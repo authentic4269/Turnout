@@ -7,9 +7,13 @@
 
 {% block content %}
 <h1>Events</h1>
+<ul id="events">
 {% for event in events.data %}
-  <p>
-    <strong>{{event.name}}</strong> {{event.start_time}} - {{event.end_time}}<br />
-    {{event.location}}
+    <li>
+    	<strong>{{event.name}}</strong> {{event.start_time}} - {{event.end_time}}<br />
+    	{{event.location}}<br />
+    	<p class="description">{{event.details.description.replace('\n', '<br />')|safe}}</p>
+	</li>
 {% endfor %}
+</ul>
 {% endblock%}
