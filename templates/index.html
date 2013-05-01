@@ -6,13 +6,27 @@
 {% endblock %}
 
 {% block content %}
+
+<h1>Primary Calendar</h1>
+<ul id="calendars">
+{% for calendar in calendar_list['items'] %}
+	{% if calendar.primary == True %}
+	<li id="calendar" data-id="{{calendar.id}}">{{ calendar.summary }}</li>
+	{% endif %}
+{% endfor %}
+</ul>
+
 <h1>Events</h1>
 <ul id="events">
 {% for event in events.data %}
-    <li>
+    <li id="event.id">
     	<strong>{{event.name}}</strong> {{event.start_time}} - {{event.end_time}}<br />
     	{{event.location}}<br />
     	<p class="description">{{event.details.description.replace('\n', '<br />')|safe}}</p>
+    	<p>
+    		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>,
+    		<a href="#" class="calendar" data-event="{{event}}">Add to calendar</a>
+    	</p>
 	</li>
 {% endfor %}
 </ul>

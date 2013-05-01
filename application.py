@@ -9,12 +9,20 @@ import json
 import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 
+import gflags
+import httplib2
+from apiclient.discovery import build
+from oauth2client.file import Storage
+from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.tools import run
+
 import requests
 from flask import Flask, request, redirect, render_template, url_for
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
+FLAGS = gflags.FLAGS
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
@@ -106,16 +114,12 @@ def fb_call(call, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
-
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
 
-
 def get_home():
     return 'https://' + request.host + '/'
-
 
 def get_token():
 
@@ -158,6 +162,43 @@ def get_token():
 
         return token
 
+def get_google():
+    # Set up a Flow object to be used if we need to authenticate. This
+    # sample uses OAuth 2.0, and we set up the OAuth2WebServerFlow with
+    # the information it needs to authenticate. Note that it is called
+    # the Web Server Flow, but it can also handle the flow for native
+    # applications
+    # The client_id and client_secret are copied from the API Access tab on
+    # the Google APIs Console
+    FLOW = OAuth2WebServerFlow(
+        client_id='499345994258-jkcmoa0r56sd6c2blsvbgccgjo5jpqel.apps.googleusercontent.com',
+        client_secret='8SihSVq73-cJVAO3Qt58_KmI',
+        scope='https://www.googleapis.com/auth/calendar',
+        user_agent='Turnout/1')
+
+    # To disable the local server feature, uncomment the following line:
+    # FLAGS.auth_local_webserver = False
+
+    # If the Credentials don't exist or are invalid, run through the native client
+    # flow. The Storage object will ensure that if successful the good
+    # Credentials will get written back to a file.
+    storage = Storage('calendar.dat')
+    credentials = storage.get()
+    if credentials is None or credentials.invalid == True:
+      credentials = run(FLOW, storage)
+
+    # Create an httplib2.Http object to handle our HTTP requests and authorize it
+    # with our good Credentials.
+    http = httplib2.Http()
+    http = credentials.authorize(http)
+
+    # Build a service object for interacting with the API. Visit
+    # the Google APIs Console
+    # to get a developerKey for your own application.
+    service = build(serviceName='calendar', version='v3', http=http,
+           developerKey='AIzaSyAthlXADineWjQjLXtBiweEMbiUUONj7PI')
+
+    return service
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -167,25 +208,64 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    if access_token:
+    google_service = get_google()
+
+    if access_token and google_service:
 
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
         url = request.url
 
+        # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
 
+        # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                      args={'access_token': access_token})
 
+        # get google calendars
+        calendar_list = google_service.calendarList().list().execute()
+
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
-            me=me, name=FB_APP_NAME, events=events)
+            me=me, name=FB_APP_NAME, events=events,
+            calendar_list=calendar_list)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
+
+@app.route('/addToCalendar', methods=['GET', 'POST'])
+def add_to_calendar():
+    error = None
+    if request.method == 'POST':
+
+        google_service = get_google()
+
+        event = request.form['event']
+        calendarId = request.form['calendar']
+
+        import ast
+        event = ast.literal_eval(event)
+
+        eventObj = {
+            'summary': event['name'],
+            'location': event['location'],
+            'start': {
+                'dateTime': event['start_time'][:-5],
+                'timeZone': event['timezone']
+            },
+            'end': {
+                'dateTime': event['end_time'][:-5],
+                'timeZone': event['timezone']
+            }
+        }
+
+        new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
+
+        return new_event['id']
+
 
 @app.route('/channel.html', methods=['GET', 'POST'])
 def get_channel():
