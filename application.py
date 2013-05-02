@@ -8,6 +8,7 @@ import hmac
 import json
 import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
+from flask.ext.sqlalchemy import SQLAlchemy
 
 import gflags
 import httplib2
@@ -115,6 +116,8 @@ def fb_call(call, args=None):
     return json.loads(r.content)
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
 
@@ -233,6 +236,10 @@ def index():
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
+    elif access_token:
+	return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="access_token")
+    elif google_service:
+	return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="google")
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
