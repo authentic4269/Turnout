@@ -180,7 +180,6 @@ def get_google(id):
         client_secret='8SihSVq73-cJVAO3Qt58_KmI',
         scope='https://www.googleapis.com/auth/calendar',
         user_agent='Turnout/1')
-    return "hello"
 
     # To disable the local server feature, uncomment the following line:
     # FLAGS.auth_local_webserver = False
@@ -192,6 +191,7 @@ def get_google(id):
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
+    return "hello"
 
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.
