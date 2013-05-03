@@ -180,6 +180,7 @@ def get_google(id):
         client_secret='8SihSVq73-cJVAO3Qt58_KmI',
         scope='https://www.googleapis.com/auth/calendar',
         user_agent='Turnout/1')
+    return "hello"
 
     # To disable the local server feature, uncomment the following line:
     # FLAGS.auth_local_webserver = False
@@ -202,6 +203,7 @@ def get_google(id):
     # to get a developerKey for your own application.
     service = build(serviceName='calendar', version='v3', http=http,
            developerKey='AIzaSyAthlXADineWjQjLXtBiweEMbiUUONj7PI')
+
 
     return service
 
