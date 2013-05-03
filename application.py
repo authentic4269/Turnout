@@ -16,6 +16,7 @@ from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
+import models
 
 import requests
 from flask import Flask, request, redirect, render_template, url_for
@@ -210,6 +211,10 @@ def google():
 @app.route('/facebook', methods=['GET'])
 def facebook():
 	return render_template('facebook.html')
+
+@app.route('/global', methods=['GET'])
+def global_opt():
+	return render_template('global.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
