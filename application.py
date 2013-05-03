@@ -8,7 +8,7 @@ import hmac
 import json
 import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 import gflags
 import httplib2
