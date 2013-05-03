@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block topbar %}
+
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Global Settings</h1>
+<form>
+<li>
+        <ul>
+                <label for="email">Email Address</label>
+		<input id="email" type="text"><br>
+	</ul
+	<ul>
+		<label for="phone">Mobile Phone Number</label>
+		<input id="phone" type="text"></br>
+	</ul>
+	<ul>
+		<label for="carrier">Carrier</label>
+                <select id="carrier">
+                        <option value="att">AT&T</option>
+                        <option value="verizon">Verizon</option>
+                        <option value="sprint">Sprint</option>
+			<option value="tmobil"><TMobile</option>
+                </select>
+        </ul>
+        <ul>
+                <input type="submit" value="Save Changes">
+        </ul>
+</li>
+</form>
+{% endblock %}

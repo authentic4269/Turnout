@@ -203,11 +203,11 @@ def get_google():
 
     return service
 
-@app.route('/google.html', methods=['POST'])
+@app.route('/google', methods=['GET'])
 def google():
 	return render_template('google.html')
 
-@app.route('/facebook.html', methods=['POST'])
+@app.route('/facebook', methods=['GET'])
 def facebook():
 	return render_template('facebook.html')
 
