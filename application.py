@@ -253,8 +253,8 @@ def index():
                      args={'access_token': access_token})
 
         # get google calendars
-        calendar_list = "hi"
-        # calendar_list = google_service.calendarList().list().execute()
+        # calendar_list = "hi"
+        calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
