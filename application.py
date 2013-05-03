@@ -176,11 +176,10 @@ def get_google(id):
     # The client_id and client_secret are copied from the API Access tab on
     # the Google APIs Console
     FLOW = OAuth2WebServerFlow(
-        client_id='499345994258-jkcmoa0r56sd6c2blsvbgccgjo5jpqel.apps.googleusercontent.com',
-        client_secret='8SihSVq73-cJVAO3Qt58_KmI',
-        scope='https://www.googleapis.com/auth/calendar',
-        redirect_uri='https://sheltered-basin-7772.herokuapp.com/',
-        user_agent='Turnout/1')
+        redirect_uri="http://127.0.0.1:5000/oauth2callback/",
+        client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
+        client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
+        scope='https://www.googleapis.com/auth/calendar')
 
     # To disable the local server feature, uncomment the following line:
     # FLAGS.auth_local_webserver = False
