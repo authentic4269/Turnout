@@ -230,7 +230,7 @@ def index():
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
-        #google_service = get_google(me['id'])
+        google_service = get_google(me['id'])
 
         url = request.url
 
