@@ -1,1 +1,30 @@
-{{calendar}}
+{% extends "base.html" %}
+
+{% block topbar %}
+
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Google Settings</h1>
+<form>
+<li>
+	<ul>
+		<label for="action">Add Facebook Events to Google Calendar</label>
+		<select id="default">
+			<option value="always">Always</option>
+			<option value="ask">Ask Me</option>
+			<option value="never">Never</option>
+		</select>
+	</ul>
+	<ul>
+		<label for="default_cal">Calendar where Facebook Events should be added</label>
+		<h2 id="default_cal">Populate a select with users calendars here</h2>
+	</ul>
+	<ul>
+		<input type="submit" value="Submit">
+	</ul>
+</li>
+</form>
+{% endblock %}

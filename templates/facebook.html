@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block topbar %}
+
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Default Facebook Settings</h1>
+<li>
+	<ul>
+		<input type="checkbox" value="auto_remind">Automatically remind me before Facebook Events<br>
+		Deliver reminders <input type="text" name="count"> 
+		<select>
+			<option value="m">Minutes</option>
+			<option value="h">Hours</option>
+			<option value="d">Days</option>
+		</select> Before start of Event
+	</ul>
+	<ul>
+		<input type="checkbox" value="auto_add">Automatically add Facebook Events to Turnout<br>
+	</ul>
+	<ul>
+                <input type="checkbox" value="auto_post">Automatically post a reminder before Facebook Events I administer<br>
+                Post reminders<input type="text" name="p_count"> 
+                <select>
+                        <option value="p_m">Minutes</option>
+                        <option value="p_h">Hours</option>
+                        <option value="p_d">Days</option>
+                </select> Before start of Event
+        </ul>
+</li>
+{% endblock %}

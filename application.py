@@ -203,6 +203,14 @@ def get_google():
 
     return service
 
+@app.route('/google.html', methods=['POST'])
+def google():
+	return render_template('google.html')
+
+@app.route('/facebook.html', methods=['POST'])
+def facebook():
+	return render_template('facebook.html')
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
