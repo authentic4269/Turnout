@@ -235,13 +235,13 @@ def index():
         url = request.url
 
         # creates user in database
-        from models import User
-        user = db.session.query(User).get(me['id'])
-        if not user:
-            newUser = User(me['name'], me['email'], me['id'])
-            db.session.add(newUser)
-            db.session.commit()
-            user = db.session.query(User).get(me['id'])
+        #from models import User
+        #user = db.session.query(User).get(me['id'])
+        #if not user:
+            #newUser = User(me['name'], me['email'], me['id'])
+            #db.session.add(newUser)
+            #db.session.commit()
+            #user = db.session.query(User).get(me['id'])
 
         # get events
         events = fb_call('me/events',
