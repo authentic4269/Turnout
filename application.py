@@ -187,7 +187,7 @@ def get_google(id):
     # If the Credentials don't exist or are invalid, run through the native client
     # flow. The Storage object will ensure that if successful the good
     # Credentials will get written back to a file.
-    storage = Storage('calendars/' + id + '.dat')
+    storage = Storage(id + '.dat')
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
@@ -230,7 +230,7 @@ def index():
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
-        google_service = get_google(me['id'])
+        #google_service = get_google(me['id'])
 
         url = request.url
 
@@ -253,7 +253,8 @@ def index():
                      args={'access_token': access_token})
 
         # get google calendars
-        calendar_list = google_service.calendarList().list().execute()
+        calendar_list = "hi"
+        # calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
