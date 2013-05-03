@@ -189,9 +189,9 @@ def get_google(id):
     # Credentials will get written back to a file.
     storage = Storage(id + '.dat')
     credentials = storage.get()
+    return "hello"
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
-    return "hello"
 
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.
