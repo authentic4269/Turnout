@@ -188,11 +188,10 @@ def get_google(id):
     # If the Credentials don't exist or are invalid, run through the native client
     # flow. The Storage object will ensure that if successful the good
     # Credentials will get written back to a file.
-    storage = Storage(id + '.dat')
+    storage = Storage('calendars/' + id + '.dat')
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
-    return "hello"
 
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.
