@@ -179,6 +179,7 @@ def get_google(id):
         client_id='499345994258-jkcmoa0r56sd6c2blsvbgccgjo5jpqel.apps.googleusercontent.com',
         client_secret='8SihSVq73-cJVAO3Qt58_KmI',
         scope='https://www.googleapis.com/auth/calendar',
+        redirect_uri='https://sheltered-basin-7772.herokuapp.com/',
         user_agent='Turnout/1')
 
     # To disable the local server feature, uncomment the following line:
