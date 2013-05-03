@@ -176,7 +176,6 @@ def get_google(id):
     # The client_id and client_secret are copied from the API Access tab on
     # the Google APIs Console
     FLOW = OAuth2WebServerFlow(
-        redirect_uri="http://127.0.0.1:5000/oauth2callback/",
         client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
         client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
         scope='https://www.googleapis.com/auth/calendar')
