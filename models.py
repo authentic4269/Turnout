@@ -13,9 +13,12 @@ class User(db.Model):
 	auto_add = db.Column(db.Boolean)
 	carrier = db.Column(db.Integer)
 	remind_type = db.Column(db.Integer)
+	remind_by_default = db.Column(db.Boolean)
+	reminder_time = db.Column(db.Integer)
 	post_by_default = db.Column(db.Boolean)
 	post_time = db.Column(db.Integer)
 	fb_id = db.Column(db.Integer, primary_key=True)
+
 
 class Reminder(db.Model):
 	__tablename__ = 'reminders'

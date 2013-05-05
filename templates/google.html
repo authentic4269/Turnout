@@ -12,15 +12,19 @@
 <li>
 	<ul>
 		<label for="action">Add Facebook Events to Google Calendar</label>
-		<select id="default">
+		<select id="default_action" name="default_action">
 			<option value="always">Always</option>
 			<option value="ask">Ask Me</option>
 			<option value="never">Never</option>
 		</select>
 	</ul>
+	<h3>The calendars are hardcoded, they need to pull from the database</h3>
 	<ul>
 		<label for="default_cal">Calendar where Facebook Events should be added</label>
-		<h2 id="default_cal">Populate a select with users calendars here</h2>
+		<select id="calendar" name="calendar">
+			<option value="mycalendar">My Calendar</option>
+			<option value="groupcalendar">Group Calendar</option?
+		</select>
 	</ul>
 	<ul>
 		<input type="submit" value="Submit">
