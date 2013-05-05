@@ -19,13 +19,16 @@ class User(db.Model):
 	post_time = db.Column(db.Integer)
 	fb_id = db.Column(db.Integer, primary_key=True)
 
-<<<<<<< HEAD
-=======
 	def __init__(self, name, email, fb_id):
 		self.name = name
 		self.email = email
 		self.fb_id = fb_id
->>>>>>> origin
+		self.remind_type = 0
+		self.post_by_default = true
+		self.post_time = 30
+		self.carrier = 0
+		self.auto_add = true
+		self.reminder_time = 30
 
 class Reminder(db.Model):
 	__tablename__ = 'reminders'
