@@ -1,5 +1,5 @@
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
@@ -19,6 +19,13 @@ class User(db.Model):
 	post_time = db.Column(db.Integer)
 	fb_id = db.Column(db.Integer, primary_key=True)
 
+<<<<<<< HEAD
+=======
+	def __init__(self, name, email, fb_id):
+		self.name = name
+		self.email = email
+		self.fb_id = fb_id
+>>>>>>> origin
 
 class Reminder(db.Model):
 	__tablename__ = 'reminders'

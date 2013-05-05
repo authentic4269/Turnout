@@ -83,6 +83,7 @@ def fbapi_auth(code):
     for pair in pairs:
         (key, value) = pair.split("=")
         result_dict[key] = value
+
     return (result_dict["access_token"], result_dict["expires"])
 
 
@@ -166,7 +167,7 @@ def get_token():
 
         return token
 
-def get_google():
+def get_google(id):
     # Set up a Flow object to be used if we need to authenticate. This
     # sample uses OAuth 2.0, and we set up the OAuth2WebServerFlow with
     # the information it needs to authenticate. Note that it is called
@@ -175,10 +176,10 @@ def get_google():
     # The client_id and client_secret are copied from the API Access tab on
     # the Google APIs Console
     FLOW = OAuth2WebServerFlow(
-        client_id='499345994258-jkcmoa0r56sd6c2blsvbgccgjo5jpqel.apps.googleusercontent.com',
-        client_secret='8SihSVq73-cJVAO3Qt58_KmI',
-        scope='https://www.googleapis.com/auth/calendar',
-        user_agent='Turnout/1')
+        redirect_uri='urn:ietf:wg:oauth:2.0:oob',
+        client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
+        client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
+        scope='https://www.googleapis.com/auth/calendar')
 
     # To disable the local server feature, uncomment the following line:
     # FLAGS.auth_local_webserver = False
@@ -186,7 +187,7 @@ def get_google():
     # If the Credentials don't exist or are invalid, run through the native client
     # flow. The Storage object will ensure that if successful the good
     # Credentials will get written back to a file.
-    storage = Storage('calendar.dat')
+    storage = Storage('calendars/' + id + '.dat')
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
@@ -201,6 +202,7 @@ def get_google():
     # to get a developerKey for your own application.
     service = build(serviceName='calendar', version='v3', http=http,
            developerKey='AIzaSyAthlXADineWjQjLXtBiweEMbiUUONj7PI')
+
 
     return service
 
@@ -224,14 +226,23 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    google_service = get_google()
-
-    if access_token and google_service:
+    if access_token:
 
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
+        google_service = get_google(me['id'])
+
         url = request.url
+
+        # creates user in database
+        #from models import User
+        #user = db.session.query(User).get(me['id'])
+        #if not user:
+            #newUser = User(me['name'], me['email'], me['id'])
+            #db.session.add(newUser)
+            #db.session.commit()
+            #user = db.session.query(User).get(me['id'])
 
         # get events
         events = fb_call('me/events',
@@ -243,16 +254,17 @@ def index():
                      args={'access_token': access_token})
 
         # get google calendars
+        # calendar_list = "hi"
         calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
-    elif access_token:
-	return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="access_token")
-    elif google_service:
-	return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="google")
+    #elif access_token:
+	#return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="access_token")
+    #elif google_service:
+	#return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name="google")
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
@@ -261,7 +273,7 @@ def add_to_calendar():
     error = None
     if request.method == 'POST':
 
-        google_service = get_google()
+        google_service = get_google(request.form['id'])
 
         event = request.form['event']
         calendarId = request.form['calendar']
@@ -286,6 +298,20 @@ def add_to_calendar():
 
         return new_event['id']
 
+@app.route('/sendReminder', methods=['GET', 'POST'])
+def send_reminder():
+    import smtplib
+    session = smtplib.SMTP('smtp.gmail.com', 587)
+    session.ehlo()
+    session.starttls()
+    session.login('turnoutreminders@gmail.com', 'cs3300heroku')
+    headers = ["from: turnoutreminders@gmail.com",
+                "subject: " + request.form['eventname'],
+                "to: " + request.form['email']]
+    headers = "\r\n".join(headers)
+    session.sendmail("turnoutreminders@gmail.com", request.form['email'], headers + "\r\n\r\n" + request.form['eventtime'] + "\n" + request.form['eventlocation'] + "\n\n" + request.form['eventdescr'])
+
+    return render_template('channel.html')
 
 @app.route('/channel.html', methods=['GET', 'POST'])
 def get_channel():
