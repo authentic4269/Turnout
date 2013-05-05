@@ -122,6 +122,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
+app.secret_key = os.urandom(22)
 
 def get_home():
     return 'https://' + request.host + '/'
@@ -207,11 +208,12 @@ def get_google(id):
     return service
 
 @app.route('/google', methods=['GET'])
-def google():
-	return render_template('google.html')
+def googlesettings():
+	if 'user' in session:
+		return render_template('google.html', )
 
 @app.route('/facebook', methods=['GET'])
-def facebook():
+def facebooksettings():
 	return render_template('facebook.html')
 
 @app.route('/global', methods=['GET'])
@@ -237,13 +239,14 @@ def index():
 
         # creates user in database
         #from models import User
-        #user = db.session.query(User).get(me['id'])
-        #if not user:
-            #newUser = User(me['name'], me['email'], me['id'])
-            #db.session.add(newUser)
-            #db.session.commit()
-            #user = db.session.query(User).get(me['id'])
+        user = db.session.query(User).get(me['id'])
+        if not user:
+            newUser = User(me['name'], me['email'], me['id'])
+            db.session.add(newUser)
+            db.session.commit()
+            user = db.session.query(User).get(me['id'])
 
+	session['user'] = user
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
