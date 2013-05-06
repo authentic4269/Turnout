@@ -2,13 +2,8 @@ from flask.wtf import Form, TextField, PasswordField, validators
 from models import User
 
 class GoogleForm(Form):
-	action = SelectField(u'default_action', choices=[('always', 'Always'), ('ask', 'Ask Me'), ('never', 'Never')])
+	default_action = SelectField(u'default_action', choices=[('always', 'Always'), ('never', 'Never')])
 	calendar = SelectField(u'calendar', coerce=int)
-	
-	def edit_google_settings(request, fb_id):
-		user = User.query.get(fb_id)
-		form = GoogleForm(request.POST, obj=user)		
-		form.calendar.choices = [(1, "Facebook"), (2, "Work")]
 
 class FacebookForm(Form):
 	auto_remind = BooleanField(u'auto_remind')

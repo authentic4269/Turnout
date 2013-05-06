@@ -19,7 +19,7 @@ from oauth2client.tools import run
 import models
 
 import requests
-from flask import Flask, request, redirect, render_template, url_for
+from flask import Flask, request, redirect, render_template, url_for, session
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
@@ -207,10 +207,14 @@ def get_google(id):
 
     return service
 
-@app.route('/google', methods=['GET'])
+@app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
-	if 'user' in session:
-		return render_template('google.html', )
+	if request.method == 'POST':
+		current_user = 		
+	if 'user' in session and 'google_service' in session:
+		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
+		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
+	
 
 @app.route('/facebook', methods=['GET'])
 def facebooksettings():
@@ -224,7 +228,11 @@ def global_opt():
 def index():
     # print get_home()
 
-    access_token = get_token()
+    if session['access_token'] then access_token = session['access_token']
+    else
+	access_token = get_token()
+	session['access_token'] = access_token
+    
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
@@ -259,7 +267,6 @@ def index():
         # get google calendars
         # calendar_list = "hi"
         calendar_list = google_service.calendarList().list().execute()
-
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
@@ -275,9 +282,9 @@ def index():
 def add_to_calendar():
     error = None
     if request.method == 'POST':
-
+	user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
         google_service = get_google(request.form['id'])
-
+	
         event = request.form['event']
         calendarId = request.form['calendar']
 
