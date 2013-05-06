@@ -264,7 +264,7 @@ def global_opt():
 def index():
     # print get_home()
 
-    if access_token in session: 
+    if 'access_token' in session: 
 	access_token = session['access_token']
     else:
 	access_token = get_token()
