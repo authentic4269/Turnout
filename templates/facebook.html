@@ -8,24 +8,26 @@
 {% block content %}
 
 <h1>Default Facebook Settings</h1>
+<form action="/facebook">
 <li>
 	<ul>
-		<input type="checkbox" value="auto_remind">Automatically remind me before Facebook Events<br>
-		Deliver reminders <input type="text" name="count" id="count"> 
+		<input type="checkbox" id="auto_remind" name="auto_remind" {% if auto_remind %} selected="true" {% endif %} value="auto_remind">Automatically remind me before Facebook Events<br>
+		Deliver reminders <input type="text" value="{{remind_time}}" id="remind_time" name="remind_time"> 
 		<select>
-			<option value="m">Minutes</option>
-			<option value="h">Hours</option>
-			<option value="d">Days</option>
+			<option value="0" {% if remind_unit=0 %} selected="true" {% endif %} >Minutes</option>
+			<option value="1" {% if remind_unit=1 %} selected="true" {% endif %}>Hours</option>
+			<option value="2" {% if remind_unit=2 %} selected="true" {% endif %}>Days</option>
 		</select> Before start of Event
 	</ul>
 	<ul>
-                <input type="checkbox" value="auto_post">Automatically post a reminder before Facebook Events I administer<br>
-                Post reminders<input type="text" name="p_count"> 
-                <select>
-                        <option value="p_m">Minutes</option>
-                        <option value="p_h">Hours</option>
-                        <option value="p_d">Days</option>
+                <input type="checkbox" {% if auto_post %} selected="true" {% endif %} name="auto_post" id="auto_post" value="auto_post">Automatically post a reminder before Facebook Events I administer<br>
+                Post reminders<input type="text" name="post_time" value="{{post_time}}"> 
+                <select name="post_unit" id="post_unit">
+                        <option value="0" {% if post_unit=0 %} selected="true" {% endif %}>Minutes</option>
+                        <option value="1" {% if post_unit=1 %} selected="true" {% endif %}>Hours</option>
+                        <option value="2" {% if post_unit=2 %} selected="true" {% endif %}>Days</option>
                 </select> Before start of Event
         </ul>
 </li>
+</form>
 {% endblock %}

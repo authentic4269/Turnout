@@ -207,18 +207,54 @@ def get_google(id):
 
     return service
 
+
+
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
 	if request.method == 'POST':
-		current_user = 		
+		f = GoogleForm(request.form)
+		user.update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
 	if 'user' in session and 'google_service' in session:
 		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
 		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
+	else:
+		flash('You are not logged in')
+		return redirect(url_for('index'))
 	
 
 @app.route('/facebook', methods=['GET'])
 def facebooksettings():
-	return render_template('facebook.html')
+	if request.method == 'POST':
+		f = FacebookForm(request.form)
+		user.update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
+		'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})	
+		flash('Facebook Settings Updated!')
+		return redirect(url_for('index'))
+	else if 'user' in session:
+		remind_inf = get_unit(session['user']['reminder_time'])
+		post_inf = get_unit(session['user']['post_time'])
+		return render_template('facebook.html', auto_remind=session['user']['remind_by_default'],
+			remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
+			post_time=post_inf['num'], post_unit=post_inf['unit'])
+	else:
+		flash('You are not logged in')
+		return redirect(url_for('index'))
+
+def convert(num, unit):
+	if unit == 0:
+		return num
+	else if unit == 1:
+		return num * 60
+	else if unit == 2: 
+		return num * 60 * 24
+
+def get_unit(num):
+	if (num % (60 * 24)) == 0:
+		return({'num': (num / (60 * 24)), 'unit': 2})
+	else if (num % 60) == 0:
+		return({'num': (num / 60), 'unit': 1})
+	else:
+		return({'num': num, 'unit': 0})
 
 @app.route('/global', methods=['GET'])
 def global_opt():

@@ -26,7 +26,10 @@ class User(db.Model):
 		self.fb_id = fb_id
 		self.remind_type = 0
 		self.post_by_default = true
+		self.remind_by_default = true
+		self.reminder_time = 30
 		self.post_time = 30
+		self.phone = 5555555555
 		self.carrier = 0
 		self.auto_add = true
 		self.reminder_time = 30
