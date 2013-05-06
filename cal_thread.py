@@ -36,41 +36,45 @@ class ReminderThread(Thread):
 			db.session.delete(reminder)
 		smtpobj.close()
 
-    def send_one_reminder(self, reminder):
+    def send_one_reminder(self, reminder, smtpobj):
 	event = self.db.session.query(Event).get(event_id=reminder.event_id)
 	user = self.db.session.query(User).get(fb_id=reminder.user_id)
 	if reminder.type == 0: #text message:
 		if user.carrier == 0: #att
 			header = 'To: ' + str(user.phone) + '@txt.att.net' + '\n' +
 			'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-			event.title'
+			event.title
 			to = str(user.phone) + '@txt.att.net'
 		else if user.carrier == 1: #sprint
                         header = 'To: ' + str(user.phone) + '@messaging.sprintpcs.com' + '\n' +
                         'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-                        event.title'
+                        event.title
 			to = str(user.phone) + '@messaging.sprintpcs.com'
 		else if user.carrier == 2: #verizon
                         header = 'To: ' + str(user.phone) + '@vtext.com' + '\n' +
                         'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-                        event.title'
+                        event.title
 			to = str(user.phone) + '@vtext.com'
 		else if user.carrier == 3: #tmobile
                         header = 'To: ' + str(user.phone) + '@tmomail.net' + '\n' +
                         'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-                        event.title'
+                        event.title
 			to = str(user.phone) + '@tmomail.net'
 		else if user.carrier == 4: #cricket
                         header = 'To: ' + str(user.phone) + '@sms.mycricket.com' + '\n' +
                         'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-                        event.title'
+                        event.title
 			to = str(user.phone) + '@sms.mycricket.com'
 		else if user.carrier == 5: #alltel
                         header = 'To: ' + str(user.phone) + '@sms.alltelwireless.com' + '\n' +
                         'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' +
-                        event.title'
+                        event.title
 			to = str(user.phone) + '@sms.alltelwireless.com'
 		msg = header + '\n This is a reminder for your event, ' + event.title + '\n\n'
 		smtpobj.sendmail(herokuturnoutapp@gmail.com, to, msg)
-	
+	else if reminder.type == 1: #email
+		header = 'To: ' + user.email + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 
+		'Subject: ' + event.title	
+		msg = header + '\n This is a reminder for your event, ' + event.title + '\n\n'
+		smtpobj.sendmail(herokuturnoutapp@gmail.com, to, msg)
 
