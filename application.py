@@ -10,6 +10,7 @@ import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from flask_sqlalchemy import SQLAlchemy
 
+
 import gflags
 import httplib2
 from apiclient.discovery import build
@@ -19,7 +20,7 @@ from oauth2client.tools import run
 import models
 
 import requests
-from flask import Flask, request, redirect, render_template, url_for, session
+from flask import Flask, request, redirect, render_template, url_for, session, flash
 
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
@@ -211,9 +212,9 @@ def get_google(id):
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
-	if request.method == 'POST':
+	if request.method == 'POST' and 'user' in session:
 		f = GoogleForm(request.form)
-		user.update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
+		session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
 	elif 'user' in session and 'google_service' in session:
 		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
 		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
@@ -224,9 +225,9 @@ def googlesettings():
 
 @app.route('/facebook', methods=['GET'])
 def facebooksettings():
-	if request.method == 'POST':
+	if request.method == 'POST' and 'user' in session:
 		f = FacebookForm(request.form)
-		user.update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
+		session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
 		'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})	
 		flash('Facebook Settings Updated!')
 		return redirect(url_for('index'))
@@ -256,8 +257,12 @@ def get_unit(num):
 	else:
 		return({'num': num, 'unit': 0})
 
-@app.route('/global', methods=['GET'])
+@app.route('/global', methods=['GET', 'POST'])
 def global_opt():
+	if request.method == 'POST' and 'user' in session:
+		f = GlobalForm(request.form)
+		if (f.validate())
+			session['user
 	return render_template('global.html')
 
 @app.route('/', methods=['GET', 'POST'])
