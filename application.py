@@ -214,7 +214,7 @@ def googlesettings():
 	if request.method == 'POST':
 		f = GoogleForm(request.form)
 		user.update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
-	if 'user' in session and 'google_service' in session:
+	elif 'user' in session and 'google_service' in session:
 		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
 		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
 	else:
@@ -230,7 +230,7 @@ def facebooksettings():
 		'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})	
 		flash('Facebook Settings Updated!')
 		return redirect(url_for('index'))
-	else if 'user' in session:
+	elif 'user' in session:
 		remind_inf = get_unit(session['user']['reminder_time'])
 		post_inf = get_unit(session['user']['post_time'])
 		return render_template('facebook.html', auto_remind=session['user']['remind_by_default'],
@@ -243,15 +243,15 @@ def facebooksettings():
 def convert(num, unit):
 	if unit == 0:
 		return num
-	else if unit == 1:
+	elif unit == 1:
 		return num * 60
-	else if unit == 2: 
+	elif unit == 2: 
 		return num * 60 * 24
 
 def get_unit(num):
 	if (num % (60 * 24)) == 0:
 		return({'num': (num / (60 * 24)), 'unit': 2})
-	else if (num % 60) == 0:
+	elif (num % 60) == 0:
 		return({'num': (num / 60), 'unit': 1})
 	else:
 		return({'num': num, 'unit': 0})
