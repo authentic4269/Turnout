@@ -302,12 +302,13 @@ def index():
 
         # creates user in database
         #from models import User
+
+
+        newUser = User(me['name'], me['email'], me['id'])
+        db.session.delete(newUser)
+        db.session.add(newUser)
+        db.session.commit()
         user = db.session.query(User).get(me['id'])
-        if not user:
-            newUser = User(me['name'], me['email'], me['id'])
-            db.session.add(newUser)
-            db.session.commit()
-            user = db.session.query(User).get(me['id'])
         google_service = get_google(me['id'])
         session['user'] = user
 
