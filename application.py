@@ -295,7 +295,7 @@ def index():
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
-
+    s = session['fatty']
     if access_token:
 
         me = fb_call('me', args={'access_token': access_token})
