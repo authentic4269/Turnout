@@ -211,7 +211,7 @@ def get_google_new_user(id):
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google(token):
-	response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
+	response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
 	return response.access_token
 		
 		
