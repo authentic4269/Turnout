@@ -13,7 +13,6 @@ class User(db.Model):
 	auto_add = db.Column(db.Boolean)
 	carrier = db.Column(db.Integer)
 	remind_type = db.Column(db.Integer)
-	refresh_token = db.Column(db.String(200))
 	phone = db.Column(db.Integer)
 	remind_by_default = db.Column(db.Boolean)
 	reminder_time = db.Column(db.Integer)
@@ -23,7 +22,6 @@ class User(db.Model):
 	default_calendar = db.Column(db.String(40))
 	def __init__(self, name, email, fb_id):
 		self.name = name
-		self.refresh_token = "N"
 		self.email = email
 		self.fb_id = fb_id
 		self.remind_type = 0

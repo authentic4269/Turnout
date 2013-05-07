@@ -168,10 +168,9 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
-
         return token
 
-def get_google_new_user(id):
+def get_google(id):
     # Set up a Flow object to be used if we need to authenticate. This
     # sample uses OAuth 2.0, and we set up the OAuth2WebServerFlow with
     # the information it needs to authenticate. Note that it is called
@@ -196,9 +195,8 @@ def get_google_new_user(id):
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
-    refresh_token = credentials.to_json().refresh_token
-    s = session['fatty']
-    db.session.query(User).filter(fb_id=id).update({'refresh_token': refresh_token})
+    #refresh_token = credentials.to_json().refresh_token
+    #db.session.query(User).filter(fb_id=id).update({'refresh_token': refresh_token})
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.
     http = httplib2.Http()
@@ -212,7 +210,7 @@ def get_google_new_user(id):
     return service
 
 @app.route('/google_auth', methods=['GET', 'POST'])
-def get_google(token):
+def get_google_auth(token):
 	response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
 	return response.access_token
 		
@@ -286,7 +284,6 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
-
     if 'access_token' in session: 
 	access_token = session['access_token']
     else:
@@ -295,12 +292,11 @@ def index():
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
-    s = session['fatty']
     if access_token:
 
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-
+	s = session['pancake']
 
         url = request.url
 
@@ -312,10 +308,6 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-	if user['refresh_token'] != 'N':
-		google_service = get_google(user['refresh_token'])
-	else:
-		google_service = get_google_new_user(me['id'])
         google_service = get_google(me['id'])
 	session['user'] = user
         # get events
