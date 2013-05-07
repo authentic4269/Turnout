@@ -13,25 +13,25 @@ class User(db.Model):
 	auto_add = db.Column(db.Boolean)
 	carrier = db.Column(db.Integer)
 	remind_type = db.Column(db.Integer)
-	phone = db.Column(db.Integer)
+	phone = db.Column(db.BigInteger)
 	remind_by_default = db.Column(db.Boolean)
 	reminder_time = db.Column(db.Integer)
 	post_by_default = db.Column(db.Boolean)
 	post_time = db.Column(db.Integer)
-	fb_id = db.Column(db.Integer, primary_key=True)
+	fb_id = db.Column(db.BigInteger, primary_key=True)
 	default_calendar = db.Column(db.String(40))
 	def __init__(self, name, email, fb_id):
 		self.name = name
 		self.email = email
 		self.fb_id = fb_id
 		self.remind_type = 0
-		self.post_by_default = true
-		self.remind_by_default = true
+		self.post_by_default = True
+		self.remind_by_default = True
 		self.reminder_time = 30
 		self.post_time = 30
 		self.phone = 5555555555
 		self.carrier = 0
-		self.auto_add = true
+		self.auto_add = True
 		self.reminder_time = 30
 
 class Reminder(db.Model):

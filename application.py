@@ -284,19 +284,19 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # print get_home()
-    if 'access_token' in session: 
-	access_token = session['access_token']
+    if 'facebook_token' in session: 
+	   access_token = session['facebook_token']
     else:
-	access_token = get_token()
-	session['access_token'] = access_token
+	   access_token = get_token()
+	   session['facebook_token'] = access_token
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
-    if access_token:
 
-        me = fb_call('me', args={'access_token': access_token})
-        fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-	s = session['pancake']
+    if session['facebook_token']:
+
+        me = fb_call('me', args={'access_token': session['facebook_token']})
+        fb_app = fb_call(FB_APP_ID, args={'access_token': session['facebook_token']})
 
         url = request.url
 
@@ -309,21 +309,21 @@ def index():
             db.session.commit()
             user = db.session.query(User).get(me['id'])
         google_service = get_google(me['id'])
-	session['user'] = user
+        session['user'] = user
+
         # get events
         events = fb_call('me/events',
-            args={'access_token': access_token})
+            args={'access_token': session['facebook_token']})
 
         # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
-                     args={'access_token': access_token})
+                     args={'access_token': session['facebook_token']})
 
         # get google calendars
-        # calendar_list = "hi"
         calendar_list = google_service.calendarList().list().execute()
         return render_template(
-            'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
+            'index.html', app_id=FB_APP_ID, token=session['facebook_token'], app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
     else:
