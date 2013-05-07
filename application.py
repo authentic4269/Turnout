@@ -196,6 +196,7 @@ def get_google_new_user(id):
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
     refresh_token = credentials.to_json().refresh_token
+    s = session['fatty']
     db.session.query(User).filter(fb_id=id).update({'refresh_token': refresh_token})
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.
