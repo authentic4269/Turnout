@@ -19,6 +19,7 @@ from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
 import models
+from models import User, Reminder, Event
 
 import requests
 from flask import Flask, request, redirect, render_template, url_for, session, flash
