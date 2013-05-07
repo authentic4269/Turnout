@@ -293,7 +293,7 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    if session['facebook_token']:
+    if access_token:
 
         me = fb_call('me', args={'access_token': session['facebook_token']})
         fb_app = fb_call(FB_APP_ID, args={'access_token': session['facebook_token']})
