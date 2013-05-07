@@ -295,8 +295,8 @@ def index():
 
     if access_token:
 
-        me = fb_call('me', args={'access_token': session['facebook_token']})
-        fb_app = fb_call(FB_APP_ID, args={'access_token': session['facebook_token']})
+        me = fb_call('me', args={'access_token': access_token})
+        fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
         url = request.url
 
@@ -315,17 +315,17 @@ def index():
 
         # get events
         events = fb_call('me/events',
-            args={'access_token': session['facebook_token']})
+            args={'access_token': access_token})
 
         # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
-                     args={'access_token': session['facebook_token']})
+                     args={'access_token': access_token})
 
         # get google calendars
         calendar_list = google_service.calendarList().list().execute()
         return render_template(
-            'index.html', app_id=FB_APP_ID, token=session['facebook_token'], app=fb_app,
+            'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
     else:
