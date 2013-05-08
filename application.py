@@ -278,7 +278,8 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        #google_service = get_google(me['id'])
+        google_service = get_google(me['id'])
+	session['google_service'] = google_service
         session['user'] = user
 
         # get events
