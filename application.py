@@ -180,10 +180,10 @@ def get_google_auth(token):
 def googlesettings():
 	if request.method == 'POST' and 'user' in session:
 		f = GoogleForm(request.form)
-		session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
+		session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user'].auto_add})
 	elif 'user' in session and 'google_service' in session:
 		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
-		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
+		default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
 	else:
 		flash('You are not logged in')
 		return redirect(url_for('index'))
@@ -198,9 +198,9 @@ def facebooksettings():
 		flash('Facebook Settings Updated!')
 		return redirect(url_for('index'))
 	elif 'user' in session:
-		remind_inf = get_unit(session['user']['reminder_time'])
-		post_inf = get_unit(session['user']['post_time'])
-		return render_template('facebook.html', auto_remind=session['user']['remind_by_default'],
+		remind_inf = get_unit(session['user'].reminder_time)
+		post_inf = get_unit(session['user'].post_time)
+		return render_template('facebook.html', auto_remind=session['user'].remind_by_default,
 			remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
 			post_time=post_inf['num'], post_unit=post_inf['unit'])
 	else:
