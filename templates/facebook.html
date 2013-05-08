@@ -21,7 +21,7 @@
 	<ul>
                 <input type="checkbox" {% if auto_post %} selected="true" {% endif %} name="auto_post" id="auto_post" value="auto_post">Automatically post a reminder before Facebook Events I administer<br>
                 Post reminders<input type="text" name="post_time_count" value="{{post_time}}"> 
-                <select name="post_unit" id="post_unit" name="post_unit">
+                <select name="post_unit" id="post_unit" name="post_time_unit">
                         <option value="0" {% if post_unit==0 %} selected="true" {% endif %}>Minutes</option>
                         <option value="1" {% if post_unit==1 %} selected="true" {% endif %}>Hours</option>
                         <option value="2" {% if post_unit==2 %} selected="true" {% endif %}>Days</option>
