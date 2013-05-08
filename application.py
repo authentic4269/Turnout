@@ -241,7 +241,11 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    access_token = get_token()
+    if 'facebook_token' in session:
+        access_token = session['facebook_token']
+    else:
+        access_token = get_token()
+        session['facebook_token'] = access_token
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
@@ -254,9 +258,6 @@ def index():
         url = request.url
 
         # creates user in database
-        #from models import User
-
-
         user = db.session.query(User).get(me['id'])
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
