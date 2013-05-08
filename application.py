@@ -217,6 +217,7 @@ def facebooksettings():
         return redirect(url_for('index'))
 
 def convert(num, unit):
+    return num
     if unit == 0:
         return num
     elif unit == 1:
