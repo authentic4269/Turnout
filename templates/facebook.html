@@ -11,7 +11,7 @@
 <form action="/facebook" method="post">
 	<ul>
 		<input type="checkbox" id="auto_remind" name="auto_remind" {% if auto_remind %} selected="true" {% endif %} value="auto_remind">Automatically remind me before Facebook Events<br>
-		Deliver reminders <input type="text" value="{{remind_time}}" id="remind_time" name="reminder_time_count"> 
+		Deliver reminders <input type="text" value="{{remind_time}}" id="reminder_time_count" name="reminder_time_count"> 
 		<select name="reminder_time_unit">
 			<option value="0" {% if remind_unit==0 %} selected="true" {% endif %} >Minutes</option>
 			<option value="1" {% if remind_unit==1 %} selected="true" {% endif %}>Hours</option>
