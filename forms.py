@@ -20,5 +20,5 @@ class GlobalForm(Form):
 	carrier = SelectField('carrier', [validators.optional()], choices=[('att', 'AT&T'), ('sprint', 'Sprint'), ('verizon', 'Verizon'), ('tmobil', 'TMobile'), ('cricket', 'Cricket'), ('alltel', 'Alltel'), ])
 	
 	def validate_phone(form, field):
-		if re.match("^[0-9]{10}$", str(field.data)):
+		if re.match("^[0-9]{10}$", field.data):
 			raise validators.ValidationError("Expected a 10-digit phone number")
