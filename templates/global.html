@@ -9,7 +9,16 @@
 
 <h1>Global Settings</h1>
 <form action="global" method="POST">
-<li>
+        {% if form.errors %}
+            <ul class="errors">
+                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <li>{{ form[field_name].label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <ul>
                 <label for="email">Email Address</label>
 		<input id="email" type="text"><br>
@@ -30,6 +39,6 @@
         <ul>
                 <input type="submit" value="Save Changes">
         </ul>
-</li>
+
 </form>
 {% endblock %}

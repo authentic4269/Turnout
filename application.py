@@ -233,7 +233,7 @@ def global_opt():
 			flash('Settings updated')
 			return redirect(url_for('index'))
 		else:
-			return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
+			return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
 	elif 'user' in session:
 		return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
         else:

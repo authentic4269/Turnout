@@ -15,7 +15,7 @@ class FacebookForm(Form):
 
 class GlobalForm(Form):
 	email = TextField(u'email', [validators.Email()])
-	phone = IntegerField(u'phone', )
+	phone = IntegerField(u'phone', [validate_phone])
 	carrier = SelectField(u'carrier', choices=[('att', 'AT&T'), ('sprint', 'Sprint'), ('verizon', 'Verizon'), ('tmobil', 'TMobile'), ('cricket', 'Cricket'), ('alltel', 'Alltel'), ])
 	
 	def validate_phone(form, field):
