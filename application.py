@@ -217,7 +217,9 @@ def facebooksettings():
         return redirect(url_for('index'))
 
 def convert(num, unit):
-    return num
+    num = int(num)
+    unit = int(unit)
+
     if unit == 0:
         return num
     elif unit == 1:
@@ -226,6 +228,8 @@ def convert(num, unit):
         return num * 60 * 24
 
 def get_unit(num):
+    num = int(num)
+    
     if (num % (60 * 24)) == 0:
         return({'num': (num / (60 * 24)), 'unit': 2})
     elif (num % 60) == 0:
