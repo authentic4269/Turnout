@@ -18,8 +18,9 @@ from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
-import models
+import models, forms
 from models import User, Reminder, Event
+from forms import GoogleForm, FacebookForm, GlobalForm
 
 import requests
 from flask import Flask, request, redirect, render_template, url_for, session, flash
@@ -226,7 +227,6 @@ def get_unit(num):
 @app.route('/global', methods=['GET', 'POST'])
 def global_opt():
 	if request.method == 'POST' and 'user' in session:
-        from forms import GlobalForm
 		f = GlobalForm(request.form)
 		if (f.validate()):
 			session['user'].update({'email': f.email.data, 'phone': f.phone.data, 'carrier': f.carrier.data})
