@@ -229,9 +229,9 @@ def global_opt():
 	if request.method == 'POST' and 'user' in session:
 		f = GlobalForm(request.form)
 		if (f.validate()):
-            session['user'].email = f.email.data
-            session['user'].phone = f.email.phone
-            session['user'].carrier = f.email.carrier
+            session['user'].email = f.email
+            session['user'].phone = f.phone
+            session['user'].carrier = f.carrier
             session['user'].commit()
 			flash('Settings updated')
 			return redirect(url_for('index'))
