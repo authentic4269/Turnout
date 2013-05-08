@@ -137,8 +137,6 @@ def get_token():
 
     cookie_key = 'fbsr_{0}'.format(FB_APP_ID)
 
-    print request.cookies
-
     if cookie_key in request.cookies:
 
         c = request.cookies.get(cookie_key)
@@ -186,7 +184,7 @@ def get_google(id):
         client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
         client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
         scope='https://www.googleapis.com/auth/calendar',
-    access_type='offline')
+	access_type='offline')
     
     # To disable the local server feature, uncomment the following line:
     # FLAGS.auth_local_webserver = False
@@ -214,114 +212,120 @@ def get_google(id):
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
-    response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
-    return response.access_token
-        
-        
+	response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
+	return response.access_token
+		
+		
     
-    
+	
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
-    if request.method == 'POST' and 'user' in session:
-        f = GoogleForm(request.form)
-        session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
-    elif 'user' in session and 'google_service' in session:
-        return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
-        default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
-    else:
-        flash('You are not logged in')
-        return redirect(url_for('index'))
-    
+	if request.method == 'POST' and 'user' in session:
+		f = GoogleForm(request.form)
+		session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user']['auto_add']})
+	elif 'user' in session and 'google_service' in session:
+		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
+		default_calendar=session['user']['default_calendar'], auto_add=session['user']['auto_add'])
+	else:
+		flash('You are not logged in')
+		return redirect(url_for('index'))
+	
 
 @app.route('/facebook', methods=['GET'])
 def facebooksettings():
-    if request.method == 'POST' and 'user' in session:
-        f = FacebookForm(request.form)
-        session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
-        'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})    
-        flash('Facebook Settings Updated!')
-        return redirect(url_for('index'))
-    elif 'user' in session:
-        remind_inf = get_unit(session['user']['reminder_time'])
-        post_inf = get_unit(session['user']['post_time'])
-        return render_template('facebook.html', auto_remind=session['user']['remind_by_default'],
-            remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
-            post_time=post_inf['num'], post_unit=post_inf['unit'])
-    else:
-        flash('You are not logged in')
-        return redirect(url_for('index'))
+	if request.method == 'POST' and 'user' in session:
+		f = FacebookForm(request.form)
+		session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
+		'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})	
+		flash('Facebook Settings Updated!')
+		return redirect(url_for('index'))
+	elif 'user' in session:
+		remind_inf = get_unit(session['user']['reminder_time'])
+		post_inf = get_unit(session['user']['post_time'])
+		return render_template('facebook.html', auto_remind=session['user']['remind_by_default'],
+			remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
+			post_time=post_inf['num'], post_unit=post_inf['unit'])
+	else:
+		flash('You are not logged in')
+		return redirect(url_for('index'))
 
 def convert(num, unit):
-    if unit == 0:
-        return num
-    elif unit == 1:
-        return num * 60
-    elif unit == 2: 
-        return num * 60 * 24
+	if unit == 0:
+		return num
+	elif unit == 1:
+		return num * 60
+	elif unit == 2: 
+		return num * 60 * 24
 
 def get_unit(num):
-    if (num % (60 * 24)) == 0:
-        return({'num': (num / (60 * 24)), 'unit': 2})
-    elif (num % 60) == 0:
-        return({'num': (num / 60), 'unit': 1})
-    else:
-        return({'num': num, 'unit': 0})
+	if (num % (60 * 24)) == 0:
+		return({'num': (num / (60 * 24)), 'unit': 2})
+	elif (num % 60) == 0:
+		return({'num': (num / 60), 'unit': 1})
+	else:
+		return({'num': num, 'unit': 0})
 
 @app.route('/global', methods=['GET', 'POST'])
 def global_opt():
-    if request.method == 'POST' and 'user' in session:
-        f = GlobalForm(request.form)
-        if (f.validate()):
-            session['user'].update({'email': f.email.data, 'phone': f.phone.data, 'carrier': f.carrier.data})
-            flash('Settings updated')
-            return redirect(url_for('index'))
+	if request.method == 'POST' and 'user' in session:
+		f = GlobalForm(request.form)
+		if (f.validate()):
+			session['user'].update({'email': f.email.data, 'phone': f.phone.data, 'carrier': f.carrier.data})
+			flash('Settings updated')
+			return redirect(url_for('index'))
+		else:
+			return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
+	elif 'user' in session:
+		return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
         else:
-            return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
-    elif 'user' in session:
-        return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
-    else:
-        flash('You are not logged in')
-        return redirect(url_for('index'))
+                flash('You are not logged in')
+                return redirect(url_for('index'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     access_token = get_token()
+    
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
     if access_token:
+
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-        likes = fb_call('me/likes',
-                    args={'access_token': access_token, 'limit': 4})
-        friends = fb_call('me/friends',
-                     args={'access_token': access_token, 'limit': 4})
-        photos = fb_call('me/photos',
-                    args={'access_token': access_token, 'limit': 16})
-
-        redir = get_home() + 'close/'
-        POST_TO_WALL = ("https://www.facebook.com/dialog/feed?redirect_uri=%s&"
-                    "display=popup&app_id=%s" % (redir, FB_APP_ID))
-
-        app_friends = fql(
-          "SELECT uid, name, is_app_user, pic_square "
-          "FROM user "
-          "WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND "
-          "  is_app_user = 1", access_token)
-
-        SEND_TO = ('https://www.facebook.com/dialog/send?'
-                'redirect_uri=%s&display=popup&app_id=%s&link=%s'
-                % (redir, FB_APP_ID, get_home()))
 
         url = request.url
+
+        # creates user in database
+        #from models import User
+
+
+        user = db.session.query(User).get(me['id'])
+        if not user:
+            newUser = User(me['name'], me['email'], me['id'])
+            db.session.add(newUser)
+            db.session.commit()
+            user = db.session.query(User).get(me['id'])
+        #google_service = get_google(me['id'])
+        session['user'] = user
+
+        # get events
+        events = fb_call('me/events',
+            args={'access_token': access_token})
+
+        # get details for each event
+        for event in events['data']:
+            event['details'] = fb_call(str(event['id']),
+                     args={'access_token': access_token})
+
+        # get google calendars
         calendar_list = "hi"
+        # calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
-            'index.html', app_id=FB_APP_ID, token=access_token, likes=likes,
-            friends=friends, photos=photos, app_friends=app_friends, app=fb_app,
-            me=me, calendar_list=calendar_list, POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO, url=url,
-            channel_url=channel_url, name=FB_APP_NAME)
+            'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
+            me=me, name=FB_APP_NAME, events=events,
+            calendar_list=calendar_list)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
@@ -329,9 +333,9 @@ def index():
 def add_to_calendar():
     error = None
     if request.method == 'POST':
-        user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
+	user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
         google_service = get_google(request.form['id'])
-    
+	
         event = request.form['event']
         calendarId = request.form['calendar']
 
