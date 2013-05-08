@@ -198,8 +198,8 @@ def facebooksettings():
         user = db.session.query(User).get(session['user'].fb_id)
         user.remind_by_default = f.auto_remind.data
         user.post_by_default = f.auto_post.data
-        user.reminder_time = 500
-        user.post_time = 500
+        user.reminder_time = convert(f.remind_time.data, f.remind_unit.data)
+        user.post_time = convert(f.post_time.data, f.post_unit.data)
         db.session.commit()
 
         session['user'] = user
@@ -217,6 +217,9 @@ def facebooksettings():
         return redirect(url_for('index'))
 
 def convert(num, unit):
+    num = int(num)
+    unit = int(unit)
+    
     if unit == 0:
         return num
     elif unit == 1:
