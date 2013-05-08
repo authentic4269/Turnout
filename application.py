@@ -226,8 +226,8 @@ def get_unit(num):
 
 @app.route('/global', methods=['GET', 'POST'])
 def global_opt():
+    f = GlobalForm(request.form)
 	if request.method == 'POST' and 'user' in session:
-		f = GlobalForm(request.form)
 		if (f.validate()):
 			session['user'].update({'email': f.email.data, 'phone': f.phone.data, 'carrier': f.carrier.data})
 			flash('Settings updated')
@@ -235,7 +235,7 @@ def global_opt():
 		else:
 			return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
 	elif 'user' in session:
-		return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
+		return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
         else:
                 flash('You are not logged in')
                 return redirect(url_for('index'))
