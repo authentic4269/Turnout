@@ -20,6 +20,6 @@ class GlobalForm(Form):
 	
 	def validate_phone(form, field):
 		if len(str(field)) != 10:
-			raise ValidationError("Expected a 10-digit phone number")
+			raise validators.ValidationError("Expected a 10-digit phone number")
 		if not re.match("^[0-9]+$", field.data):
-			raise ValidationError("Expected a 10-digit phone number")
+			raise validators.ValidationError("Expected a 10-digit phone number")
