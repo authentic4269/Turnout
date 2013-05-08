@@ -232,7 +232,6 @@ def global_opt():
             session['user'].email = f.email
             session['user'].phone = f.phone
             session['user'].carrier = f.carrier
-            session['user'].commit()
             flash('Settings updated')
             return redirect(url_for('index'))
         else:
