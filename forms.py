@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, PasswordField, validators
+from wtforms import Form, TextField, PasswordField, SelectField, IntegerField, BooleanField, validators
 from models import User
 
 class GoogleForm(Form):
