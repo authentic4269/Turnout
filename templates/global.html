@@ -30,10 +30,10 @@
 	<ul>
 		<label for="carrier">Carrier</label>
                 <select id="carrier" name="carrier">
-                        <option value="att"{% if carrier == '0' %} selected="selected"{% endif %}>AT&T</option>
-                        <option value="verizon"{% if carrier == '1' %} selected="verizon"{% endif %}>Verizon</option>
-                        <option value="spring"{% if carrier == '2' %} selected="sprint"{% endif %}>Sprint</option>
-			<option value="tmobile"{% if carrier == '3' %} selected="tmobile"{% endif %}>TMobile</option>
+                        <option value="0"{% if carrier == '0' %} selected="selected"{% endif %}>AT&T</option>
+                        <option value="1"{% if carrier == '1' %} selected="verizon"{% endif %}>Verizon</option>
+                        <option value="2"{% if carrier == '2' %} selected="sprint"{% endif %}>Sprint</option>
+			<option value="3"{% if carrier == '3' %} selected="tmobile"{% endif %}>TMobile</option>
                 </select>
         </ul>
         <ul>
