@@ -223,7 +223,6 @@ def convert(num, unit):
         return num * 60
     elif unit == 2: 
         return num * 60 * 24
-    return 10
 
 def get_unit(num):
     if (num % (60 * 24)) == 0:
