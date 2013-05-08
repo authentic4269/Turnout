@@ -278,7 +278,7 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        google_service = get_google(me['id'])
+        google_service = util.get_google(me['id'])
 	session['google_service'] = google_service
         session['user'] = user
 
@@ -307,7 +307,7 @@ def add_to_calendar():
     error = None
     if request.method == 'POST':
         user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
-        google_service = get_google(request.form['id'])
+        google_service = util.get_google(request.form['id'])
     
         event = request.form['event']
         calendarId = request.form['calendar']
