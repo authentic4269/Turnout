@@ -239,9 +239,9 @@ def global_opt():
             return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
     elif 'user' in session:
         return render_template('global.html', form="", email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
-        else:
-                flash('You are not logged in')
-                return redirect(url_for('index'))
+    else:
+        flash('You are not logged in')
+        return redirect(url_for('index'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
