@@ -1,4 +1,3 @@
-from flask import Flask
 from flask.ext.wtf import Form, TextField, PasswordField, validators
 from models import User
 
