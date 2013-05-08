@@ -315,7 +315,7 @@ def index():
                 % (redir, FB_APP_ID, get_home()))
 
         url = request.url
-        calenar_list = "hi"
+        calendar_list = "hi"
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, likes=likes,
