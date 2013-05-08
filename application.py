@@ -174,71 +174,71 @@ def get_token():
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
-	response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
-	return response.access_token
+    response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
+    return response.access_token
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
-	if request.method == 'POST' and 'user' in session:
-		f = GoogleForm(request.form)
-		session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user'].auto_add})
-	elif 'user' in session and 'google_service' in session:
-		return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
-		default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
-	else:
-		flash('You are not logged in')
-		return redirect(url_for('index'))
-	
+    if request.method == 'POST' and 'user' in session:
+        f = GoogleForm(request.form)
+        session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user'].auto_add})
+    elif 'user' in session and 'google_service' in session:
+        return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
+        default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
+    else:
+        flash('You are not logged in')
+        return redirect(url_for('index'))
+    
 
 @app.route('/facebook', methods=['GET'])
 def facebooksettings():
-	if request.method == 'POST' and 'user' in session:
-		f = FacebookForm(request.form)
-		session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
-		'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})	
-		flash('Facebook Settings Updated!')
-		return redirect(url_for('index'))
-	elif 'user' in session:
-		remind_inf = get_unit(session['user'].reminder_time)
-		post_inf = get_unit(session['user'].post_time)
-		return render_template('facebook.html', auto_remind=session['user'].remind_by_default,
-			remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
-			post_time=post_inf['num'], post_unit=post_inf['unit'])
-	else:
-		flash('You are not logged in')
-		return redirect(url_for('index'))
+    if request.method == 'POST' and 'user' in session:
+        f = FacebookForm(request.form)
+        session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
+        'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})    
+        flash('Facebook Settings Updated!')
+        return redirect(url_for('index'))
+    elif 'user' in session:
+        remind_inf = get_unit(session['user'].reminder_time)
+        post_inf = get_unit(session['user'].post_time)
+        return render_template('facebook.html', auto_remind=session['user'].remind_by_default,
+            remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
+            post_time=post_inf['num'], post_unit=post_inf['unit'])
+    else:
+        flash('You are not logged in')
+        return redirect(url_for('index'))
 
 def convert(num, unit):
-	if unit == 0:
-		return num
-	elif unit == 1:
-		return num * 60
-	elif unit == 2: 
-		return num * 60 * 24
+    if unit == 0:
+        return num
+    elif unit == 1:
+        return num * 60
+    elif unit == 2: 
+        return num * 60 * 24
 
 def get_unit(num):
-	if (num % (60 * 24)) == 0:
-		return({'num': (num / (60 * 24)), 'unit': 2})
-	elif (num % 60) == 0:
-		return({'num': (num / 60), 'unit': 1})
-	else:
-		return({'num': num, 'unit': 0})
+    if (num % (60 * 24)) == 0:
+        return({'num': (num / (60 * 24)), 'unit': 2})
+    elif (num % 60) == 0:
+        return({'num': (num / 60), 'unit': 1})
+    else:
+        return({'num': num, 'unit': 0})
 
 @app.route('/global', methods=['GET', 'POST'])
 def global_opt():
-	if request.method == 'POST' and 'user' in session:
-		f = GlobalForm(request.form)
-		if (f.validate()):
+    if request.method == 'POST' and 'user' in session:
+        f = GlobalForm(request.form)
+        if (f.validate()):
             session['user'].email = f.email
             session['user'].phone = f.phone
             session['user'].carrier = f.carrier
             session['user'].commit()
-			flash('Settings updated')
-			return redirect(url_for('index'))
-		else:
-			return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
-	elif 'user' in session:
-		return render_template('global.html', form="", email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
+            flash('Settings updated')
+            return redirect(url_for('index'))
+        else:
+            return render_template('global.html', form=f, email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
+    elif 'user' in session:
+        return render_template('global.html', form="", email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
         else:
                 flash('You are not logged in')
                 return redirect(url_for('index'))
@@ -295,9 +295,9 @@ def index():
 def add_to_calendar():
     error = None
     if request.method == 'POST':
-	user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
+    user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
         google_service = get_google(request.form['id'])
-	
+    
         event = request.form['event']
         calendarId = request.form['calendar']
 
