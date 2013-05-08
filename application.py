@@ -320,7 +320,7 @@ def index():
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, likes=likes,
             friends=friends, photos=photos, app_friends=app_friends, app=fb_app,
-            me=me, POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO, url=url,
+            me=me, calendar_list=calendar_list, POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO, url=url,
             channel_url=channel_url, name=FB_APP_NAME)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
