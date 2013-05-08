@@ -21,19 +21,19 @@
 
         <ul>
                 <label for="email">Email Address</label>
-		<input id="email" name="email" type="text"><br>
+		<input id="email" name="email" type="text" value="{{email}}"><br>
 	</ul
 	<ul>
 		<label for="phone">Mobile Phone Number (xxxyyyzzzz)</label>
-		<input id="phone" name="phone" type="text"></br>
+		<input id="phone" name="phone" type="text" value="{{phone}}"></br>
 	</ul>
 	<ul>
 		<label for="carrier">Carrier</label>
                 <select id="carrier" name="carrier">
-                        <option value="att">AT&T</option>
-                        <option value="verizon">Verizon</option>
-                        <option value="sprint">Sprint</option>
-			<option value="tmobil">TMobile</option>
+                        <option value="att"{% if {{carrier}} == 'att' %} selected="selected"{% endif %}>AT&T</option>
+                        <option value="verizon"{% if {{carrier}} == 'att' %} selected="verizon"{% endif %}>Verizon</option>
+                        <option value="sprint"{% if {{carrier}} == 'att' %} selected="sprint"{% endif %}>Sprint</option>
+			<option value="tmobil"{% if {{carrier}} == 'att' %} selected="tmobil"{% endif %}>TMobile</option>
                 </select>
         </ul>
         <ul>
