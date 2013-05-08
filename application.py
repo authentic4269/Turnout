@@ -234,6 +234,8 @@ def global_opt():
             user.phone = f.phone.data
             user.carrier = f.carrier.data
             db.session.commit()
+
+            session['user'] = user
             flash('Settings updated')
             return redirect(url_for('index'))
         else:
