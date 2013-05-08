@@ -1,5 +1,6 @@
 from wtforms import Form, TextField, PasswordField, SelectField, IntegerField, BooleanField, validators
 from models import User
+import re
 
 class GoogleForm(Form):
 	default_action = SelectField(u'default_action', choices=[('always', 'Always'), ('never', 'Never')])
