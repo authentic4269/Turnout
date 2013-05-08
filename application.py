@@ -229,9 +229,10 @@ def global_opt():
     if request.method == 'POST' and 'user' in session:
         f = GlobalForm(request.form)
         if (f.validate()):
-            session['user'].email = f.email.data
-            session['user'].phone = f.phone.data
-            session['user'].carrier = f.carrier.data
+            user = db.session.query(User).get(session['user'].fb_id)
+            user.email = f.email.data
+            user.phone = f.phone.data
+            user.carrier = f.carrier.data
             db.session.commit()
             flash('Settings updated')
             return redirect(url_for('index'))
