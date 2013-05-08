@@ -194,8 +194,16 @@ def googlesettings():
 def facebooksettings():
     if request.method == 'POST' and 'user' in session:
         f = FacebookForm(request.form)
-        session['user'].update({'remind_by_default': f.auto_remind.data, 'post_by_default': f.auto_post.data, 
-        'reminder_time': convert(f.remind_time.data, f.remind_unit.data), 'post_time': convert(f.post_time.data, f.post_unit.data)})    
+
+        user = db.session.query(User).get(session['user'].fb_id)
+        user.remind_by_default = f.auto_remind.data
+        user.post_by_default = f.auto_post.data
+        user.reminder_time = convert(f.remind_time.data, f.remind_unit.data)
+        user.post_time = convert(f.post_time.data, f.post_unit.data)
+        db.session.commit()
+
+        user['session'] = user
+   
         flash('Facebook Settings Updated!')
         return redirect(url_for('index'))
     elif 'user' in session:

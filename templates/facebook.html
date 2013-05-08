@@ -8,8 +8,7 @@
 {% block content %}
 
 <h1>Default Facebook Settings</h1>
-<form action="/facebook">
-<li>
+<form action="/facebook" method="post">
 	<ul>
 		<input type="checkbox" id="auto_remind" name="auto_remind" {% if auto_remind %} selected="true" {% endif %} value="auto_remind">Automatically remind me before Facebook Events<br>
 		Deliver reminders <input type="text" value="{{remind_time}}" id="remind_time" name="remind_time"> 
@@ -27,7 +26,7 @@
                         <option value="1" {% if post_unit==1 %} selected="true" {% endif %}>Hours</option>
                         <option value="2" {% if post_unit==2 %} selected="true" {% endif %}>Days</option>
                 </select> Before start of Event
-        </ul>
-</li>
+    </ul>
+    <input type="submit" name="Submit" />
 </form>
 {% endblock %}
