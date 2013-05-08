@@ -19,7 +19,7 @@ class GlobalForm(Form):
 	carrier = SelectField(u'carrier', choices=[('att', 'AT&T'), ('sprint', 'Sprint'), ('verizon', 'Verizon'), ('tmobil', 'TMobile'), ('cricket', 'Cricket'), ('alltel', 'Alltel'), ])
 	
 	def validate_phone(form, field):
-		if len(field) != 10:
+		if len(str(field)) != 10:
 			raise ValidationError("Expected a 10-digit phone number")
 		if not re.match("^[0-9]+$", field.data):
 			raise ValidationError("Expected a 10-digit phone number")
