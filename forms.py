@@ -14,7 +14,7 @@ class FacebookForm(Form):
 	post_unit = SelectField(u'post_time_unit', choices=[('0', 'Minutes'), ('1', 'Hours'), ('2', 'Days')])
 
 class GlobalForm(Form):
-	email = TextField(u'email', [Email()])
+	email = TextField(u'email', [validators.Email()])
 	phone = IntegerField(u'phone', )
 	carrier = SelectField(u'carrier', choices=[('att', 'AT&T'), ('sprint', 'Sprint'), ('verizon', 'Verizon'), ('tmobil', 'TMobile'), ('cricket', 'Cricket'), ('alltel', 'Alltel'), ])
 	
