@@ -7,12 +7,12 @@ class GoogleForm(Form):
 	calendar = SelectField(u'calendar', coerce=int)
 
 class FacebookForm(Form):
-	auto_remind = BooleanField(u'auto_remind')
-	remind_time = IntegerField(u'reminder_time_count')
-	remind_unit = SelectField(u'reminder_time_unit', choices=[('0', 'Minutes'), ('1', 'Hours'), ('2', 'Days')])
-	auto_post = BooleanField(u'auto_post')
-	post_time = IntegerField(u'post_time_count')
-	post_unit = SelectField(u'post_time_unit', choices=[('0', 'Minutes'), ('1', 'Hours'), ('2', 'Days')])
+	auto_remind = BooleanField('auto_remind')
+	remind_time = IntegerField('reminder_time_count')
+	remind_unit = SelectField('reminder_time_unit', choices=[('0', 'Minutes'), ('1', 'Hours'), ('2', 'Days')])
+	auto_post = BooleanField('auto_post')
+	post_time = IntegerField('post_time_count')
+	post_unit = SelectField('post_time_unit', choices=[('0', 'Minutes'), ('1', 'Hours'), ('2', 'Days')])
 
 class GlobalForm(Form):
 	email = TextField('email', [validators.optional(), validators.Email()])
