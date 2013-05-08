@@ -241,19 +241,8 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-<<<<<<< HEAD
-    # print get_home()
-    #if 'access_token' in session: 
-	#access_token = session['access_token']
-    #else:
-#	access_token = get_token()
-#	session['access_token'] = access_token
-    access_token = get_token()   
-    session['access_token'] = access_token
-=======
     access_token = get_token()
     
->>>>>>> 4cd74912ba60ef1e104c35d55f81e445ed443b67
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
