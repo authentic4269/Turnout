@@ -202,7 +202,7 @@ def facebooksettings():
         user.post_time = convert(f.post_time.data, f.post_unit.data)
         db.session.commit()
 
-        user['session'] = user
+        session['user'] = user
    
         flash('Facebook Settings Updated!')
         return redirect(url_for('index'))
