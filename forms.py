@@ -17,7 +17,7 @@ class FacebookForm(Form):
 class GlobalForm(Form):
 	email = TextField('email', [validators.optional(), validators.Email()])
 	phone = IntegerField('phone', [validators.optional()])
-	carrier = SelectField('carrier', [validators.optional()], choices=[('att', 'AT&T'), ('sprint', 'Sprint'), ('verizon', 'Verizon'), ('tmobil', 'TMobile'), ('cricket', 'Cricket'), ('alltel', 'Alltel'), ])
+	carrier = SelectField('carrier', [validators.optional()], choices=[('att', '0'), ('sprint', '1'), ('verizon', '2'), ('tmobil', '3'), ('cricket', '4'), ('alltel', '5'), ])
 	
 	def validate_phone(form, field):
 		if not re.match("^[0-9]{10}$", str(field.data)):
