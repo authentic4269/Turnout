@@ -168,6 +168,7 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
+
         return token
 
 def get_google(id):
@@ -274,15 +275,16 @@ def global_opt():
 			flash('Settings updated')
 			return redirect(url_for('index'))
 		else:
-			return render_template('global.html', email=session['user']['email'], phone=session['user']['phone'], carrier=session['user']['carrier'])
+			return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
 	elif 'user' in session:
-		return render_template('global.html', email=session['user']['email'], phone=session['user']['phone'], carrier=session['user']['carrier'])
+		return render_template('global.html', email=session['user'].email, phone=session['user'].phone, carrier=session['user'].carrier)
         else:
                 flash('You are not logged in')
                 return redirect(url_for('index'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+<<<<<<< HEAD
     # print get_home()
     #if 'access_token' in session: 
 	#access_token = session['access_token']
@@ -291,26 +293,33 @@ def index():
 #	session['access_token'] = access_token
     access_token = get_token()   
     session['access_token'] = access_token
+=======
+    access_token = get_token()
+    
+>>>>>>> 4cd74912ba60ef1e104c35d55f81e445ed443b67
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
+
     if access_token:
 
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-	s = session['pancake']
 
         url = request.url
 
         # creates user in database
         #from models import User
+
+
         user = db.session.query(User).get(me['id'])
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        google_service = get_google(me['id'])
-	session['user'] = user
+        #google_service = get_google(me['id'])
+        session['user'] = user
+
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
@@ -321,8 +330,9 @@ def index():
                      args={'access_token': access_token})
 
         # get google calendars
-        # calendar_list = "hi"
-        calendar_list = google_service.calendarList().list().execute()
+        calendar_list = "hi"
+        # calendar_list = google_service.calendarList().list().execute()
+
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
