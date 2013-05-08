@@ -1,4 +1,4 @@
-from flask.wtf import Form, TextField, PasswordField, validators
+from wtforms import Form, TextField, PasswordField, validators
 from models import User
 
 class GoogleForm(Form):
