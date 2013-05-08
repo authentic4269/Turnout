@@ -227,7 +227,7 @@ def get_unit(num):
 @app.route('/global', methods=['GET', 'POST'])
 def global_opt():
 	if request.method == 'POST' and 'user' in session:
-		f = GlobalForm(request.POST)
+		f = GlobalForm(request.form)
 		if (f.validate()):
 			session['user'].update({'email': f.email.data, 'phone': f.phone.data, 'carrier': f.carrier.data})
 			flash('Settings updated')
