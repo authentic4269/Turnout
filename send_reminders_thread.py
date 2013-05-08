@@ -19,12 +19,12 @@ class ReminderThread(Thread):
 	app.config.from_object(__name__)
 
     def run(self):
-        self.check_for_events()
+        reminders = self.check_for_events()
+	return send_all_reminders(reminders)
 
     def check_for_events(self):
-        reminders = db.session.query(Reminder).filter(
-		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1))
-	send_all_reminders(reminders)
+        return(db.session.query(Reminder).filter(
+		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1)))
 
     def send_all_reminders(self, reminders):
 		smtpobj = smtplib.SMTP(smtp.gmail.com, 465)

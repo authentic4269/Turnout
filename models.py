@@ -20,6 +20,7 @@ class User(db.Model):
 	post_time = db.Column(db.Integer)
 	fb_id = db.Column(db.Integer, primary_key=True)
 	default_calendar = db.Column(db.String(40))
+	access_token = db.Column(db.String(200))
 	def __init__(self, name, email, fb_id):
 		self.name = name
 		self.email = email
