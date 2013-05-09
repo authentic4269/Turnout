@@ -263,6 +263,7 @@ def index():
     session['facebook_token'] = access_token
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
+    print "got access token"
 
     if access_token:
 
@@ -278,22 +279,22 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
+	print "getting google..."
         google_service = util.get_google(me['id'])
 	session['google_service'] = google_service
         session['user'] = user
+	print "got google"
 
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
-
+	print "got events"
         # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                      args={'access_token': access_token})
 
-        # get google calendars
-        calendar_list = "hi"
-        # calendar_list = google_service.calendarList().list().execute()
+        calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
