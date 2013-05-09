@@ -266,15 +266,16 @@ def index():
     print "got access token"
 
     if access_token:
-
+	print "making fb_call"
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-
+	
         url = request.url
 
         # creates user in database
         user = db.session.query(User).get(me['id'])
         if not user:
+	    print "creating user"
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
