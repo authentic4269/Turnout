@@ -133,15 +133,7 @@ def get_home():
 
 def get_token():
 
-    if 'ok' in session:
-        print "we in if"
-        print session['ok']
-    else:
-        print "we in else"
-        session['ok'] = "hello"
-        print session['ok']
-
-    if 'facebook_token' in session and session['facebook_token'] is not None:
+    if 'facebook_token' in session:
         print "got the session"
         print session['facebook_token']
         return session['facebook_token']
@@ -181,7 +173,7 @@ def get_token():
 
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
-        token = parse_qs(r.content).get('access_token')
+        token = parse_qs(r.content).get('access_token')[0]
         session['facebook_token'] = token
         if 'facebook_token' in session:
             print session['facebook_token']
@@ -276,7 +268,7 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    access_token = get_token()
+    access_token = [get_token()]
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
