@@ -126,7 +126,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
-app.secret_key = os.urandom(22)
 
 def get_home():
     return 'https://' + request.host + '/'
@@ -367,3 +366,5 @@ if __name__ == '__main__':
         app.run(host='0.0.0.0', port=port)
     else:
         print 'Cannot start application without Facebook App Id and Secret set'
+
+app.secret_key = os.urandom(24)
