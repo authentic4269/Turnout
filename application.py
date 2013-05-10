@@ -123,6 +123,8 @@ def fb_call(call, args=None):
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SERVER_NAME'] = "sheltered-basin-7772.herokuapp.com"
+app.config['SESSION_COOKIE_DOMAIN'] = "sheltered-basin-7772.herokuapp.com"
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
