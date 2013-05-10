@@ -260,10 +260,7 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    if 'facebook' in session:
-        print "we're in!!!"
-        access_token = session['facebook']
-    else:
+    if not 'facebook' in session:
         access_token = get_token()
         if access_token is not None:
             session['facebook'] = list(access_token)
@@ -271,7 +268,7 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    if access_token:
+    if 'facebook' in session and session['facebook']:
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
