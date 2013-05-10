@@ -261,8 +261,8 @@ def global_opt():
 def index():
     access_token = get_token()
 
-    print "facebook session:"
-    print session['facebook']
+    print "session:"
+    print session
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
