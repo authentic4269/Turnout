@@ -262,6 +262,7 @@ def global_opt():
 def index():
     if 'facebook' in session:
         access_token = session['facebook']
+        print "FINALLY"
     else:
         access_token = get_token()
         session['facebook'] = access_token
