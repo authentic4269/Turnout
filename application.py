@@ -192,6 +192,7 @@ def googlesettings():
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
+    return render_template('sessions.html', text=session)
     if request.method == 'POST' and 'user' in session:
         f = FacebookForm(request.form)
 
