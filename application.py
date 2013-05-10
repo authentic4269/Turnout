@@ -132,6 +132,9 @@ def get_home():
 
 def get_token():
 
+    if 'facebook_token' in session:
+        return session['facebook_token']
+
     if request.args.get('code', None):
         return fbapi_auth(request.args.get('code'))[0]
 
