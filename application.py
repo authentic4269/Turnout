@@ -297,6 +297,9 @@ def index():
 
         calendar_list = google_service.calendarList().list().execute()
 
+        print "is this shit working"
+        print session['facebook']
+
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
