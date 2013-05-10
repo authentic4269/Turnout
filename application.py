@@ -133,6 +133,7 @@ def get_home():
 def get_token():
 
     if 'facebook_token' in session:
+        print "got the session"
         return session['facebook_token']
 
     if request.args.get('code', None):
