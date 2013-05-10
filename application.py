@@ -264,8 +264,8 @@ def index():
         access_token = session['facebook']
     else:
         access_token = get_token()
-        print access_token
-        session['facebook'] = list(access_token)
+        if access_token is not None:
+            session['facebook'] = list(access_token)
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
