@@ -259,10 +259,10 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    access_token = get_token()
-
     print "session:"
     print session
+
+    access_token = get_token()
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
