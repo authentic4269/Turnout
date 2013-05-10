@@ -126,6 +126,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
+app.secret_key = os.urandom(24)
+app.server_name = "http://sheltered-basin-7772.herokuapp.com/"
 
 def get_home():
     return 'https://' + request.host + '/'
@@ -363,7 +365,6 @@ def get_channel():
 def close():
     return render_template('close.html')
 
-app.secret_key = os.urandom(24)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
