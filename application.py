@@ -271,6 +271,7 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print "session:"
     session['test'] = "test"
     print session
 
