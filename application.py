@@ -126,7 +126,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
-app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(22)
 
 def get_home():
     return 'https://' + request.host + '/'
