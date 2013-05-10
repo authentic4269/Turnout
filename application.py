@@ -135,6 +135,11 @@ def get_home():
 
 def get_token():
 
+    if 'hi' in session:
+        print session['hi']
+    else:
+        session['hi'] = "hello"
+
     if 'facebook_token' in session and session['facebook_token'] is not None:
         print "got the session"
         print session['facebook_token']
