@@ -169,9 +169,8 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
-        session['facebook'] = token
 
-        return session['facebook']
+        return token
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
@@ -261,7 +260,11 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    access_token = get_token()
+    if 'facebook' in session:
+        access_token = session['facebook']
+    else:
+        access_token = get_token()
+        session['facebook'] = list(access_token)
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
@@ -298,7 +301,7 @@ def index():
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
     else:
-        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=session['test'])
+        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
