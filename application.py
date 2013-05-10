@@ -264,32 +264,34 @@ def index():
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
     print "got access token"
+    print access_token
+    print session['facebook_token']
 
     if access_token:
-	print "making fb_call"
+        print "making fb_call"
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-	
+
         url = request.url
 
         # creates user in database
         user = db.session.query(User).get(me['id'])
         if not user:
-	    print "creating user"
+            print "creating user"
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-	print "getting google..."
+        print "getting google..."
         google_service = util.get_google(me['id'])
-	session['google_service'] = google_service
+        session['google_service'] = google_service
         session['user'] = user
-	print "got google"
+        print "got google"
 
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
-	print "got events"
+        print "got events"
         # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
