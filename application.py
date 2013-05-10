@@ -298,7 +298,7 @@ def index():
             me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list)
     else:
-        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
+        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=session['test'])
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
