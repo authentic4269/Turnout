@@ -188,7 +188,53 @@ def googlesettings():
     else:
         flash('You are not logged in')
         return redirect(url_for('index'))
-    
+
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+
+    if not 'facebook' in session:
+        access_token = get_token()
+        if access_token is not None:
+            session['facebook'] = access_token
+
+    channel_url = url_for('get_channel', _external=True)
+    channel_url = channel_url.replace('http:', '').replace('https:', '')
+
+    if 'facebook' in session and session['facebook']:
+        me = fb_call('me', args={'access_token': access_token})
+        fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
+
+        url = request.url
+
+        # creates user in database
+        user = db.session.query(User).get(me['id'])
+        if not user:
+            newUser = User(me['name'], me['email'], me['id'])
+            db.session.add(newUser)
+            db.session.commit()
+            user = db.session.query(User).get(me['id'])
+        google_service = util.get_google(me['id'])
+        session['google_service'] = google_service
+        session['user'] = user
+
+        # get events
+        events = fb_call('me/events',
+            args={'access_token': access_token})
+        # get details for each event
+        for event in events['data']:
+            event['details'] = fb_call(str(event['id']),
+                     args={'access_token': access_token})
+
+        calendar_list = google_service.calendarList().list().execute()
+
+        return render_template(
+            'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
+            me=me, name=FB_APP_NAME, events=events,
+            calendar_list=calendar_list, session=session)
+    else:
+        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
@@ -257,51 +303,6 @@ def global_opt():
     else:
         flash('You are not logged in')
         return redirect(url_for('index'))
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-
-    if not 'facebook' in session:
-        access_token = get_token()
-        if access_token is not None:
-            session['facebook'] = access_token
-
-    channel_url = url_for('get_channel', _external=True)
-    channel_url = channel_url.replace('http:', '').replace('https:', '')
-
-    if 'facebook' in session and session['facebook']:
-        me = fb_call('me', args={'access_token': access_token})
-        fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
-
-        url = request.url
-
-        # creates user in database
-        user = db.session.query(User).get(me['id'])
-        if not user:
-            newUser = User(me['name'], me['email'], me['id'])
-            db.session.add(newUser)
-            db.session.commit()
-            user = db.session.query(User).get(me['id'])
-        google_service = util.get_google(me['id'])
-        session['google_service'] = google_service
-        session['user'] = user
-
-        # get events
-        events = fb_call('me/events',
-            args={'access_token': access_token})
-        # get details for each event
-        for event in events['data']:
-            event['details'] = fb_call(str(event['id']),
-                     args={'access_token': access_token})
-
-        calendar_list = google_service.calendarList().list().execute()
-
-        return render_template(
-            'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
-            me=me, name=FB_APP_NAME, events=events,
-            calendar_list=calendar_list, session=session)
-    else:
-        return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
