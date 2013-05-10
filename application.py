@@ -173,6 +173,8 @@ def get_token():
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
         session['facebook_token'] = token
+        if 'facebook_token' in session:
+            print "stored in session"
 
         return token
 
