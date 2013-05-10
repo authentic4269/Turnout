@@ -261,7 +261,7 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print "session:"
-    print session
+    print flask.session
     print "---------------------"
 
     access_token = get_token()
