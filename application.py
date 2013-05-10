@@ -175,7 +175,7 @@ def get_token():
 
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
-        token = parse_qs(r.content).get('access_token')[0]
+        token = parse_qs(r.content).get('access_token')
         session['facebook_token'] = token
         if 'facebook_token' in session:
             print session['facebook_token']
@@ -270,7 +270,7 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    access_token = [get_token()]
+    access_token = get_token()
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
