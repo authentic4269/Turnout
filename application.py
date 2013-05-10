@@ -127,7 +127,6 @@ db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
 app.secret_key = os.urandom(24)
-app.server_name = "http://sheltered-basin-7772.herokuapp.com/"
 
 def get_home():
     return 'https://' + request.host + '/'
@@ -136,6 +135,7 @@ def get_token():
 
     if 'facebook_token' in session:
         print "got the session"
+        print session['facebook_token']
         return session['facebook_token']
 
     if request.args.get('code', None):
