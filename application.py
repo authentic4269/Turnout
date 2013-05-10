@@ -123,8 +123,6 @@ def fb_call(call, args=None):
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config['SERVER_NAME'] = "sheltered-basin-7772.herokuapp.com"
-app.config['SESSION_COOKIE_DOMAIN'] = "sheltered-basin-7772.herokuapp.com"
 db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
@@ -170,8 +168,9 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
+        session['facebook'] = token
 
-        return token
+        return session['facebook']
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
@@ -260,18 +259,12 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if 'facebook' in session:
-        access_token = session['facebook']
-        print "FINALLY"
-    else:
-        access_token = get_token()
-        session['facebook'] = access_token
+    access_token = get_token()
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
     if access_token:
-        print "making fb_call"
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
@@ -280,21 +273,17 @@ def index():
         # creates user in database
         user = db.session.query(User).get(me['id'])
         if not user:
-            print "creating user"
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        print "getting google..."
         google_service = util.get_google(me['id'])
         session['google_service'] = google_service
         session['user'] = user
-        print "got google"
 
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
-        print "got events"
         # get details for each event
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
@@ -365,7 +354,7 @@ def close():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 80))
     if app.config.get('FB_APP_ID') and app.config.get('FB_APP_SECRET'):
         app.run(host='0.0.0.0', port=port)
     else:
