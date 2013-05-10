@@ -271,6 +271,8 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print session
+    
     access_token = get_token()
     
     channel_url = url_for('get_channel', _external=True)
