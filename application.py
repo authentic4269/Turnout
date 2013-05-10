@@ -260,6 +260,9 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     access_token = get_token()
+
+    print "facebook session:"
+    print session['facebook']
     
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
