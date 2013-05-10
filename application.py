@@ -176,7 +176,7 @@ def get_token():
         token = parse_qs(r.content).get('access_token')
         session['facebook_token'] = token
         if 'facebook_token' in session:
-            print session['facebook_toke']
+            print session['facebook_token']
             print "stored in session"
 
         return token
