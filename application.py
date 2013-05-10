@@ -272,7 +272,10 @@ def global_opt():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print "session:"
-    session['test'] = "test"
+    print session
+    if not 'test' in session:
+        session['test'] = "test"
+    print "session 2:"
     print session
 
     access_token = get_token()
