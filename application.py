@@ -263,7 +263,7 @@ def index():
     if not 'facebook' in session:
         access_token = get_token()
         if access_token is not None:
-            session['facebook'] = list(access_token)
+            session['facebook'] = access_token
 
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
@@ -355,15 +355,6 @@ def get_channel():
 @app.route('/close/', methods=['GET', 'POST'])
 def close():
     return render_template('close.html')
-
-@app.route('/sessions', methods=['GET', 'POST'])
-def sessions():
-    if 'test' in session:
-        text = session['test']
-    else:
-        session['test'] = {"_module": "oauth2client.client", "token_expiry": "2013-05-04T04:49:43Z", "access_token": "ya29.AHES6ZRu4Q4fy-W35dZqBgkCiHmSTx3kNyI39ljS9bsobATmobeUOw", "token_uri": "https://accounts.google.com/o/oauth2/token", "invalid": False, "token_response": {"access_token": "ya29.AHES6ZRu4Q4fy-W35dZqBgkCiHmSTx3kNyI39ljS9bsobATmobeUOw", "token_type": "Bearer", "expires_in": 3600, "refresh_token": "1/a1CE_fUQoii3YMMY6tTIuJD9lN10o1IF7mFfiugdoIg"}, "client_id": "499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com", "id_token": None, "client_secret": "cFDEqr9pHqZs5-Xxdc3QpTv9", "revoke_uri": "https://accounts.google.com/o/oauth2/revoke", "_class": "OAuth2Credentials", "refresh_token": "1/a1CE_fUQoii3YMMY6tTIuJD9lN10o1IF7mFfiugdoIg", "user_agent": None}
-        text = "fail"
-    return render_template('sessions.html', text=text)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 80))
