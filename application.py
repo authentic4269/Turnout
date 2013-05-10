@@ -261,6 +261,7 @@ def global_opt():
 def index():
     print "session:"
     print session
+    print "---------------------"
 
     access_token = get_token()
     
