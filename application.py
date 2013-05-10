@@ -214,7 +214,7 @@ def facebooksettings():
             post_time=post_inf['num'], post_unit=post_inf['unit'])
     else:
         flash('You are not logged in')
-        return redirect(url_for('index'))
+        return redirect(url_for('index'), session=session)
 
 def convert(num, unit):
     num = int(num)
