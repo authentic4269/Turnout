@@ -261,12 +261,13 @@ def global_opt():
 def index():
 
     if 'facebook' in session:
+        print "we're in!!!"
         access_token = session['facebook']
     else:
         access_token = get_token()
         if access_token is not None:
             session['facebook'] = list(access_token)
-    
+
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
@@ -296,9 +297,6 @@ def index():
                      args={'access_token': access_token})
 
         calendar_list = google_service.calendarList().list().execute()
-
-        print "is this shit working"
-        print session['facebook']
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
