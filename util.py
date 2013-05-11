@@ -22,6 +22,18 @@ from models import User, Reminder, Event
 import requests
 from flask import Flask, request, redirect, render_template, url_for, session, flash
 
+FLAGS = gflags.FLAGS
+def process_flags(argv):
+    try:
+        argv = FLAGS(argv)  # parse flags
+    except gflags.FlagsError, e:
+        print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
+        sys.exit(1)
+    print argv
+
+import sys
+process_flags(sys.argv)
+
 class Storage():
     def put(param, arg):
         return

@@ -28,15 +28,13 @@ FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
 FLAGS = gflags.FLAGS
-gflags.DEFINE_enum('logging_level', 'ERROR',
-    ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-    'Set the level of logging detail.')
 def process_flags(argv):
     try:
         argv = FLAGS(argv)  # parse flags
     except gflags.FlagsError, e:
         print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
         sys.exit(1)
+
 
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
@@ -377,8 +375,6 @@ def close():
     return render_template('close.html')
 
 if __name__ == '__main__':
-    import sys
-    process_flags(sys.argv)
 
     port = int(os.environ.get("PORT", 80))
     if app.config.get('FB_APP_ID') and app.config.get('FB_APP_SECRET'):
