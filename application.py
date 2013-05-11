@@ -35,6 +35,9 @@ def process_flags(argv):
         print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
         sys.exit(1)
 
+import sys
+process_flags(sys.argv)
+
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
@@ -374,9 +377,7 @@ def close():
     return render_template('close.html')
 
 if __name__ == '__main__':
-    import sys
-    process_flags(sys.argv)
-    
+
     port = int(os.environ.get("PORT", 80))
     if app.config.get('FB_APP_ID') and app.config.get('FB_APP_SECRET'):
         app.run(host='0.0.0.0', port=port)
