@@ -11,7 +11,6 @@ import hashlib
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from flask_sqlalchemy import SQLAlchemy
 
-
 import gflags
 import httplib2
 from apiclient.discovery import build
@@ -283,7 +282,9 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        google_service = util.get_google(me['id'])
+
+        google_cred = util.get_google_cred()
+        google_service = util.get_google(google_cred)
         #session['google_service'] = google_service
         session['user'] = user
 
@@ -353,6 +354,12 @@ def send_reminder():
 def get_channel():
     return render_template('channel.html')
 
+@app.route('/googleme', methods=['GET', 'POST'])
+def get_googleme():
+    credentials = util.get_google_cred()
+    google_service = util.get_google(credentials)
+    text = google_service.calendarList().list().execute()
+    return render_template('sessions.html', text=text)
 
 @app.route('/close/', methods=['GET', 'POST'])
 def close():
