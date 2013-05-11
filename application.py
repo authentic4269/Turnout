@@ -28,6 +28,13 @@ FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
 FLAGS = gflags.FLAGS
+def main(argv):
+    try:
+        argv = FLAGS(argv)  # parse flags
+    except gflags.FlagsError, e:
+        print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
+        sys.exit(1)
+
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
