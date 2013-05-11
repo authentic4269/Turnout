@@ -192,6 +192,7 @@ def googlesettings():
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
+    return render_template('sessions.html', text=session)
     if request.method == 'POST' and 'user' in session:
         f = FacebookForm(request.form)
 
@@ -259,13 +260,17 @@ def global_opt():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if not 'facebook' in session:
+        access_token = get_token()
+        if access_token is not None:
+            session['facebook'] = access_token
+
     access_token = get_token()
 
     channel_url = url_for('get_channel', _external=True)
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
-    #if 'facebook' in session and session['facebook']:
-    if access_token:
+    if 'facebook' in session and session['facebook']:
         me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
@@ -278,8 +283,8 @@ def index():
             db.session.add(newUser)
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-        google_service = util.get_google(me['id'])
-        #session['google_service'] = google_service
+        #google_service = util.get_google(me['id'])
+        session['google_service'] = google_service
         session['user'] = user
 
         # get events
