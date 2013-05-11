@@ -375,6 +375,10 @@ def close():
     return render_template('close.html')
 
 if __name__ == '__main__':
+    import sys
+    process_flags(sys.argv)
+
+    print sys.argv
 
     port = int(os.environ.get("PORT", 80))
     if app.config.get('FB_APP_ID') and app.config.get('FB_APP_SECRET'):
