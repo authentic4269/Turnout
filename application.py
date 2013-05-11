@@ -284,7 +284,7 @@ def index():
             user = db.session.query(User).get(me['id'])
 
         google_cred = util.get_google_cred()
-        google_service = util.get_google(google_cred)
+        #google_service = util.get_google(google_cred)
         #session['google_service'] = google_service
         session['user'] = user
 
@@ -296,7 +296,8 @@ def index():
             event['details'] = fb_call(str(event['id']),
                      args={'access_token': access_token})
 
-        calendar_list = google_service.calendarList().list().execute()
+        calendar_list = "hi"
+        #calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
