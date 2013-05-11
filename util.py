@@ -54,8 +54,8 @@ def get_google_cred():
         # the Google APIs Console
         FLOW = OAuth2WebServerFlow(
             redirect_uri='urn:ietf:wg:oauth:2.0:oob',
-            client_id='499345994258-q9pblg44lpjvu5k4v6rn7ig6urddha8j.apps.googleusercontent.com',
-            client_secret='UooNcktymi3sABAZs5LjwCy9',
+            client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
+            client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
             scope='https://www.googleapis.com/auth/calendar',
             access_type='offline')
 
