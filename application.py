@@ -348,8 +348,7 @@ def index():
 def add_to_calendar():
     error = None
     if request.method == 'POST':
-        user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
-        google_service = util.get_google(request.form['id'])
+        google_service = util.get_google_serv(session['google_cred'])
     
         event = request.form['event']
         calendarId = request.form['calendar']
