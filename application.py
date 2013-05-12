@@ -179,12 +179,9 @@ def get_token():
 
         return token
 
-@app.route('/google_login', methods=['GET', 'POST']
-def login():
-  util.get_google()
-
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
+    print "in oauth2calback"
     if code in request.args:
       data = { 'code': code, 'client_id': GOOGLE_CLIENT_ID, 'client_secret': GOOGLE_CLIENT_SECRET, 'redirect_uri': 'http://www.sheltered-basin-7772.herokuapp.com/process_google_token', 'grant_type': 'authorization_code'}
       r = urllib2.Request("https://accounts.google.com/o/oauth2/token", data)
@@ -192,6 +189,7 @@ def auth():
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
 def process_google_token():
+  print "processing google token"
   if access_token in request.form:
     print "auth success"
   else:
