@@ -322,10 +322,10 @@ def index():
 
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
-	    session['google_service'] = google_service
         else:
             return redirect(util.get_google_code())
-
+	
+	session['google_service'] = google_service
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
