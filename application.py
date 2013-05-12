@@ -307,11 +307,10 @@ def index():
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
-            user = db.session.query(User).get(me['id'])
+        user = db.session.query(User).get(me['id'])
 
         session['user'] = user
-	user.access_token = access_token
-	db.session.commit()
+
         # get google service
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
