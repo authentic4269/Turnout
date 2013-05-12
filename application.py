@@ -181,7 +181,7 @@ def get_token():
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
-    credentials = util.get_google_cred(request.args['code'])
+    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
     return redirect('/googleme')
@@ -310,10 +310,12 @@ def index():
             db.session.commit()
             user = db.session.query(User).get(me['id'])
 
-        google_cred = util.get_google_cred()
-        google_service = util.get_google(google_cred)
-        #session['google_service'] = google_service
         session['user'] = user
+
+        if 'google_cred' in session and ensure_cred(session['google_cred']):
+            google_service = util.get_google_serv(session['google_cred'])
+        else:
+            return redirect(util.get_google_code())
 
         # get events
         events = fb_call('me/events',
@@ -323,8 +325,7 @@ def index():
             event['details'] = fb_call(str(event['id']),
                      args={'access_token': access_token})
 
-        calendar_list = "hi"
-        #calendar_list = google_service.calendarList().list().execute()
+        calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
