@@ -211,7 +211,7 @@ def googlesettings():
         f = GoogleForm(request.form)
 	user = db.session.query(User).get(session['user'].fb_id)
 	user.default_calendar = f.calendar.data
-	if f.auto_add.data == "true":
+	if f.auto_add.data == "Always":
 		user.auto_add = true
 	else:
 		user.auto_add = false

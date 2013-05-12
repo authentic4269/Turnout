@@ -3,7 +3,7 @@ from models import User
 import re
 
 class GoogleForm(Form):
-	default_action = SelectField(u'default_action', choices=[('always', 'Always'), ('never', 'Never')])
+	auto_add = SelectField(u'auto_add', choices=[('always', 'Always'), ('never', 'Never')])
 	calendar = SelectField(u'calendar', coerce=int)
 
 class FacebookForm(Form):
