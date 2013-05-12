@@ -52,7 +52,7 @@ def get_all_users_new_events(db):
     users = db.session.query(models.User).filter(models.User.auto_add == True)
     events = [] 
     for user in users:
-            events.append((user, get_new_events_one_user(user)))
+            events.append((user, get_new_events_one_user(db, user)))
     return events
       
 def get_new_events_one_user(db, user):
