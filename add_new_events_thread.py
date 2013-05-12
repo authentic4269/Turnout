@@ -27,7 +27,7 @@ def run2(db):
 
 def add_new_events_to_calendar(user, events):
     default_calendar_id = user.default_calendar
-    google_service = get_google(util.get_cred_storage(user.fb_id))
+    google_service = get_google_serv(util.get_cred_storage(user.fb_id))
         
     for e in events:
         event = ast.literal_eval(e)
@@ -49,19 +49,19 @@ def add_new_events_to_calendar(user, events):
 
           
 def get_all_users_new_events(db):
-    users = db.session.query(User).filter(User.auto_add == true)
+    users = db.session.query(models.User).filter(auto_add == true)
     events = [] 
     for user in users:
             events.append((user, get_new_events_one_user(user)))
     return events
       
 def get_new_events_one_user(db, user):
-     access_token = db.session.query(User).get(user.fb_id).access_token
+     access_token = db.session.query(models.User).get(user.fb_id).access_token
      refresh(access_token)	
      events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})
      ret = []
      for event in events:
-        if (not db.session.query(Event).get(event.id)) and is_in_future(event):
+        if (not db.session.query(models.Event).get(event.id)) and is_in_future(event):
                 ret.append(event)
      return ret
 
