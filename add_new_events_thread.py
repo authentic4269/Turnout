@@ -49,7 +49,7 @@ def add_new_events_to_calendar(user, events):
 
           
 def get_all_users_new_events(db):
-    users = db.session.query(models.User).filter(auto_add == true)
+    users = db.session.query(models.User).filter(models.User.auto_add == true)
     events = [] 
     for user in users:
             events.append((user, get_new_events_one_user(user)))
