@@ -190,6 +190,12 @@ def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
+    if(session['user'].default_calendar = ''):
+        db.session.query(Uesr).get(session['user'].fb_id)
+        google_service = util.get_google_serv(credentials)
+        primary_calendar = service.calendars().get(calendarId='primary').execute()
+        user.default_calendar = primary_calendar['id']
+
     return redirect('/')
 
 @app.route('/google', methods=['GET', 'POST'])
@@ -204,7 +210,6 @@ def googlesettings():
             user.auto_add = False
         db.session.commit()
         session['user'] = user
-        return render_template('sessions.html', text=f.calendar.data)
 
         return index()
     elif 'user' in session and 'google_cred' in session:
