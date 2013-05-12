@@ -206,7 +206,7 @@ def googlesettings():
         db.session.commit()
         session['user'] = user
 
-        return index()
+        return redirect('/')
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
         for calendar in google_service.calendarList().list().execute()['items']:
@@ -215,7 +215,7 @@ def googlesettings():
             default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-    return index()
+    return redirect('/')
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
