@@ -307,7 +307,7 @@ def index():
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
             db.session.commit()
-        user = db.session.query(User).get(me['id'])
+            user = db.session.query(User).get(me['id'])
 
         session['user'] = user
 
