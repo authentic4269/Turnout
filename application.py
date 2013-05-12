@@ -199,11 +199,10 @@ def googlesettings():
     	return index()
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
-	for calendar in google_service.calendarList().list().execute()['items']:
-		print calendar['summary']
-	print str(session['user'].default_calendar)
+    	for calendar in google_service.calendarList().list().execute()['items']:
+    		print calendar['summary']
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute()['items'], 
-        default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
+            default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
 	return index()
@@ -329,8 +328,7 @@ def index():
 def add_to_calendar():
     error = None
     if request.method == 'POST':
-        user.update({"auto_add": form.default_action.data, "default_calendar": form.calendar.data})
-        google_service = util.get_google(request.form['id'])
+        google_service = util.get_google_serv(session['google_cred'])
     
         event = request.form['event']
         calendarId = request.form['calendar']
