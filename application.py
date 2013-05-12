@@ -347,7 +347,7 @@ def sync_events():
     for fb_event in fb_events['data']:
         db_event = db.session.query(Event).get(fb_event['id'])
         if not db_event:
-            event_details = fb_call(str(db_event['id']),
+            event_details = fb_call(str(fb_event['id']),
                      args={'access_token': session['facebook']})
             new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'])
             db.session.add(new_db_event)
