@@ -9,7 +9,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 
-class ReminderThread(Thread):
 
     def __init__(self):
         Thread.__init__(self)
