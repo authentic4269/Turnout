@@ -181,10 +181,10 @@ def get_token():
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
-    if code in request.args:
-      data = { 'code': code, 'client_id': GOOGLE_CLIENT_ID, 'client_secret': GOOGLE_CLIENT_SECRET, 'redirect_uri': 'http://www.sheltered-basin-7772.herokuapp.com/process_google_token', 'grant_type': 'authorization_code'}
-      r = urllib2.Request("https://accounts.google.com/o/oauth2/token", data)
-      d = urllib2.urlopen(r)
+    credentials = util.get_google_cred(request.args['code'])
+    session['google_cred'] = credentials
+
+    return redirect('/googleme')
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
 def process_google_token():
@@ -378,18 +378,14 @@ def get_channel():
 
 @app.route('/googleme', methods=['GET', 'POST'])
 def get_googleme():
-    credentials = util.get_google_cred()
-    google_service = util.get_google(credentials)
-    text = google_service.calendarList().list().execute()
+    if 'google_cred' in session:
+        google_service = util.get_google_serv(session['google_cred'])
+        calendar_list = google_service.calendarList().list().execute()
 
-    # creates user in database
-    user = db.session.query(User).get('1045684881')
-    session['user'] = user
+        return render_template('sessions.html', text=calendar_list)
 
-    import sys
-    text = sys.getsizeof(session)
+    return redirect(util.get_google_code())
 
-    return render_template('sessions.html', text=text)
 
 @app.route('/close/', methods=['GET', 'POST'])
 def close():
