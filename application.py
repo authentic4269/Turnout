@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import send_reminders_thread
+import add_new_events_thread
 import urllib2
 import util
 import base64
@@ -182,7 +183,7 @@ def get_token():
 
 @app.route('/testbackground', methods=['GET'])
 def test():
-  send_reminders_thread.run2(db, app)
+  add_new_events_thread(db)
   return index()
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
