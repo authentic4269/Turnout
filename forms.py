@@ -4,7 +4,7 @@ import re
 
 class GoogleForm(Form):
 	auto_add = SelectField(u'auto_add', choices=[('always', 'Always'), ('never', 'Never')])
-	calendar = SelectField(u'calendar', coerce=int)
+	calendar = SelectField(u'calendar', [validators.Email()])
 
 class FacebookForm(Form):
 	auto_remind = BooleanField('auto_remind')
