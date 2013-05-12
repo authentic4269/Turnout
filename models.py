@@ -39,16 +39,16 @@ class Reminder(db.Model):
 	__tablename__ = 'reminders'
 	send_time = db.Column(db.DateTime)
 	reminder_id = db.Column(db.Integer, primary_key=True)
-	event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
-	user_id = db.Column(db.Integer, db.ForeignKey('users.fb_id'))
+	event_id = db.Column(db.BigInteger, db.ForeignKey('events.event_id'))
+	user_id = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
 	type = db.Column(db.Integer)
 	
 class Event(db.Model):
 	__tablename__ = 'events'
 	title = db.Column(db.String(40))
 	description = db.Column(db.String(800))
-	uid = db.Column(db.Integer, db.ForeignKey('users.fb_id'))
-	event_id  = db.Column(db.Integer, primary_key=True)
+	uid = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
+	event_id  = db.Column(db.BigInteger, primary_key=True)
 
 	def __init__(self, title, description, uid, event_id):
 		self.title = title
