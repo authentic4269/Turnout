@@ -34,7 +34,7 @@ FLOW = OAuth2WebServerFlow(
     client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
     client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
     scope='https://www.googleapis.com/auth/calendar',
-    redirect_uri='http://127.0.0.1:5000/oauth2callback',
+    redirect_uri='https://sheltered-basin-7772.herokuapp.com/oauth2callback',
     access_type='offline')
 
 # returns true if credentials are valid
