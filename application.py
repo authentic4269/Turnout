@@ -196,25 +196,24 @@ def auth():
 def googlesettings():
     if request.method == 'POST' and 'user' in session:
         f = GoogleForm(request.form)
-    	user = db.session.query(User).get(session['user'].fb_id)
-    	user.default_calendar = f.calendar.data
-	p = session['potato']
-    	if f.auto_add.data == "Always":
-    		user.auto_add = True
-    	else:
-    		user.auto_add = False
-    	db.session.commit()
-	session['user'] = user
-    	return index()
+        user = db.session.query(User).get(session['user'].fb_id)
+        user.default_calendar = f.calendar.data
+        if f.auto_add.data == "Always":
+            user.auto_add = True
+        else:
+            user.auto_add = False
+        db.session.commit()
+        session['user'] = user
+        return index()
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
-    	for calendar in google_service.calendarList().list().execute()['items']:
-    		print calendar['summary']
+        for calendar in google_service.calendarList().list().execute()['items']:
+            print calendar['summary']
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute()['items'], 
             default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-	return index()
+    return index()
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
@@ -315,7 +314,7 @@ def index():
             google_service = util.get_google_serv(session['google_cred'])
         else:
             return redirect(util.get_google_code())
-	
+    
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
