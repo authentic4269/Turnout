@@ -305,7 +305,7 @@ def index():
             user = db.session.query(User).get(me['id'])
 
         google_cred = util.get_google_cred()
-        #google_service = util.get_google(google_cred)
+        google_service = util.get_google(google_cred)
         #session['google_service'] = google_service
         session['user'] = user
 
