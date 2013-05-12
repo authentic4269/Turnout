@@ -182,7 +182,7 @@ def get_token():
 
 @app.route('/testbackground', methods=['GET'])
 def test():
-  #send_reminders_thread.run()
+  send_reminders_thread.run()
   return index()
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
