@@ -335,7 +335,7 @@ def index():
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
-@app.route('/syncEvents', methods=['POST'])
+@app.route('/syncEvents', methods=['GET'])
 def sync_events():
     # get events from fb
     fb_events = fb_call('me/events', args={'access_token': session['facebook']})
