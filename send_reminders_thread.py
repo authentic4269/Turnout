@@ -16,16 +16,20 @@ def __init__(self):
 	db = SQLAlchemy(app)
 	app.config.from_object(__name__)
 
-def run(self):
-	reminders = self.check_for_events()
-	return send_all_reminders(reminders)
+def run():
+        app = Flask(__name__)
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+        db = SQLAlchemy(app)
+        app.config.from_object(__name__)
+	reminders = self.check_for_events(db)
+	return send_all_reminders(db, reminders)
 
-def check_for_events(self):
+def check_for_events(db):
 	return db.session.query(Reminder)
 #        return(db.session.query(Reminder).filter(
 #		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1)))
 
-def send_all_reminders(self, reminders):
+def send_all_reminders(db, reminders):
 	smtpobj = smtplib.SMTP("smtp.gmail.com", 465)
 	smtpobj.ehlo()
 	smtpobj.starttls()
@@ -35,9 +39,9 @@ def send_all_reminders(self, reminders):
 		db.session.delete(reminder)
 	smtpobj.close()
 
-def send_one_reminder(self, reminder, smtpobj):
-	event = self.db.session.query(Event).get(event_id=reminder.event_id)
-	user = self.db.session.query(User).get(fb_id=reminder.user_id)
+def send_one_reminder(db, reminder, smtpobj):
+	event = db.session.query(Event).get(event_id=reminder.event_id)
+	user = db.session.query(User).get(fb_id=reminder.user_id)
 	if reminder.type == 0: #text message:
 		if user.carrier == 0: #att
 			header = 'To: ' + str(user.phone) + '@txt.att.net' + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' + event.title
