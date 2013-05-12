@@ -49,15 +49,17 @@ class Event(db.Model):
 	description = db.Column(db.String(1500))
 	uid = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
 	event_id  = db.Column(db.BigInteger, primary_key=True)
-	start_time = db.Column(db.DateTime)
-	end_time = db.Column(db.DateTime)
+	start_time = db.Column(db.String(40))
+	end_time = db.Column(db.String(40))
+	location = db.Column(db.String(200))
 
-	def __init__(self, title, description, uid, event_id, start_time, end_time):
+	def __init__(self, title, description, uid, event_id, start_time, end_time, location):
 		self.title = title
 		self.description = description
 		self.uid = uid
 		self.event_id = event_id
 		self.start_time = start_time
 		self.end_time = end_time
+		self.location = location
 
 

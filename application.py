@@ -349,7 +349,7 @@ def sync_events():
         if not db_event:
             event_details = fb_call(str(fb_event['id']),
                      args={'access_token': session['facebook']})
-            new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'])
+            new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'], event_details['location'])
             db.session.add(new_db_event)
             db.session.commit()
 
