@@ -318,7 +318,7 @@ def index():
 
         if(not session['user'].default_calendar):
             db.session.query(User).get(session['user'].fb_id)
-            primary_calendar = service.calendars().get(calendarId='primary').execute()
+            primary_calendar = google_service.calendars().get(calendarId='primary').execute()
             user.default_calendar = primary_calendar['id']
     
         # get events
