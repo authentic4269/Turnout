@@ -223,6 +223,7 @@ def googlesettings():
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
+	return index()
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
@@ -321,6 +322,7 @@ def index():
 
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
+	    session['google_service'] = google_service
         else:
             return redirect(util.get_google_code())
 
