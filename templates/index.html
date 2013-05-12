@@ -26,7 +26,7 @@
     <li id="event.id">
     	<strong class="eventname">{{event.name}}</strong> <span class="eventtime">{{event.start_time}} - {{event.end_time}}</span><br />
     	<span class="eventlocation">{{event.location}}</span><br />
-    	<p class="description">{{event.details.description.replace('\n', '<br />')|safe}}</p>
+    	<p class="description">{{event.description.replace('\n', '<br />')|safe}}</p>
     	<p>
     		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>,
     		<a href="#" class="calendar" data-id="{{me.id}}" data-event="{{event}}">Add to calendar</a>
