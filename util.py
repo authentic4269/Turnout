@@ -63,6 +63,16 @@ def get_google_cred(userId, code):
 
     return credentials
 
+def get_cred_storage(userId):
+    storage = Storage("calendars/" + str(userId) + ".dat")
+    credentials = storage.get()
+
+    #refresh
+    http = httplib2.Http()
+    credentials.refresh(http)
+
+    return credentials
+
 def get_google_serv(credentials):
     # Create an httplib2.Http object to handle our HTTP requests and authorize it
     # with our good Credentials.

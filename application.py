@@ -209,6 +209,9 @@ def get_google_auth(token):
 def googlesettings():
     if request.method == 'POST' and 'user' in session:
         f = GoogleForm(request.form)
+
+        user = db.session.query(User).get(session['user'].fb_id)
+
         session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user'].auto_add})
     elif 'user' in session and 'google_service' in session:
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
@@ -218,7 +221,6 @@ def googlesettings():
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
-    return render_template('sessions.html', text=session)
     if request.method == 'POST' and 'user' in session:
         f = FacebookForm(request.form)
 
@@ -330,7 +332,7 @@ def index():
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
-            calendar_list=calendar_list, session=session)
+            calendar_list=calendar_list)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
 
@@ -386,7 +388,8 @@ def get_channel():
 @app.route('/googleme', methods=['GET', 'POST'])
 def get_googleme():
     if 'google_cred' in session:
-        google_service = util.get_google_serv(session['google_cred'])
+        cred = util.get_cred_storage(session['user'].fb_id)
+        google_service = util.get_google_serv(cred)
         calendar_list = google_service.calendarList().list().execute()
 
         return render_template('sessions.html', text=calendar_list)
