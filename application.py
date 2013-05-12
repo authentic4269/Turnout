@@ -187,7 +187,7 @@ def auth():
       d = urllib2.urlopen(r)
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
-def process_google_token:
+def process_google_token():
   if access_token in request.form:
     print "auth success"
   else:
