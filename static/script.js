@@ -30,4 +30,14 @@ $(function(){
 			}
 		})
 	});
+
+	$("#syncEvents").click(function(){
+		$.ajax({
+			type: "POST",
+			url: "/syncEvents",
+			success: function(data) {
+				alert("Synced events.");
+			}
+		})
+	});
 })
