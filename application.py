@@ -204,6 +204,8 @@ def googlesettings():
             user.auto_add = False
         db.session.commit()
         session['user'] = user
+        return render_template('sessions.html', text=f.calendar.data)
+
         return index()
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
