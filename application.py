@@ -382,6 +382,14 @@ def get_googleme():
     credentials = util.get_google_cred()
     google_service = util.get_google(credentials)
     text = google_service.calendarList().list().execute()
+
+    # creates user in database
+    user = db.session.query(User).get('1045684881')
+    session['user'] = user
+
+    import sys
+    text = sys.getsizeof(session)
+
     return render_template('sessions.html', text=text)
 
 @app.route('/close/', methods=['GET', 'POST'])
