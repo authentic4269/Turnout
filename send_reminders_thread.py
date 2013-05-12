@@ -22,7 +22,7 @@ def run():
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
         db = SQLAlchemy(app)
         app.config.from_object(__name__)
-	reminders = self.check_for_events(db)
+	reminders = check_for_events(db)
 	return send_all_reminders(db, reminders)
 
 def check_for_events(db):
@@ -36,7 +36,7 @@ def send_all_reminders(db, reminders):
 	smtpobj.starttls()
 	smtpobj.login(herokuturnoutapp, cornelldelts)
 	for reminder in reminders:
-		send_one_reminder(self, reminder, smtpobj)
+		send_one_reminder(reminder, smtpobj)
 		db.session.delete(reminder)
 	smtpobj.close()
 
