@@ -28,13 +28,6 @@ from flask import Flask, request, redirect, render_template, url_for, session, f
 FB_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 requests = requests.session()
 
-@app.route('/oauth2callback', methods=['GET', 'POST'])
-def auth():
-    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
-    session['google_cred'] = credentials
-
-    return redirect('/')
-
 FLAGS = gflags.FLAGS
 def process_flags(argv):
     try:
@@ -191,6 +184,13 @@ def get_token():
 def test():
   send_reminders_thread.run()
   return index()
+
+@app.route('/oauth2callback', methods=['GET', 'POST'])
+def auth():
+    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
+    session['google_cred'] = credentials
+
+    return redirect('/')
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
