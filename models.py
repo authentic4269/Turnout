@@ -45,15 +45,21 @@ class Reminder(db.Model):
 	
 class Event(db.Model):
 	__tablename__ = 'events'
-	title = db.Column(db.String(40))
-	description = db.Column(db.String(800))
+	title = db.Column(db.String(200))
+	description = db.Column(db.String(1500))
 	uid = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
 	event_id  = db.Column(db.BigInteger, primary_key=True)
+	start_time = db.Column(db.String(40))
+	end_time = db.Column(db.String(40))
+	location = db.Column(db.String(200))
 
-	def __init__(self, title, description, uid, event_id):
+	def __init__(self, title, description, uid, event_id, start_time, end_time, location):
 		self.title = title
 		self.description = description
 		self.uid = uid
 		self.event_id = event_id
+		self.start_time = start_time
+		self.end_time = end_time
+		self.location = location
 
 
