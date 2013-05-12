@@ -44,6 +44,7 @@ def get_google_cred():
             client_id='499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com',
             client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
             scope='https://www.googleapis.com/auth/calendar',
+	    redirect_uri='http://www.sheltered-basin-7772.herokuapp.com/oauth2callback',
             access_type='offline')
 
         credentials = run(FLOW, Storage())
