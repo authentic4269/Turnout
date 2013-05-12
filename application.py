@@ -190,7 +190,7 @@ def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
-    if(session['user'].default_calendar = ''):
+    if(session['user'].default_calendar == ''):
         db.session.query(Uesr).get(session['user'].fb_id)
         google_service = util.get_google_serv(credentials)
         primary_calendar = service.calendars().get(calendarId='primary').execute()
