@@ -39,8 +39,6 @@ FLOW = OAuth2WebServerFlow(
 
 # returns true if credentials are valid
 def ensure_cred(credentials):
-    credentials = Credentials.new_from_json(credentials)
-
     if credentials is None or credentials.invalid == True:
         return False
 
