@@ -209,8 +209,16 @@ def get_google_auth(token):
 def googlesettings():
     if request.method == 'POST' and 'user' in session:
         f = GoogleForm(request.form)
-        session['user'].update({'default_calendar': f.calendar.data, 'auto_add': session['user'].auto_add})
+	user = db.session.query(User).get(session['user'].fb_id)
+	user.default_calendar = f.calendar.data
+	if f.auto_add.data == "true":
+		user.auto_add = true
+	else:
+		user.auto_add = false
+	db.session.commit()
+	return index()
     elif 'user' in session and 'google_service' in session:
+	primary_id = session['user'].primary_calendar
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
@@ -218,7 +226,6 @@ def googlesettings():
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
-    return render_template('sessions.html', text=session)
     if request.method == 'POST' and 'user' in session:
         f = FacebookForm(request.form)
 
@@ -363,6 +370,8 @@ def add_to_calendar():
         new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
 
         return new_event['id']
+
+@app.route('/
 
 @app.route('/sendReminder', methods=['GET', 'POST'])
 def send_reminder():
