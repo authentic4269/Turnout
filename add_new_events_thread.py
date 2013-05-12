@@ -1,4 +1,5 @@
 import util
+import urllib2
 import ast
 import smtplib
 from datetime import datetime, timedelta
