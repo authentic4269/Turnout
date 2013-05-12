@@ -195,6 +195,11 @@ def process_google_token():
   else:
     print "auth fail"
   
+@app.route('/google_login', methods=['GET', 'POST'])
+def google_login():
+  util.get_google_cred()
+  util.get_google(session['google_credentials'])
+  print "auth returned" 
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
