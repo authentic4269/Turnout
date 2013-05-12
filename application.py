@@ -184,7 +184,7 @@ def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
-    return redirect('/googleme')
+    return redirect('/')
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
 def process_google_token():
