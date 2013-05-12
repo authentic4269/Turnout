@@ -50,8 +50,8 @@ def send_all_reminders(db, reminders):
 	db.session.commit()
 
 def send_one_reminder(db, reminder, smtpobj):
-	event = db.session.query(models.Event).get(Event.event_id=reminder.event_id)
-	user = db.session.query(models.User).get(Event.fb_id=reminder.user_id)
+	event = db.session.query(models.Event).get(reminder.event_id)
+	user = db.session.query(models.User).get(reminder.user_id)
 	if reminder.type == 0: #text message:
 		if user.carrier == 0: #att
 			header = 'To: ' + str(user.phone) + '@txt.att.net' + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' + event.title
