@@ -60,7 +60,7 @@ def get_google_cred(userId, code):
     session['google_cred'] = credentials
 
     #store in /calendars
-    storage = Storage("calendars/" + userId + ".dat")
+    storage = Storage("calendars/" + str(userId) + ".dat")
     storage.put(credentials)
 
     return credentials
