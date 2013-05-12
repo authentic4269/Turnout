@@ -312,7 +312,7 @@ def index():
 
         session['user'] = user
 
-        if 'google_cred' in session and ensure_cred(session['google_cred']):
+        if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
         else:
             return redirect(util.get_google_code())
