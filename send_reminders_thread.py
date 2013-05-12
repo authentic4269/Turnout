@@ -26,6 +26,10 @@ def run():
 	reminders = check_for_events(db)
 	return send_all_reminders(db, reminders)
 
+def run2(db, app):
+	reminders = check_for_events(db)
+	return send_all_reminders(db, reminders)
+
 def check_for_events(db):
 	return db.session.query(models.Reminder)
 #        return(db.session.query(models.Reminder).filter(
