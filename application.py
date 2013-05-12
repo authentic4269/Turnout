@@ -219,6 +219,7 @@ def googlesettings():
 	return index()
     elif 'user' in session and 'google_cred' in session:
 	google_session =  util.get_google_serv(session['google_cred'])
+	primary_id = session['user'].primary_calendar
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
@@ -325,7 +326,6 @@ def index():
         else:
             return redirect(util.get_google_code())
 	
-	session['google_service'] = google_service
         # get events
         events = fb_call('me/events',
             args={'access_token': access_token})
