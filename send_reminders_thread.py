@@ -44,7 +44,7 @@ def send_all_reminders(db, reminders):
 	smtpobj.login("herokuturnoutapp@gmail.com", "cornelldelts")
 	print "logged in"
 	for reminder in reminders:
-		send_one_reminder(reminder, smtpobj)
+		send_one_reminder(db, reminder, smtpobj)
 		db.session.delete(reminder)
 	smtpobj.close()
 	db.session.commit()
