@@ -11,18 +11,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 def __init__(self):
-	Thread.__init__(self)
 	app = Flask(__name__)
 	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 	db = SQLAlchemy(app)
 	app.config.from_object(__name__)
 
-	def run(self):
+def run(self):
 	reminders = self.check_for_events()
 	return send_all_reminders(reminders)
 
-	def check_for_events(self):
-		return db.session.query(Reminder)
+def check_for_events(self):
+	return db.session.query(Reminder)
 #        return(db.session.query(Reminder).filter(
 #		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1)))
 
