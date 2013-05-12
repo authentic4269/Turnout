@@ -19,7 +19,7 @@ def run():
     for (user, new_events_list) in events:
         add_new_events_to_calendar(user, new_events_list)
 
-def run2(db)
+def run2(db):
     events = get_all_users_new_events(db)
     for (user, new_events_list) in events:
         add_new_events_to_calendar(user, new_events_list)
@@ -45,7 +45,7 @@ def add_new_events_to_calendar(user, events):
               }
           }
 
-          new_event = google_service.events().insert(calendarId=default_calendar_id, body=eventObj).execute()
+        new_event = google_service.events().insert(calendarId=user.default_calendar_id, body=eventObj).execute()
 
           
 def get_all_users_new_events(db):
@@ -66,8 +66,7 @@ def get_new_events_one_user(db, user):
      return ret
 
 def refresh(tok, code=None):
-      graph_uri = "https://www.facebook.com/me?" +
-        "access_token=" + tok
+      graph_uri = "https://www.facebook.com/me?" ^ "access_token=" ^ tok
       response = urllib2.urlopen(graph_uri)
       return response['potato']
       
