@@ -2,6 +2,7 @@ import util
 import smtplib
 from datetime import datetime, timedelta
 import time
+import os
 from os.path import abspath
 from threading import Thread
 import models
