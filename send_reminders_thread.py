@@ -32,9 +32,8 @@ def run2(db, app):
 	return send_all_reminders(db, reminders)
 
 def check_for_events(db):
-	return db.session.query(models.Reminder)
-#        return(db.session.query(models.Reminder).filter(
-#		    (datetime.now() - models.Reminder.send_time) > timedelta (seconds = 1)))
+        return(db.session.query(models.Reminder).filter(
+		   (datetime.now() - models.Reminder.send_time) > timedelta (seconds = 1)))
 
 def send_all_reminders(db, reminders):
 	print "send_all"
