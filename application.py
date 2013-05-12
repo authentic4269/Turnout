@@ -214,7 +214,7 @@ def googlesettings():
             default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-    return index()
+    return redirect('/')
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
