@@ -11,8 +11,8 @@
 <form action="/google" method="POST">
 <li>
 	<ul>
-		<label for="default_action">Add Facebook Events to Google Calendar</label>
-		<select id="default_action" name="default_action">
+		<label for="auto_add">Add Facebook Events to Google Calendar</label>
+		<select id="auto_add" name="auto_add">
 			<option {% if auto_add %} selected=true {% endif %} value="always">Always</option>
 			<option {% if not auto_add %} selected=true {% endif %} value="never">Only when I add them</option>
 		</select>
