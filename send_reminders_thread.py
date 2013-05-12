@@ -31,8 +31,8 @@ def send_all_reminders(self, reminders):
 	smtpobj.starttls()
 	smtpobj.login(herokuturnoutapp, cornelldelts)
 	for reminder in reminders:
-	send_one_reminder(self, reminder, smtpobj)
-	db.session.delete(reminder)
+		send_one_reminder(self, reminder, smtpobj)
+		db.session.delete(reminder)
 	smtpobj.close()
 
 def send_one_reminder(self, reminder, smtpobj):
