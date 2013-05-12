@@ -179,6 +179,10 @@ def get_token():
 
         return token
 
+@app.route('/google_login', methods=['GET', 'POST']
+def login():
+  util.get_google()
+
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
     if code in request.args:
