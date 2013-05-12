@@ -61,5 +61,3 @@ class Event(db.Model):
 		self.start_time = start_time
 		self.end_time = end_time
 		self.location = location
-
-

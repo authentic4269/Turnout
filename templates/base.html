@@ -68,23 +68,28 @@
 	 }(document, 'script', 'facebook-jssdk'));
     </script>
 
-    <div id="layout">
-		<div id="header">
-			<a href="/"><img src="static/images/logo.png" alt="Turnout" /></a>
-			<ul id="navigation">
-				<li><a href="/">Events</a></li>
-				<li><a href="facebook">Facebook Settings</a></li>
-				<li><a href="google">Google Settings</a></li>
-				<li><a href="global">Global Settings</a></li>
-			</ul>
-		</div>
+	<div id="header">
+		<a href="/"><img src="static/images/logo.png" alt="Turnout" id="logo" /></a>
+		<ul id="navigation">
+			<li><a href="/" {% if request.path == "/" %}class="active"{% endif %}>Events</a></li>
+			<li><a href="facebook" {% if request.path == "/facebook" %}class="active"{% endif %}>Facebook Settings</a></li>
+			<li><a href="google" {% if request.path == "/google" %}class="active"{% endif %}>Google Settings</a></li>
+			<li><a href="global" {% if request.path == "/global" %}class="active"{% endif %}>Global Settings</a></li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
 
-		<div id="content">
+	<div id="content">
+		<div id="content_container">
 			{% block topbar %}
 			{% endblock %}
 			{% block content%}
 			{% endblock %}
 		</div>
+	</div>
+
+	<div id="footer">
+		Made by Mitchell Vogel (mjv58) and Tae Lee (tcl47).
 	</div>
 
   </body>

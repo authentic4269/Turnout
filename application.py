@@ -323,10 +323,11 @@ def index():
             primary_calendar = google_service.calendars().get(calendarId='primary').execute()
             user.default_calendar = primary_calendar['id']
 
+        # get calendars
+        calendar_list = google_service.calendarList().list().execute()
+
         # get events
         events = db.session.query(Event).filter_by(uid=user.fb_id)
-
-        calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
