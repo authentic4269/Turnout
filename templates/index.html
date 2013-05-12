@@ -18,13 +18,11 @@
 
 <a href="/syncEvents" id="syncEvents">Sync Events Now</a>
 
-{{events}}
-
 <h1>Events</h1>
 <ul id="events">
 {% for event in events %}
     <li id="event.id">
-    	<strong class="eventname">{{event.name}}</strong> <span class="eventtime">{{event.start_time}} - {{event.end_time}}</span><br />
+    	<strong class="eventname">{{event.title}}</strong> <span class="eventtime">{{event.start_time}} - {{event.end_time}}</span><br />
     	<span class="eventlocation">{{event.location}}</span><br />
     	<p class="description">{{event.description.replace('\n', '<br />')|safe}}</p>
     	<p>
