@@ -10,7 +10,7 @@
 <h1>Primary Calendar</h1>
 <ul id="calendars">
 {% for calendar in calendar_list['items'] %}
-	{% if calendar.primary == True %}
+	{% if calendar.id == default_calendar %}
 	<li id="calendar" data-id="{{calendar.id}}">{{ calendar.summary }}</li>
 	{% endif %}
 {% endfor %}
