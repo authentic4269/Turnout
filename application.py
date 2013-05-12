@@ -185,7 +185,6 @@ def auth():
       data = { 'code': code, 'client_id': 'client_id': GOOGLE_CLIENT_ID, 'client_secret': GOOGLE_CLIENT_SECRET, 'redirect_uri': 'http://www.sheltered-basin-7772.herokuapp.com/process_google_token', 'grant_type': 'authorization_code'}
       r = urllib2.Request("https://accounts.google.com/o/oauth2/token", data)
       d = urllib2.urlopen(r)
-      if d.access_token:
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
 def process_google_token:
