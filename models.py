@@ -45,7 +45,7 @@ class Reminder(db.Model):
 	
 class Event(db.Model):
 	__tablename__ = 'events'
-	title = db.Column(db.String(40))
+	title = db.Column(db.String(200))
 	description = db.Column(db.String(800))
 	uid = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
 	event_id  = db.Column(db.BigInteger, primary_key=True)
