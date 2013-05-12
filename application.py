@@ -188,11 +188,17 @@ def auth():
 
 @app.route('/process_google_token', methods=['GET', 'POST'])
 def process_google_token():
+  print "processing google token"
   if access_token in request.form:
     print "auth success"
   else:
     print "auth fail"
   
+@app.route('/google_login', methods=['GET', 'POST'])
+def google_login():
+  util.get_google_cred()
+  util.get_google(session['google_credentials'])
+  print "auth returned" 
 
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
@@ -305,7 +311,7 @@ def index():
             user = db.session.query(User).get(me['id'])
 
         google_cred = util.get_google_cred()
-        #google_service = util.get_google(google_cred)
+        google_service = util.get_google(google_cred)
         #session['google_service'] = google_service
         session['user'] = user
 
