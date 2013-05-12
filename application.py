@@ -179,6 +179,22 @@ def get_token():
 
         return token
 
+@app.route('/oauth2callback', methods=['GET', 'POST'])
+def auth():
+    if code in request.args then
+      data = { 'code': code, 'client_id': 'client_id': GOOGLE_CLIENT_ID, 'client_secret': GOOGLE_CLIENT_SECRET, 'redirect_uri': 'http://www.sheltered-basin-7772.herokuapp.com/process_google_token', 'grant_type': 'authorization_code'}
+      r = urllib2.Request("https://accounts.google.com/o/oauth2/token", data)
+      d = urllib2.urlopen(r)
+      if d.access_token:
+
+@app.route('/process_google_token', methods=['GET', 'POST'])
+def process_google_token:
+  if access_token in request.form:
+    print "auth success"
+  else:
+    print "auth fail"
+  
+
 @app.route('/google_auth', methods=['GET', 'POST'])
 def get_google_auth(token):
     response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
@@ -194,8 +210,6 @@ def googlesettings():
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-        return redirect(url_for('index'))
-    
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
