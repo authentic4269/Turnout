@@ -217,7 +217,8 @@ def googlesettings():
 		user.auto_add = false
 	db.session.commit()
 	return index()
-    elif 'user' in session and 'google_service' in session:
+    elif 'user' in session and 'google_cred' in session:
+	google_session =  util.get_google_serv(session['google_cred'])
 	primary_id = session['user'].primary_calendar
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
