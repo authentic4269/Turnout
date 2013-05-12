@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import send_reminders_thread
 import urllib2
 import util
 import base64
@@ -179,31 +180,10 @@ def get_token():
 
         return token
 
-@app.route('/oauth2callback', methods=['GET', 'POST'])
-def auth():
-    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
-    session['google_cred'] = credentials
-
-    return redirect('/')
-
-@app.route('/process_google_token', methods=['GET', 'POST'])
-def process_google_token():
-  print "processing google token"
-  if access_token in request.form:
-    print "auth success"
-  else:
-    print "auth fail"
-  
-@app.route('/google_login', methods=['GET', 'POST'])
-def google_login():
-  util.get_google_cred()
-  util.get_google(session['google_credentials'])
-  print "auth returned" 
-
-@app.route('/google_auth', methods=['GET', 'POST'])
-def get_google_auth(token):
-    response = urllib2.urlopen("https://accounts.google.com/o/oauth2/token&refresh_token=" + token + "&client_id=499345994258-dckpi4k4dvm3660a2c94huf9tee3a9cj.apps.googleusercontent.com&client_secret=cFDEqr9pHqZs5-Xxdc3QpTv9&grant_type=refresh_token")
-    return response.access_token
+@app.route('/testbackground', methods=['GET'])
+def test():
+  send_reminders_thread.run()
+  return index()
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():

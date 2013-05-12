@@ -23,8 +23,9 @@ class ReminderThread(Thread):
 	return send_all_reminders(reminders)
 
     def check_for_events(self):
-        return(db.session.query(Reminder).filter(
-		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1)))
+	return db.session.query(Reminder)
+#        return(db.session.query(Reminder).filter(
+#		    (datetime.now() - Reminder.send_time) > timedelta (seconds = 1)))
 
     def send_all_reminders(self, reminders):
 		smtpobj = smtplib.SMTP("smtp.gmail.com", 465)
