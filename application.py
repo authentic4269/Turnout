@@ -204,6 +204,7 @@ def googlesettings():
     	else:
     		user.auto_add = False
     	db.session.commit()
+	session['user'] = user
     	return index()
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
