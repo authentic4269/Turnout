@@ -1,45 +1,67 @@
 body {
-	margin: 30px;
+	margin: 30px 0;
 	background: url('images/wavegrid.png');
-	font-family: Arial, sans-serif;
+	font-family: Tahoma;
 	font-size: 14px;
 	line-height: 18px;
 }
 
-#layout {
-	width: 900px;
-	margin: auto;
-}
+.clearfix{clear: both;}
+p{margin-top: 0;}
+a {color: #3b559f;}
 
 #header {
-	line-height: 70px;
+	width: 960px;
+	margin: auto;
+	line-height: 50px;
 }
 
+	#logo {
+		width: 200px;
+		height: 50px;
+		float: left;
+		margin-right: 20px;
+	}
+
 	#navigation {
-		float: right;
+		float: left;
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
 
 		#navigation li {
+			line-height: 20px;
+			padding: 0 20px 0 0;
+			margin: 20px 0 0 0;
 			float: left;
-			margin-left: 60px;
 		}
 
 			#navigation li a {
-				background: #3b559f;
-				padding: 5px;
-				border-radius: 5px;
-				color: #fff;
+				display: block;
+				padding: 10px;
+				color: #3b559f;
 				text-decoration: none;
+				font-weight: bold;
+			}
+
+			#navigation li a.active {
+				background: #fff;
+			}
+
+			#navigation li:first-child {
+				border: 0;
 			}
 
 #content {
-	padding: 30px;
 	background: #fff;
-	border-radius: 5px;
 }
+
+	#content_container {
+		width: 960px;
+		margin: auto;
+		padding: 30px 0;
+	}
 
 	#content h1 {
 		margin-top: 0;
@@ -62,3 +84,23 @@ body {
 				overflow: hidden;
 				font-style: italic;
 			}
+
+h1 {
+	font-size: 1.4em;
+}
+
+#syncEvents {
+	background: #3b559f;
+	display: block;
+	padding: 10px;
+	float: right;
+	color: #fff;
+	text-decoration: none;
+	border: solid 1px #000;
+}
+
+#footer {
+	padding: 20px 0;
+	text-align: center;
+	font-size: 0.8em;
+}
