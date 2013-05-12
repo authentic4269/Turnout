@@ -341,7 +341,7 @@ def sync_events():
     fb_events = fb_call('me/events', args={'access_token': session['facebook']})
 
     # get events from db
-    db_events = db.session.query(Event).filter_by(fb_id=session['user'].fb_id)
+    db_events = db.session.query(Event).filter_by(uid=session['user'].fb_id)
 
     # get details for each event
     for fb_event in fb_events['data']:
