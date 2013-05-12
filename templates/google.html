@@ -23,10 +23,10 @@
 		<li>
 		{% for calendar in calendars_list %}
 		<ul>
-		{% if calendar.id = primary_id %}
+		{% if calendar.id == default_calendar %}
 		<option selected=true value={{calendar.id}}>{{calendar.summary}}</option>
 		{% else %}
-		<option value={{calendar.id}}>{{calendar.summary}}</option>
+		<option value={{calendar.id}} name={{calendar.summary}}>{{calendar.summary}}</option>
 		{% endif %}
 		</ul>
 		{% endfor %}
