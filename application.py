@@ -324,7 +324,7 @@ def index():
             user.default_calendar = primary_calendar['id']
 
         # get events
-        events = db.session.query(Event)
+        events = db.session.query(Event).all()
 
         calendar_list = google_service.calendarList().list().execute()
 
