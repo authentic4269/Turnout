@@ -317,7 +317,7 @@ def index():
             return redirect(util.get_google_code())
 
         if(not session['user'].default_calendar):
-            db.session.query(Uesr).get(session['user'].fb_id)
+            db.session.query(User).get(session['user'].fb_id)
             primary_calendar = service.calendars().get(calendarId='primary').execute()
             user.default_calendar = primary_calendar['id']
     
