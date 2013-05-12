@@ -27,6 +27,7 @@ def run():
 	return send_all_reminders(db, reminders)
 
 def run2(db, app):
+	print "run2"
 	reminders = check_for_events(db)
 	return send_all_reminders(db, reminders)
 
@@ -36,14 +37,17 @@ def check_for_events(db):
 #		    (datetime.now() - models.Reminder.send_time) > timedelta (seconds = 1)))
 
 def send_all_reminders(db, reminders):
-	smtpobj = smtplib.SMTP("smtp.gmail.com", 465)
+	print "send_all"
+	smtpobj = smtplib.SMTP("smtp.gmail.com", 587)
 	smtpobj.ehlo()
 	smtpobj.starttls()
-	smtpobj.login(herokuturnoutapp, cornelldelts)
+	smtpobj.login("herokuturnoutapp@gmail.com", "cornelldelts")
+	print "logged in"
 	for reminder in reminders:
 		send_one_reminder(reminder, smtpobj)
 		db.session.delete(reminder)
 	smtpobj.close()
+	db.session.commit()
 
 def send_one_reminder(db, reminder, smtpobj):
 	event = db.session.query(Event).get(event_id=reminder.event_id)
