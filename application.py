@@ -222,6 +222,7 @@ def googlesettings():
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute(), 
         default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
+	p = session['potato']
         flash('You are not logged in')
 	return index()
 
