@@ -324,7 +324,7 @@ def index():
             user.default_calendar = primary_calendar['id']
 
         # get events
-        events = db.session.query(Event).all()
+        events = db.session.query(Event).filter_by(uid=user.fb_id)
 
         calendar_list = google_service.calendarList().list().execute()
 
