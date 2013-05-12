@@ -371,7 +371,6 @@ def add_to_calendar():
 
         return new_event['id']
 
-@app.route('/
 
 @app.route('/sendReminder', methods=['GET', 'POST'])
 def send_reminder():
