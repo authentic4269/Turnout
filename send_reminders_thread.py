@@ -72,6 +72,7 @@ def send_one_reminder(db, reminder, smtpobj):
 			header = 'To: ' + str(user.phone) + '@sms.alltelwireless.com' + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' + event.title
 			to = str(user.phone) + '@sms.alltelwireless.com'
 		msg = header + '\n This is a reminder for your event, ' + event.title + '\n\n'
+		print to
 		smtpobj.sendmail("herokuturnoutapp@gmail.com", to, msg)
 	elif reminder.type == 1: #email
 		header = 'To: ' + user.email + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' + event.title	
