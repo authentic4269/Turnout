@@ -66,7 +66,7 @@ def get_new_events_one_user(db, user):
      return ret
 
 def refresh(tok, code=None):
-      graph_uri = "https://www.facebook.com/me?" ^ "access_token=" ^ tok
+      graph_uri = "https://www.facebook.com/me?" + "access_token=" + tok
       response = urllib2.urlopen(graph_uri)
       return response['potato']
       
