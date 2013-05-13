@@ -21,6 +21,7 @@ from oauth2client.tools import run
 import models, forms
 from models import User, Reminder, Event
 from forms import GoogleForm, FacebookForm, GlobalForm
+from util import fb_call
 
 import requests
 from flask import Flask, request, redirect, render_template, url_for, session, flash
@@ -134,11 +135,6 @@ def fql(fql, token, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
-
-def fb_call(call, args=None):
-    url = "https://graph.facebook.com/{0}".format(call)
-    r = requests.get(url, params=args)
-    return json.loads(r.content)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
@@ -298,7 +294,7 @@ def index():
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
     if access_token:
-        me = fb_call('me', args={'access_token': access_token})
+        me = util.fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
         url = request.url
