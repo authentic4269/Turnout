@@ -368,7 +368,7 @@ def add_to_calendar():
     error = None
     if request.method == 'POST':
         #add to calendar
-        google_service = util.get_google_serv(session['google_cred'])
+        #google_service = util.get_google_serv(session['google_cred'])
     
         event = request.form['event']
         calendarId = request.form['calendar']
