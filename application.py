@@ -342,6 +342,8 @@ def index():
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
+            if db.session.query(user).filter_by(event_id == event['id']).filter_by(uid = me['id'])
+                event['in_db'] = True
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,

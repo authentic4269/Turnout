@@ -24,8 +24,8 @@
     	<span class="eventlocation">{{event.details.location}}</span><br />
     	<p class="description">{{event.details.description.replace('\n', '<br />')|safe}}</p>
     	<p>
-    		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>,
-    		<a href="#" class="calendar" data-id="{{me.id}}" data-event="{{event}}">Add to calendar</a>
+    		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>
+    		{% if event.in_db %}<a href="#" class="calendar" data-id="{{me.id}}" data-event="{{event}}">Add to calendar</a>{% endif %}
     	</p>
 	</li>
 {% endfor %}
