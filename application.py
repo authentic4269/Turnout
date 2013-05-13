@@ -214,7 +214,7 @@ def googlesettings():
 
     	user = db.session.query(User).get(session['user'].fb_id)
     	user.default_calendar = f.calendar.data
-    	if f.auto_add.data == "Always":
+    	if f.auto_add.data == "always":
     		user.auto_add = True
     	else:
     		user.auto_add = False
@@ -383,9 +383,13 @@ def add_to_calendar():
 
         if len(event['start_time']) == 10:
             event['start_time'] += "T00:00:00"
+        elif len(event['start_time']) > 19:
+            event['start_time'] = event['start_time'][0:19]
 
         if len(event['end_time']) == 10:
-            event['start_time'] += "T23:59:59"
+            event['end_time'] += "T23:59:59"
+        elif len(event['end_time']) > 19:
+            event['end_time'] = event['end_time'][0:19]
 
         eventObj = {
             'summary': event['name'],
