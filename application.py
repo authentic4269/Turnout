@@ -382,7 +382,12 @@ def add_to_calendar():
 
 @app.route('/postReminder', methods=['GET', 'POST'])
 def post_reminder():
-    posted_reminder = fb_post('584999951522295/feed', args={'message':"hello", 'access_token': session['facebook']})
+    event = fb_call('584999951522295?fields=attending', args={'access_token': session['facebook']})
+    attendees = ""
+    for attendee in event['attending']['data']:
+        attendees += "@[" + attendee['id'] + "], "
+
+    posted_reminder = fb_post('584999951522295/feed', args={'message':"hello" + attendees, 'access_token': session['facebook']})
     return redirect('/')
 
 @app.route('/channel.html', methods=['GET', 'POST'])
