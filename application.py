@@ -376,11 +376,11 @@ def add_to_calendar():
         import ast
         event = ast.literal_eval(event)
 
-        if len(event['start_time'] == 10):
+        if len(event['start_time']) == 10:
             event['start_time'] += "00:00"
 
         if 'end_time' in event:
-            if len(event['end_time'] == 10):
+            if len(event['end_time']) == 10:
                 event['end_time'] += "11:59:59"
         else:
             event['end_time'] = event['start_time'][:-5] + "11:59:59"
