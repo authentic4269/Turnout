@@ -37,6 +37,11 @@ FLOW = OAuth2WebServerFlow(
     redirect_uri='https://sheltered-basin-7772.herokuapp.com/oauth2callback',
     access_type='offline')
 
+def fb_call(call, args=None):
+    url = "https://graph.facebook.com/{0}".format(call)
+    r = requests.get(url, params=args)
+    return json.loads(r.content)
+
 # returns true if credentials are valid
 def ensure_cred(credentials):
     if credentials is None or credentials.invalid == True:
