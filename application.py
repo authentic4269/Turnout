@@ -379,20 +379,18 @@ def add_to_calendar():
         event = ast.literal_eval(event)
 
         if 'end_time' not in event:
-            event['end_time'] = event['start_time'] + "T00:00:00"
-        if 'timezone' not in event:
-            event['timezone'] = "American/New_York"
+            event['end_time'] = event['start_time']
 
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
             'start': {
-                'dateTime': event['start_time'][:-5],
-                'timeZone': event['timezone']
+                'dateTime': event['start_time'],
+                'timeZone': 'American/New_York'
             },
             'end': {
-                'dateTime': event['end_time'][:-5],
-                'timeZone': event['timezone']
+                'dateTime': event['end_time'],
+                'timeZone': 'American/New_York'
             }
         }
 
