@@ -16,6 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import gflags
 import httplib2
+from apscheduler.scheduler import Scheduler
 from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
@@ -130,6 +131,13 @@ db = SQLAlchemy(app)
 app.config.from_object(__name__)
 app.config.from_object('conf.Config')
 app.secret_key = os.urandom(22)
+
+sched = Scheduler
+sched.start()
+
+@sched.interval_schedule(minutes=2)
+def send_reminders():
+  send_reminders_thread.run2(db, app)
 
 def get_home():
     return 'https://' + request.host + '/'
