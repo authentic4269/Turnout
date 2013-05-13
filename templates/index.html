@@ -20,6 +20,7 @@
 
 <h1>Events</h1>
 <ul id="events">
+    {{events}}
 {% for event in events %}
     <li id="event.id">
     	<strong class="eventname">{{event.title}}</strong> <span class="eventtime">{{event.details.start_time}} - {{event.details.end_time}}</span><br />
