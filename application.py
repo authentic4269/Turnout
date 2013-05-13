@@ -349,18 +349,17 @@ def index():
 
         # get events
         events = fb_call('me/events', args={'access_token': session['facebook']})
-        render_events = []
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
             db_event = db.session.query(Event).get(event['id'])
-            #p = session['potato']
-            if not db_event:
-                render_events.append(event)
+            event['in_db'] = False
+            if db_event:
+                event['in_db'] = True
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
-            me=me, name=FB_APP_NAME, events=render_events,
+            me=me, name=FB_APP_NAME, events=events,
             calendar_list=calendar_list, default_calendar=session['user'].default_calendar)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
