@@ -138,7 +138,7 @@ sched = Scheduler()
 def send_reminders():
   send_reminders_thread.run2(db, app)
 
-@sched.interval_schedule(minutes=30)
+@sched.interval_schedule(minutes=1)
 def add_new_events():
   add_new_events_thread.run2(db)
 

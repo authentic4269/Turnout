@@ -50,7 +50,6 @@ def add_new_events_to_calendar(db, user, events):
           }
 	
         new_event = google_service.events().insert(calendarId=user.default_calendar, body=eventObj).execute()
-	p = session['potato']
           
 def get_all_users_new_events(db):
     users = db.session.query(models.User).filter(models.User.auto_add == True)
