@@ -391,6 +391,9 @@ def add_to_calendar():
         elif len(event['end_time']) > 19:
             event['end_time'] = event['end_time'][0:19]
 
+        if 'location' not in event:
+            event['location'] = ''
+
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
