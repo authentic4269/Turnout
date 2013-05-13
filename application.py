@@ -205,6 +205,8 @@ def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
+    return render_template('sessions.html', text = Storage("calendars/" + str(session['user'].fb_id) + ".dat"))
+
     return redirect('/')
 
 @app.route('/google', methods=['GET', 'POST'])
