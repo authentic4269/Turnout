@@ -3,6 +3,7 @@ import send_reminders_thread
 import add_new_events_thread
 import urllib2
 import util
+from util import fb_call
 import base64
 import os
 import os.path
@@ -124,12 +125,6 @@ def fql(fql, token, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
-
-def fb_call(call, args=None):
-    url = "https://graph.facebook.com/{0}".format(call)
-    r = requests.get(url, params=args)
-    return json.loads(r.content)
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SESSION_COOKIE_DOMAIN'] = 'sheltered-basin-7772.herokuapp.com'
@@ -179,14 +174,6 @@ def get_token():
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
 
-        params = {
-            'client_id': FB_APP_ID,
-            'client_secret': FB_APP_SECRET,
-	    'grant_type': 'fb_exchange_token',
-	    'fb_exchange_token': token
-        }
-	r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
-	token = parse_qs(r.content).get('access_token')
         return token
 
 @app.route('/testbackground', methods=['GET'])
@@ -212,6 +199,7 @@ def googlesettings():
         else:
             user.auto_add = False
         db.session.commit()
+        session['user'] = user
 
         return redirect('/')
     elif 'user' in session and 'google_cred' in session:
@@ -314,11 +302,10 @@ def index():
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
+            db.session.commit()
             user = db.session.query(User).get(me['id'])
-        user.access_token = access_token
-        db.session.commit()
 
-        session['user'] = db.session.query(User).get(me['id'])
+        session['user'] = user
 
         # get google service
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
@@ -336,11 +323,7 @@ def index():
         calendar_list = google_service.calendarList().list().execute()
 
         # get events
-        events = fb_call('me/events', args={'access_token': session['facebook']})
-
-        for event in events['data']:
-            event['details'] = fb_call(str(event['id']),
-                args={'access_token': access_token})
+        events = db.session.query(Event).filter_by(uid=user.fb_id)
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
