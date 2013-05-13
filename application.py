@@ -204,6 +204,8 @@ def auth():
 
     storage = Storage("calendars/" + str(session['user'].fb_id) + ".dat")
     c = storage.locked_get()
+    if c is None or c.invalid == True:
+        c = "credentials is none"
 
     return render_template('sessions.html', text = c)
 
