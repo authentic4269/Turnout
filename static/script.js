@@ -31,7 +31,7 @@ $(function(){
 				alert("Added to calendar.");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.responseText);
+				$("body").html(xhr.responseText);
 			}
 		})
 	});
