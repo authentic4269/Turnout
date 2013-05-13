@@ -69,13 +69,14 @@ def get_google_cred(userId, code):
 
     #store in /calendars
     storage = Storage("calendars/" + str(userId) + ".dat")
-    storage.put(credentials)
+    storage._create_file_if_needed()
+    storage.locked_put(credentials)
 
     return credentials
 
 def get_cred_storage(userId):
     storage = Storage("calendars/" + str(userId) + ".dat")
-    credentials = storage.get()
+    credentials = storage.locked_get()
 
     #refresh
     http = httplib2.Http()
