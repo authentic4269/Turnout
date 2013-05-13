@@ -63,7 +63,7 @@ def get_google_code():
     if credentials is None or credentials.invalid == True:
         return FLOW.step1_get_authorize_url()
 
-def get_google_cred(userId, code):
+def get_google_cred(db, userId, code):
     credentials = FLOW.step2_exchange(code)
     session['google_cred'] = credentials
 
@@ -74,7 +74,7 @@ def get_google_cred(userId, code):
 
     return credentials
 
-def get_cred_storage(userId):
+def get_cred_storage(db, userId):
     #get from db
     user = db.session.query(User).get(str(userId))
     credentials = Credentials.new_from_json(user.google_cred)

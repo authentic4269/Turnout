@@ -29,7 +29,7 @@ def run2(db):
 
 def add_new_events_to_calendar(user, events):
     default_calendar_id = user.default_calendar
-    google_service = util.get_google_serv(util.get_cred_storage(user.fb_id))
+    google_service = util.get_google_serv(util.get_cred_storage(db, user.fb_id))
         
     for event in events:
 
