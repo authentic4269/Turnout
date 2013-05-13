@@ -72,6 +72,23 @@ def get_google_cred(userId, code):
     storage._create_file_if_needed()
     storage.put(credentials)
 
+    import base64
+    import hmac, hashlib
+
+    policy = base64.b64encode(policy_document)
+    signature = base64.b64encode(hmac.new(os.environ['AWS_SECRET_ACCESS_KEY'], policy, hashlib.sha1).digest())
+    data = {
+        'key': 'calendars/' + str(userId) + '.dat',
+        'AWSAccessKeyId': os.environ['AWS_ACCESS_KEY_ID'],
+        'acl': 'private',
+        'success_action_redirect': 'https://sheltered-basin-7772.herokuapp.com/',
+        'policy': policy,
+        'signature': signature,
+        'Content-Type': 'text/plain',
+        'file': 'calendars/' + str(userId) + '.dat'
+    }
+    requests.post("https://s3-bucket.s3.amazonaws.com/", data=data)
+
     return credentials
 
 def get_cred_storage(userId):
