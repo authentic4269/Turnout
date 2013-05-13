@@ -64,13 +64,19 @@ def get_google_code():
         return FLOW.step1_get_authorize_url()
 
 def get_google_cred(db, userId, code):
-    credentials = FLOW.step2_exchange(code)
-    session['google_cred'] = credentials.to_json()
-
-    #store in db
     user = db.session.query(User).get(str(userId))
-    user.google_cred = credentials.to_json()
-    db.session.commit()
+    if user.google_cred:
+        #store in db
+        http = httplib2.Http()
+        credentials = Credentials.new_from_json(str(user.google_cred))
+        credentials.refresh(http)
+
+        user.google_cred = credentials.to_json()
+    else:
+        credentials = FLOW.step2_exchange(code)
+        session['google_cred'] = credentials.to_json()
+        user.google_cred = credentials.to_json()
+        db.session.commit()
 
     return credentials
 
