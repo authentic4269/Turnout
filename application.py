@@ -370,7 +370,7 @@ def add_to_calendar():
         #add to calendar
         google_service = util.get_google_serv(session['google_cred'])
     
-        event = request.form['event']['details']
+        event = request.form['event']
         calendarId = request.form['calendar']
 
         import ast
