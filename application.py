@@ -354,7 +354,7 @@ def index():
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
             db_event = db.session.query(Event).get(event['id'])
-            if db_event:
+            if not db_event:
 		render_events.append(db_event)
 
         return render_template(
