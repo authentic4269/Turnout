@@ -22,6 +22,7 @@ $(function(){
 		var e = $(this).data("event");
 		var myid = $(this).data("id");
 		var calendar = $(this).siblings(".calendar").children("option:selected").val();
+
 		$.ajax({
 			type: "POST",
 			url: "/addToCalendar",
@@ -30,7 +31,7 @@ $(function(){
 				alert("Added to calendar.");
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.responseText);
+				$("body").html(xhr.responseText);
 			}
 		})
 	});

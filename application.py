@@ -370,7 +370,7 @@ def add_to_calendar():
         #add to calendar
         google_service = util.get_google_serv(session['google_cred'])
     
-        event = request.form['event']
+        event = request.form['event']['details']
         calendarId = request.form['calendar']
 
         import ast
@@ -380,14 +380,16 @@ def add_to_calendar():
             'summary': event['name'],
             'location': event['location'],
             'start': {
-                'dateTime': event['start_time'][:-5],
-                'timeZone': event['timezone']
+                'dateTime': event['start_time'][:-5]
             },
             'end': {
-                'dateTime': event['end_time'][:-5],
-                'timeZone': event['timezone']
+                'dateTime': event['end_time'][:-5]
             }
         }
+
+        if 'timezone' in event:
+            eventObj.start.timeZone = event['timezone']
+            eventObj.end.timeZone = event['timezone']
 
         new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
 
