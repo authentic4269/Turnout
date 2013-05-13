@@ -212,7 +212,6 @@ def googlesettings():
         else:
             user.auto_add = False
         db.session.commit()
-        session['user'] = user
 
         return redirect('/')
     elif 'user' in session and 'google_cred' in session:
@@ -319,7 +318,7 @@ def index():
         user.access_token = access_token
         db.session.commit()
 
-        session['user'] = user
+        session['user'] = db.session.query(User).get(me['id'])
 
         # get google service
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
