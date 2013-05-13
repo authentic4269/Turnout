@@ -315,8 +315,9 @@ def index():
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
-            db.session.commit()
             user = db.session.query(User).get(me['id'])
+        user.access_token = access_token
+        db.session.commit()
 
         session['user'] = user
 
