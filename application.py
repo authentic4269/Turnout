@@ -384,7 +384,7 @@ def add_to_calendar():
                 'timeZone': ''
             }
             'end': {
-                'dateTime': ''
+                'dateTime': '',
                 'timeZone': ''
             }
         }
