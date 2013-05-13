@@ -329,9 +329,6 @@ def index():
         calendar_list = google_service.calendarList().list().execute()
 
         # get events
-<<<<<<< HEAD
-        events = db.session.query(Event).filter_by(uid=user.fb_id)
-=======
         events = fb_call('me/events', args={'access_token': session['facebook']})
 
         for event in events['data']:
@@ -340,7 +337,6 @@ def index():
             event['in_db'] = False
             if db.session.query(Event).filter_by(event_id = event['id']).filter_by(uid = me['id']):
                 event['in_db'] = True
->>>>>>> 817a944d1910b38d307c0fa58e89e0c05c74a635
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
