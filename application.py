@@ -377,7 +377,7 @@ def add_to_calendar():
             }
         }
 
-        new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
+        #new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
 
         #add to database
         #db_event = Event(event['name'], event['description'], request.form['id'], event['id'], event['start_time'], event['end_time'], event['location'])
