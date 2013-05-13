@@ -308,7 +308,16 @@ def index():
             google_service = util.get_google_serv(session['google_cred'])
         else:
             return redirect(util.get_google_code())
-	
+	   
+        calendar_list = google_service.calendarList().list().execute()
+
+        # set default calendar if not set
+        if not user.default_calendar:
+            primary = google_service.calendars().get(calendarId='primary').execute()
+            user.default_calendar = primary['id']
+            db.session.commit()
+            session['user'] = user
+        
         # get events
         events = fb_call('me/events', args={'access_token': session['facebook']})
 
@@ -319,8 +328,6 @@ def index():
             db_event = db.session.query(Event).filter_by(uid=me['id']).filter_by(event_id=event['id']).all()
             if db_event:
                 event['in_db'] = True
-
-        calendar_list = google_service.calendarList().list().execute()
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
