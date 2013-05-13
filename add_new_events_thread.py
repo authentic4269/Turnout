@@ -41,7 +41,8 @@ def add_new_events_to_calendar(db, user, events):
                 'timeZone': 'America/New_York'
              },
              'end': {
-                'dateTime': event['end_time'],
+		if 'end_time' in event:
+                	'dateTime': event['end_time'],
                 'timeZone': 'America/New_York'
               }
           }
