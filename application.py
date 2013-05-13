@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import send_reminders_thread
+import add_new_events_thread
 import urllib2
 import util
+from util import fb_call
 import base64
 import os
 import os.path
@@ -21,7 +23,6 @@ from oauth2client.tools import run
 import models, forms
 from models import User, Reminder, Event
 from forms import GoogleForm, FacebookForm, GlobalForm
-from util import fb_call
 
 import requests
 from flask import Flask, request, redirect, render_template, url_for, session, flash
@@ -122,7 +123,6 @@ def fql(fql, token, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SESSION_COOKIE_DOMAIN'] = 'sheltered-basin-7772.herokuapp.com'
@@ -174,6 +174,11 @@ def get_token():
 
         return token
 
+@app.route('/testbackground', methods=['GET'])
+def test():
+  add_new_events_thread.run2(db)
+  return index()
+
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
@@ -181,16 +186,11 @@ def auth():
 
     return redirect('/')
 
-
-@app.route('/testbackground', methods=['GET'])
-def test():
-  send_reminders_thread.run()
-  return index()
-
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
     if request.method == 'POST' and 'user' in session:
         f = GoogleForm(request.form)
+
     	user = db.session.query(User).get(session['user'].fb_id)
     	user.default_calendar = f.calendar.data
     	if f.auto_add.data == "Always":
@@ -198,7 +198,7 @@ def googlesettings():
     	else:
     		user.auto_add = False
     	db.session.commit()
-    	return index()
+    	return redirect('/')
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
     	for calendar in google_service.calendarList().list().execute()['items']:
@@ -207,7 +207,7 @@ def googlesettings():
             default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-	return index()
+    return redirect('/')
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
@@ -289,7 +289,7 @@ def index():
     channel_url = channel_url.replace('http:', '').replace('https:', '')
 
     if access_token:
-        me = util.fb_call('me', args={'access_token': access_token})
+        me = fb_call('me', args={'access_token': access_token})
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
         url = request.url
@@ -304,6 +304,7 @@ def index():
 
         session['user'] = user
 
+        # get google service
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
         else:
@@ -318,12 +319,16 @@ def index():
             db.session.commit()
             session['user'] = user
         
+        # get calendars
+        calendar_list = google_service.calendarList().list().execute()
+
         # get events
         events = fb_call('me/events', args={'access_token': session['facebook']})
 
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
+
             event['in_db'] = False
             db_event = db.session.query(Event).filter_by(uid=me['id']).filter_by(event_id=event['id']).all()
             if db_event:
@@ -335,6 +340,30 @@ def index():
             calendar_list=calendar_list, default_calendar=session['user'].default_calendar)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
+
+@app.route('/syncEvents', methods=['GET'])
+def sync_events():
+    if session['user'].auto_add:
+        # get events from fb
+        fb_events = fb_call('me/events', args={'access_token': session['facebook']})
+
+        # get events from db
+        db_events = db.session.query(Event).filter_by(uid=session['user'].fb_id)
+
+        # get details for each event
+        for fb_event in fb_events['data']:
+            db_event = db.session.query(Event).get(fb_event['id'])
+            if not db_event:
+                event_details = fb_call(str(fb_event['id']),
+                         args={'access_token': session['facebook']})
+                new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'], event_details['location'])
+                db.session.add(new_db_event)
+                db.session.commit()
+
+        return redirect('/')
+    else:
+        flash('Auto_add set to false. No events to add.')
+        return redirect('/')
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
@@ -384,12 +413,6 @@ def send_reminder():
 @app.route('/channel.html', methods=['GET', 'POST'])
 def get_channel():
     return render_template('channel.html')
-
-@app.route('/googleme', methods=['GET', 'POST'])
-def get_googleme():
-    tet = db.session.query(User).filter_by(fb_id=1045684881).filter_by(fb_id=10245684881).all()
-    return render_template('sessions.html', text=tet)
-
 
 @app.route('/close/', methods=['GET', 'POST'])
 def close():
