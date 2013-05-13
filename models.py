@@ -18,6 +18,7 @@ class User(db.Model):
 	reminder_time = db.Column(db.Integer)
 	post_by_default = db.Column(db.Boolean)
 	post_time = db.Column(db.Integer)
+	google_cred = db.Column(db.String(300))
 	fb_id = db.Column(db.BigInteger, primary_key=True)
 	default_calendar = db.Column(db.Integer)
 	access_token = db.Column(db.String(200))
