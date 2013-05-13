@@ -314,7 +314,6 @@ def index():
             return redirect(util.get_google_code())
 	
         # get events
-<<<<<<< HEAD
         events = fb_call('me/events', args={'access_token': session['facebook']})
 
         for event in events['data']:
