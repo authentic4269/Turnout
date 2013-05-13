@@ -22,7 +22,7 @@ $(function(){
 		var e = $(this).data("event");
 		var myid = $(this).data("id");
 		var calendar = $(this).siblings(".calendar").children("option:selected").val();
-		var eventli = $(this).parent().parent();
+		var eventli = $(this).parent();
 
 		$.ajax({
 			type: "POST",
