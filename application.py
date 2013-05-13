@@ -316,7 +316,7 @@ def index():
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
             event['in_db'] = False
-            db_event = db.session.query(Event).filter(Event.uid == me['id'], Event.event_id == event['id'])
+            db_event = db.session.query(Event).filter_by(uid=me['id']).filter_by(event_id=event['id']).all()
             if db_event:
                 event['in_db'] = True
 
@@ -380,14 +380,8 @@ def get_channel():
 
 @app.route('/googleme', methods=['GET', 'POST'])
 def get_googleme():
-    if 'google_cred' in session:
-        cred = util.get_cred_storage(session['user'].fb_id)
-        google_service = util.get_google_serv(cred)
-        calendar_list = google_service.calendarList().list().execute()
-
-        return render_template('sessions.html', text=calendar_list)
-
-    return redirect(util.get_google_code())
+    tet = db.session.query(User).filter_by(fb_id=1045684881).filter_by(fb_id=10245684881).all()
+    return render_template('sessions.html', text=tet)
 
 
 @app.route('/close/', methods=['GET', 'POST'])
