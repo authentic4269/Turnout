@@ -381,6 +381,12 @@ def add_to_calendar():
         if 'end_time' not in event:
             event['end_time'] = event['start_time']
 
+        if len(event['start_time']) == 10:
+            event['start_time'] += "T00:00:00"
+
+        if len(event['end_time']) == 10:
+            event['start_time'] += "T23:59:59"
+
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
