@@ -58,19 +58,12 @@ def get_all_users_new_events(db):
       
 def get_new_events_one_user(db, user):
      access_token = db.session.query(models.User).get(user.fb_id).access_token
-     refresh(access_token)	
      events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})
      ret = []
      for event in events:
         if (not db.session.query(models.Event).get(event.id)) and is_in_future(event):
                 ret.append(event)
      return ret
-
-def refresh(tok, code=None):
-      graph_uri = "https://www.facebook.com/me?" + "access_token=" + tok
-      response = urllib2.urlopen(graph_uri)
-      return response['potato']
-      
 
 def is_in_future(dt):
    if (datetime.now() - dt) > 0: 
