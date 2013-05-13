@@ -323,7 +323,17 @@ def index():
         calendar_list = google_service.calendarList().list().execute()
 
         # get events
+<<<<<<< HEAD
         events = db.session.query(Event).filter_by(uid=user.fb_id)
+=======
+        events = fb_call('me/events', args={'access_token': session['facebook']})
+
+        for event in events['data']:
+            event['details'] = fb_call(str(event['id']),
+                args={'access_token': access_token})
+            if db.session.query(user).filter_by(event_id == event['id']).filter_by(uid = me['id']):
+                event['in_db'] = True
+>>>>>>> 817a944d1910b38d307c0fa58e89e0c05c74a635
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
@@ -334,23 +344,28 @@ def index():
 
 @app.route('/syncEvents', methods=['GET'])
 def sync_events():
-    # get events from fb
-    fb_events = fb_call('me/events', args={'access_token': session['facebook']})
+    if session['user'].auto_add:
+        # get events from fb
+        fb_events = fb_call('me/events', args={'access_token': session['facebook']})
 
-    # get events from db
-    db_events = db.session.query(Event).filter_by(uid=session['user'].fb_id)
+        # get events from db
+        db_events = db.session.query(Event).filter_by(uid=session['user'].fb_id)
 
-    # get details for each event
-    for fb_event in fb_events['data']:
-        db_event = db.session.query(Event).get(fb_event['id'])
-        if not db_event:
-            event_details = fb_call(str(fb_event['id']),
-                     args={'access_token': session['facebook']})
-            new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'], event_details['location'])
-            db.session.add(new_db_event)
-            db.session.commit()
+        # get details for each event
+        for fb_event in fb_events['data']:
+            db_event = db.session.query(Event).get(fb_event['id'])
+            if not db_event:
+                event_details = fb_call(str(fb_event['id']),
+                         args={'access_token': session['facebook']})
+                new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'], event_details['location'])
+                db.session.add(new_db_event)
+                db.session.commit()
 
-    return redirect('/')
+        return redirect('/')
+    else:
+        flash('Auto_add set to false. No events to add.')
+        return redirect('/')
+
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
