@@ -23,13 +23,20 @@ def run():
 
 def run2(db):
     events = get_all_users_new_events(db)
+    p = db.session.query(models.Reminder).count() + 1
     for (user, new_events_list) in events:
         add_new_events_to_calendar(db, user, new_events_list)
 	for new_event in new_events_list:
 		newEvent = Event(new_event['title'], new_event['description'], user.fb_id, new_event['id'], new_event['start_time'], new_event['end_time'], new_event['timezone'])
+		if user.remind_by_default == True:
+			r = Reminder(get_reminder_time(user, newEvent), p, new_event['id'], user.fb_id, user.remind_type)
+			db.session.add(r)
 		db.session.add(newEvent)
     db.session.commit()
 
+def get_reminder_time(u, e):
+	d = datetime.strptime(e['start_time'][0:10], "%Y-%m-%d" )	
+	return d - timedelta(minutes = u.remind_time)
 
 def add_new_events_to_calendar(db, user, events):
     default_calendar_id = user.default_calendar
