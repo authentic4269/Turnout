@@ -380,9 +380,9 @@ def add_to_calendar():
             'summary': event['name'],
             'location': event['location'],
             'start': {
-                'dateTime': event['start_time'][:-5]
+                'dateTime': event['start_time'][:-5],
                 'timeZone': ''
-            }
+            },
             'end': {
                 'dateTime': '',
                 'timeZone': ''
