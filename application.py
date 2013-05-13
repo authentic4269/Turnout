@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import send_reminders_thread
-import add_new_events_thread
 import urllib2
 import util
-from util import fb_call
 import base64
 import os
 import os.path
@@ -100,6 +98,12 @@ def fbapi_auth(code):
 
     return (result_dict["access_token"], result_dict["expires"])
 
+@app.route('/oauth2callback', methods=['GET', 'POST'])
+def auth():
+    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
+    session['google_cred'] = credentials
+
+    return redirect('/')
 
 def fbapi_get_application_access_token(id):
     token = fbapi_get_string(
@@ -122,6 +126,12 @@ def fql(fql, token, args=None):
 
     url = "https://api.facebook.com/method/fql.query"
 
+    r = requests.get(url, params=args)
+    return json.loads(r.content)
+
+
+def fb_call(call, args=None):
+    url = "https://graph.facebook.com/{0}".format(call)
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
@@ -173,50 +183,35 @@ def get_token():
         from urlparse import parse_qs
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
-        params = {
-            'client_id': FB_APP_ID,
-            'client_secret': FB_APP_SECRET,
-	    'fb_exchange_token': token,
-	    'grant_type': 'fb_exchange_token'
-        }        
 
         return token
 
 @app.route('/testbackground', methods=['GET'])
 def test():
-  add_new_events_thread.run2(db)
+  send_reminders_thread.run()
   return index()
-
-@app.route('/oauth2callback', methods=['GET', 'POST'])
-def auth():
-    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
-    session['google_cred'] = credentials
-
-    return redirect('/')
 
 @app.route('/google', methods=['GET', 'POST'])
 def googlesettings():
     if request.method == 'POST' and 'user' in session:
         f = GoogleForm(request.form)
-        user = db.session.query(User).get(session['user'].fb_id)
-        user.default_calendar = f.calendar.data
-        if f.auto_add.data == "always":
-            user.auto_add = True
-        else:
-            user.auto_add = False
-        db.session.commit()
-        session['user'] = user
-
-        return redirect('/')
+    	user = db.session.query(User).get(session['user'].fb_id)
+    	user.default_calendar = f.calendar.data
+    	if f.auto_add.data == "Always":
+    		user.auto_add = True
+    	else:
+    		user.auto_add = False
+    	db.session.commit()
+    	return index()
     elif 'user' in session and 'google_cred' in session:
         google_service = util.get_google_serv(session['google_cred'])
-        for calendar in google_service.calendarList().list().execute()['items']:
-            print calendar['summary']
+    	for calendar in google_service.calendarList().list().execute()['items']:
+    		print calendar['summary']
         return render_template('google.html', calendars_list=google_service.calendarList().list().execute()['items'], 
             default_calendar=session['user'].default_calendar, auto_add=session['user'].auto_add)
     else:
         flash('You are not logged in')
-    return redirect('/')
+	return index()
 
 @app.route('/facebook', methods=['GET', 'POST'])
 def facebooksettings():
@@ -313,22 +308,13 @@ def index():
 
         session['user'] = user
 
-        # get google service
         if 'google_cred' in session and util.ensure_cred(session['google_cred']):
             google_service = util.get_google_serv(session['google_cred'])
         else:
             return redirect(util.get_google_code())
-
-        # if there is no default_calendar set, ensure primary calendar as default
-        if(not session['user'].default_calendar):
-            db.session.query(User).get(session['user'].fb_id)
-            primary_calendar = google_service.calendars().get(calendarId='primary').execute()
-            user.default_calendar = primary_calendar['id']
-
-        # get calendars
-        calendar_list = google_service.calendarList().list().execute()
-
+	
         # get events
+<<<<<<< HEAD
         events = fb_call('me/events', args={'access_token': session['facebook']})
 
         for event in events['data']:
@@ -339,37 +325,14 @@ def index():
             if db_event:
                 event['in_db'] = True
 
+        calendar_list = google_service.calendarList().list().execute()
+
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
             me=me, name=FB_APP_NAME, events=events,
-            calendar_list=calendar_list, default_calendar=session['user'].default_calendar)
+            calendar_list=calendar_list)
     else:
         return render_template('login.html', app_id=FB_APP_ID, token=access_token, url=request.url, channel_url=channel_url, name=FB_APP_NAME)
-
-@app.route('/syncEvents', methods=['GET'])
-def sync_events():
-    if session['user'].auto_add:
-        # get events from fb
-        fb_events = fb_call('me/events', args={'access_token': session['facebook']})
-
-        # get events from db
-        db_events = db.session.query(Event).filter_by(uid=session['user'].fb_id)
-
-        # get details for each event
-        for fb_event in fb_events['data']:
-            db_event = db.session.query(Event).get(fb_event['id'])
-            if not db_event:
-                event_details = fb_call(str(fb_event['id']),
-                         args={'access_token': session['facebook']})
-                new_db_event = Event(event_details['name'], event_details['description'], session['user'].fb_id, event_details['id'], event_details['start_time'], event_details['end_time'], event_details['location'])
-                db.session.add(new_db_event)
-                db.session.commit()
-
-        return redirect('/')
-    else:
-        flash('Auto_add set to false. No events to add.')
-        return redirect('/')
-
 
 @app.route('/addToCalendar', methods=['GET', 'POST'])
 def add_to_calendar():
@@ -420,12 +383,17 @@ def send_reminder():
 def get_channel():
     return render_template('channel.html')
 
-@app.route('/sandbox', methods=['GET', 'POST'])
-def sandbox():
-    users = db.session.query(User)
-    for user in users:
-        text = user.fb_id
-    return render_template('sessions.html', text=text)
+@app.route('/googleme', methods=['GET', 'POST'])
+def get_googleme():
+    if 'google_cred' in session:
+        cred = util.get_cred_storage(session['user'].fb_id)
+        google_service = util.get_google_serv(cred)
+        calendar_list = google_service.calendarList().list().execute()
+
+        return render_template('sessions.html', text=calendar_list)
+
+    return redirect(util.get_google_code())
+
 
 @app.route('/close/', methods=['GET', 'POST'])
 def close():
