@@ -18,13 +18,14 @@ $(function(){
 	});
 
 	//add to calendar
-	$(".calendar").click(function(){
+	$(".addToCalendar").click(function(){
 		var e = $(this).data("event");
 		var myid = $(this).data("id");
+		var calendar = $(this).siblings(".calendar option").filter(":selected").val()
 		$.ajax({
 			type: "POST",
 			url: "/addToCalendar",
-			data: {"event": e, "calendar": $("#calendar").data("id"), "id": myid},
+			data: {"event": e, "calendar": calendar, "id": myid},
 			success: function(data){
 				alert("Added to calendar.");
 			}
