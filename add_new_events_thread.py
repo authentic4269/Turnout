@@ -49,7 +49,7 @@ def add_new_events_to_calendar(db, user, events):
               }
           }
 
-        new_event = google_service.events().insert(calendarId=user.default_calendar_id, body=eventObj).execute()
+        new_event = google_service.events().insert(calendarId=user.default_calendar, body=eventObj).execute()
 
           
 def get_all_users_new_events(db):
