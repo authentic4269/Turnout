@@ -37,12 +37,6 @@ def process_flags(argv):
         print '%s\\nUsage: %s ARGS\\n%s' % (e, sys.argv[0], FLAGS)
         sys.exit(1)
 
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-db = SQLAlchemy(app)
-app.config.from_object(__name__)
-
 app_url = 'https://graph.facebook.com/{0}'.format(FB_APP_ID)
 FB_APP_NAME = json.loads(requests.get(app_url).content).get('name')
 FB_APP_SECRET = os.environ.get('FACEBOOK_SECRET')
@@ -103,13 +97,6 @@ def fbapi_auth(code):
         result_dict[key] = value
 
     return (result_dict["access_token"], result_dict["expires"])
-
-@app.route('/oauth2callback', methods=['GET', 'POST'])
-def auth():
-    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
-    session['google_cred'] = credentials
-
-    return redirect('/')
 
 def fbapi_get_application_access_token(id):
     token = fbapi_get_string(
@@ -186,6 +173,14 @@ def get_token():
         token = parse_qs(r.content).get('access_token')
 
         return token
+
+@app.route('/oauth2callback', methods=['GET', 'POST'])
+def auth():
+    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
+    session['google_cred'] = credentials
+
+    return redirect('/')
+
 
 @app.route('/testbackground', methods=['GET'])
 def test():
