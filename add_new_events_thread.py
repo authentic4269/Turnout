@@ -63,12 +63,13 @@ def get_new_events_one_user(db, user):
      events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})['data']
      ret = []
      for event in events:
-        if (not db.session.query(models.Event).get(event['id'])) and is_in_future(event):
+        if (not db.session.query(models.Event).get(event['id'])) and is_in_future(event['start_time']):
                 ret.append(event)
      return ret
 
 def is_in_future(dt):
-   if (datetime.now() - dt) > 0: 
+   d = datetime.strptime(dt['start_time'], "%Y-%m-%d" )
+   if (datetime.now() - d) < timedelta(seconds=1): 
         return True
    return False
     
