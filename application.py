@@ -382,7 +382,7 @@ def add_to_calendar():
             'start': {
                 'dateTime': event['start_time'][:-5],
                 'timeZone': ''
-            }
+            },
             'end': {
                 'dateTime': '',
                 'timeZone': ''
