@@ -18,7 +18,7 @@
     		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>
     		{% if event.in_db == False %}
                 <select class="calendar" name="calendar">
-                    {% for calendar in calendar_list %}
+                    {% for calendar in calendar_list['items'] %}
                         {% if calendar.id == default_calendar %}
                             <option selected=true value={{calendar.id}}>{{calendar.summary}}</option>
                         {% else %}
