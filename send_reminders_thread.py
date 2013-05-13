@@ -29,7 +29,7 @@ def run2(db, app):
 
 def check_for_events(db):
         return(db.session.query(models.Reminder).filter(
-		   (datetime.now() - models.Reminder.send_time) > timedelta (seconds = 1)))
+		   (models.Reminder.send_time - datetime.now()) < timedelta (minutes = 1)))
 
 def send_all_reminders(db, reminders):
 	print "send_all"
@@ -39,14 +39,15 @@ def send_all_reminders(db, reminders):
 	smtpobj.login("herokuturnoutapp@gmail.com", "cornelldelts")
 	print "logged in"
 	for reminder in reminders:
-		send_one_reminder(db, reminder, smtpobj)
+	        event = db.session.query(models.Event).get(reminder.event_id)
+	        user = db.session.query(models.User).get(reminder.user_id)
+		send_one_reminder(db, reminder, smtpobj, event, user)
 		db.session.delete(reminder)
 	smtpobj.close()
 	db.session.commit()
 
-def send_one_reminder(db, reminder, smtpobj):
-	event = db.session.query(models.Event).get(reminder.event_id)
-	user = db.session.query(models.User).get(reminder.user_id)
+
+def send_one_reminder(db, reminder, smtpobj, event, user):
 	if reminder.type == 0: #text message:
 		if user.carrier == 0: #att
 			header = 'To: ' + str(user.phone) + '@txt.att.net' + '\n' + 'From: ' + 'herokuturnoutapp@gmail.com' + '\n' + 'Subject: ' + event.title
