@@ -30,10 +30,12 @@ def run2(db):
 def add_new_events_to_calendar(db, user, events):
     default_calendar_id = user.default_calendar
     google_service = util.get_google_serv(util.get_cred_storage(db, user.fb_id))
-        
+    
     for event in events:
-	if not 'end_time' in event:
-		event['end_time'] = event['start_time']	
+
+        if not 'end_time' in event:
+	       event['end_time'] = event['start_time']	
+
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
