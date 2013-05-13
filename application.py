@@ -331,7 +331,7 @@ def index():
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
-            if db.session.query(user).filter_by(event_id == event['id']).filter_by(uid = me['id']):
+            if db.session.query(Event).filter_by(event_id = event['id']).filter_by(uid = me['id']):
                 event['in_db'] = True
 >>>>>>> 817a944d1910b38d307c0fa58e89e0c05c74a635
 
