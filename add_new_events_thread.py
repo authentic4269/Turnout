@@ -68,8 +68,8 @@ def get_new_events_one_user(db, user):
      return ret
 
 def is_in_future(dt):
-   datetime.strptime(dt['start_time'], "%Y-%m-%d" )
-   if (datetime.now() - dt) < timedelta(seconds=1): 
+   d = datetime.strptime(dt['start_time'], "%Y-%m-%d" )
+   if (datetime.now() - d) < timedelta(seconds=1): 
         return True
    return False
     
