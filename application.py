@@ -134,11 +134,11 @@ app.secret_key = os.urandom(22)
 
 sched = Scheduler()
 
-@sched.interval_schedule(minutes=30)
+@sched.interval_schedule(minutes=3)
 def send_reminders():
   send_reminders_thread.run2(db, app)
 
-@sched.interval_schedule(minutes=1)
+@sched.interval_schedule(minutes=3)
 def add_new_events():
   add_new_events_thread.run2(db)
 
