@@ -385,9 +385,9 @@ def post_reminder():
     location = event['location']
     attendees = ""
     for attendee in event['attending']['data']:
-        attendees += ", " + attendee['id']
+        attendees += "@[" attendee['id'] + "], "
 
-    posted_reminder = fb_post('584999951522295/feed', args={'message':"hello", 'location': location, 'tags': attendees, 'access_token': session['facebook']})
+    posted_reminder = fb_post('584999951522295/feed', args={'message':"hello" + attendees, 'access_token': session['facebook']})
     return redirect('/')
 
 @app.route('/channel.html', methods=['GET', 'POST'])
