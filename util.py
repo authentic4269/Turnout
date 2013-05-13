@@ -74,6 +74,7 @@ def get_google_cred(db, userId, code):
         credentials.refresh(http)
 
         user.google_cred = credentials.to_json()
+        session['google_cred'] = user.google_cred
     else:
         credentials = FLOW.step2_exchange(code)
         session['google_cred'] = credentials.to_json()

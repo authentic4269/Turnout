@@ -22,6 +22,7 @@ $(function(){
 		var e = $(this).data("event");
 		var myid = $(this).data("id");
 		var calendar = $(this).siblings(".calendar").children("option:selected").val();
+		var eventli = $(this).parent().parent();
 
 		$.ajax({
 			type: "POST",
@@ -29,6 +30,7 @@ $(function(){
 			data: {"event": e, "calendar": calendar, "id": myid},
 			success: function(data){
 				alert("Added to calendar.");
+				eventli.hide();
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				$("body").html(xhr.responseText);
