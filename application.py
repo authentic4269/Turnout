@@ -396,7 +396,8 @@ def add_to_calendar():
         #db.session.add(db_event)
         #db.session.commit()
 
-        return new_event['id']
+        #return new_event['id']
+        return "hello"
 
 @app.route('/postReminder', methods=['GET', 'POST'])
 def post_reminder():
