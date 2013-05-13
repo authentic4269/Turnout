@@ -65,6 +65,8 @@ def get_google_code():
 
 def get_google_cred(db, userId, code):
     user = db.session.query(User).get(str(userId))
+    print "potato"
+    print str(user.google_cred)
     if len(str(user.google_cred)) > 5:
         #store in db
         http = httplib2.Http()
