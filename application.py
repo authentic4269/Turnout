@@ -197,15 +197,17 @@ def get_token():
 
 @app.route('/testbackground', methods=['GET'])
 def test():
-  add_new_events_thread.run2(db)
-  return index()
+    add_new_events_thread.run2(db)
+    return index()
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
-    return render_template('sessions.html', text = Storage("calendars/" + str(session['user'].fb_id) + ".dat"))
+    c = "calendars/" + str(session['user'].fb_id) + ".dat"
+
+    return render_template('sessions.html', text = c)
 
     return redirect('/')
 
