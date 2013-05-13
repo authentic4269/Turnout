@@ -381,6 +381,11 @@ def add_to_calendar():
             'location': event['location'],
             'start': {
                 'dateTime': event['start_time'][:-5]
+                'timeZone': ''
+            }
+            'end': {
+                'dateTime': ''
+                'timeZone': ''
             }
         }
 
