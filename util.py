@@ -58,7 +58,7 @@ def get_google_code():
     credentials = None
 
     if 'google_cred' in session:
-        credentials = Credentials.ne_from_json(credentials)
+        credentials = Credentials.new_from_json(session['google_cred'])
 
     if credentials is None or credentials.invalid == True:
         return FLOW.step1_get_authorize_url()
@@ -67,36 +67,17 @@ def get_google_cred(userId, code):
     credentials = FLOW.step2_exchange(code)
     session['google_cred'] = credentials
 
-    #store in /calendars
-    storage = Storage("calendars/" + str(userId) + ".dat")
-    storage._create_file_if_needed()
-    storage.put(credentials)
-
-    import base64
-    import hmac, hashlib
-
-    policy = base64.b64encode(policy_document)
-    signature = base64.b64encode(hmac.new(os.environ['AWS_SECRET_ACCESS_KEY'], policy, hashlib.sha1).digest())
-    data = {
-        'key': 'calendars/' + str(userId) + '.dat',
-        'AWSAccessKeyId': os.environ['AWS_ACCESS_KEY_ID'],
-        'acl': 'private',
-        'success_action_redirect': 'https://sheltered-basin-7772.herokuapp.com/',
-        'policy': policy,
-        'signature': signature,
-        'Content-Type': 'text/plain',
-        'file': 'calendars/' + str(userId) + '.dat'
-    }
-    requests.post("https://s3-bucket.s3.amazonaws.com/", data=data)
+    #store in db
+    user = db.session.query(User).get(str(userId))
+    user.google_cred = credentials
+    db.session.commit()
 
     return credentials
 
 def get_cred_storage(userId):
-    storage = Storage("calendars/" + str(userId) + ".dat")
-    credentials = storage.get()
-
-    print "Credentials:"
-    print storage
+    #get from db
+    user = db.session.query(User).get(str(userId))
+    credentials = Credentials.new_from_json(user.google_cred)
 
     #refresh
     http = httplib2.Http()
