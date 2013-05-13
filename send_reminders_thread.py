@@ -1,4 +1,5 @@
 import util
+from fabric.api import task
 import smtplib
 from datetime import datetime, timedelta
 import time
@@ -12,12 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 
-def __init__(self):
-	app = Flask(__name__)
-	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-	db = SQLAlchemy(app)
-	app.config.from_object(__name__)
-
+@task
 def run():
         app = Flask(__name__)
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
