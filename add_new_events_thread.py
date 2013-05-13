@@ -27,6 +27,8 @@ def run2(db):
         add_new_events_to_calendar(db, user, new_events_list)
 	for new_event in new_events_list:
 		newEvent = Event(new_event['title'], new_event['description'], user.fb_id, new_event['id'], new_event['start_time'], new_event['end_time'], new_event['timezone'])
+		db.session.add(newEvent)
+    db.session.commit()
 
 
 def add_new_events_to_calendar(db, user, events):
