@@ -31,19 +31,18 @@ def add_new_events_to_calendar(user, events):
     default_calendar_id = user.default_calendar
     google_service = util.get_google_serv(util.get_cred_storage(user.fb_id))
         
-    for e in events:
-        event = ast.literal_eval(e)
+    for event in events:
 
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
             'start': {
                 'dateTime': event['start_time'],
-                'timeZone': event['timezone']
+                'timeZone': 'America/New_York'
              },
              'end': {
                 'dateTime': event['end_time'],
-                'timeZone': event['timezone']
+                'timeZone': 'America/New_York'
               }
           }
 
