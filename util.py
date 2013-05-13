@@ -69,7 +69,7 @@ def get_google_cred(db, userId, code):
 
     #store in db
     user = db.session.query(User).get(str(userId))
-    user.google_cred = credentials
+    user.google_cred = credentials._to_json()
     db.session.commit()
 
     return credentials
