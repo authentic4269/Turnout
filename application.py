@@ -399,11 +399,11 @@ def add_to_calendar():
             'location': event['location'],
             'start': {
                 'dateTime': event['start_time'],
-                'timeZone': 'American/New_York'
+                'timeZone': 'America/New_York'
             },
             'end': {
                 'dateTime': event['end_time'],
-                'timeZone': 'American/New_York'
+                'timeZone': 'America/New_York'
             }
         }
 
