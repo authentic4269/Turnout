@@ -9,11 +9,8 @@
 
 <h1>Default Facebook Settings</h1>
 <form action="/facebook" method="post">
-	<ul>Automatically remind me before Facebook Events<br>
-		<select id="auto_add" name="auto_add">
-			<option {% if auto_remind %} selected=true {% endif %} value="True">Yes</option>
-			<option {% if not auto_remind %} selected=true {% endif %} value="False">No</option>
-		</select>
+	<ul>
+		<input type="checkbox" id="auto_remind" name="auto_remind" {% if auto_remind %} selected="true" {% endif %}>Automatically remind me before Facebook Events<br>
 
 		Deliver reminders <input type="text" value="{{remind_time}}" id="reminder_time_count" name="reminder_time_count"> 
 		<select name="reminder_time_unit">
