@@ -356,7 +356,7 @@ def index():
             db_event = db.session.query(Event).get(event['id'])
             #p = session['potato']
             if not db_event:
-                render_events.append(db_event)
+                render_events.append(event)
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
