@@ -77,7 +77,7 @@ def get_google_cred(db, userId, code):
 def get_cred_storage(db, userId):
     #get from db
     user = db.session.query(User).get(str(userId))
-    credentials = Credentials.new_from_json(user.google_cred)
+    credentials = Credentials.new_from_json(str(user.google_cred))
 
     #refresh
     http = httplib2.Http()
