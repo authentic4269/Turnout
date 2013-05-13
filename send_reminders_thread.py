@@ -14,7 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 @task
-def run():
+def run_reminders():
         app = Flask(__name__)
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
         db = SQLAlchemy(app)
