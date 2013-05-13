@@ -139,7 +139,7 @@ def send_reminders():
   print "hi"
   send_reminders_thread.run2(db, app)
 
-sched.start(sched)
+sched.start()
 
 def get_home():
     return 'https://' + request.host + '/'
