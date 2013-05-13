@@ -43,7 +43,7 @@ class Reminder(db.Model):
 	reminder_id = db.Column(db.BigInteger, primary_key=True)
 	event_id = db.Column(db.BigInteger, db.ForeignKey('events.event_id'))
 	user_id = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
-	type = db.Column(db.Integer)
+	type = db.Column(db.BigInteger)
 	
 	def __init__(self, send_time, reminder_id, event_id, user_id, type):
 		self.send_time = send_time
