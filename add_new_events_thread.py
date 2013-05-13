@@ -25,7 +25,7 @@ def run2(db):
     events = get_all_users_new_events(db)
     for (user, new_events_list) in events:
         add_new_events_to_calendar(db, user, new_events_list)
-	for new_event in new_events_list
+	for new_event in new_events_list:
 		newEvent = Event(new_event['title'], new_event['description'], user.fb_id, new_event['id'], new_event['start_time'], new_event['end_time'], new_event['location'])
 
 
