@@ -3,7 +3,7 @@ import send_reminders_thread
 import add_new_events_thread
 import urllib2
 import util
-from util import fb_call
+from util import fb_call, fb_post
 import base64
 import os
 import os.path
