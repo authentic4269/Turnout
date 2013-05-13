@@ -202,7 +202,7 @@ def test():
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():
-    credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
+    credentials = util.get_google_cred(db, session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
     return redirect('/')
