@@ -3,7 +3,7 @@ import send_reminders_thread
 import add_new_events_thread
 import urllib2
 import util
-from util import fb_call
+from util import fb_call, fb_post
 import base64
 import os
 import os.path
@@ -380,7 +380,7 @@ def add_to_calendar():
 
 @app.route('/postReminder', methods=['GET', 'POST'])
 def post_reminder():
-    posted_reminder = fb_call('584999951522295/feed', 'post', args={'message':"hello", 'access_token': session['facebook']})
+    posted_reminder = fb_post('584999951522295/feed', args={'message':"hello", 'access_token': session['facebook']})
     return redirect('/')
 
 @app.route('/channel.html', methods=['GET', 'POST'])
