@@ -58,7 +58,7 @@ def get_google_code():
     credentials = None
 
     if 'google_cred' in session:
-        credentials = Credentials.ne_from_json(credentials)
+        credentials = Credentials.new_from_json(session['google_cred'])
 
     if credentials is None or credentials.invalid == True:
         return FLOW.step1_get_authorize_url()
@@ -67,19 +67,17 @@ def get_google_cred(userId, code):
     credentials = FLOW.step2_exchange(code)
     session['google_cred'] = credentials
 
-    #store in /calendars
-    storage = Storage("calendars/" + str(userId) + ".dat")
-    storage._create_file_if_needed()
-    storage.put(credentials)
+    #store in db
+    user = db.session.query(User).get(str(userId))
+    user.google_cred = credentials
+    db.session.commit()
 
     return credentials
 
 def get_cred_storage(userId):
-    storage = Storage("calendars/" + str(userId) + ".dat")
-    credentials = storage.get()
-
-    print "Credentials:"
-    print storage
+    #get from db
+    user = db.session.query(User).get(str(userId))
+    credentials = Credentials.new_from_json(user.google_cred)
 
     #refresh
     http = httplib2.Http()
