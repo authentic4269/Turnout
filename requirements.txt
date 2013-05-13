@@ -16,4 +16,4 @@ requests==0.10.4
 simplejson==2.2.1
 virtualenv==1.9.1
 wsgiref==0.1.2
-fabric
+apscheduler

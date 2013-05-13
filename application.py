@@ -137,6 +137,7 @@ sched.start()
 
 @sched.interval_schedule(minutes=2)
 def send_reminders():
+  print "hi"
   send_reminders_thread.run2(db, app)
 
 def get_home():
