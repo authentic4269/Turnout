@@ -35,15 +35,15 @@ def add_new_events_to_calendar(user, events):
         event = ast.literal_eval(e)
 
         eventObj = {
-            'summary': event.name,
-            'location': event.location,
+            'summary': event['name'],
+            'location': event['location'],
             'start': {
-                'dateTime': event.start_time,
-                'timeZone': event.timezone
+                'dateTime': event['start_time'],
+                'timeZone': event['timezone']
              },
              'end': {
-                'dateTime': event.end_time,
-                'timeZone': event.timezone
+                'dateTime': event['end_time'],
+                'timeZone': event['timezone']
               }
           }
 
@@ -63,7 +63,7 @@ def get_new_events_one_user(db, user):
      events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})['data']
      ret = []
      for event in events:
-        if (not db.session.query(models.Event).get(event.id)) and is_in_future(event):
+        if (not db.session.query(models.Event).get(event['id'])) and is_in_future(event):
                 ret.append(event)
      return ret
 
