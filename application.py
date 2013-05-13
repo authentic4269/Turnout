@@ -378,6 +378,8 @@ def add_to_calendar():
 
         if 'end_time' not in event:
             event['end_time'] = event['start_time']
+        if 'timezone' not in event:
+            event['timezone'] = "American/New_York"
 
         eventObj = {
             'summary': event['name'],
