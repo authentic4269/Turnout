@@ -21,6 +21,7 @@ class User(db.Model):
 	fb_id = db.Column(db.BigInteger, primary_key=True)
 	default_calendar = db.Column(db.Integer)
 	access_token = db.Column(db.String(200))
+	google_cred = db.Column(db.String(5000))
 	def __init__(self, name, email, fb_id):
 		self.name = name
 		self.email = email

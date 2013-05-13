@@ -69,7 +69,6 @@ def get_google_cred(db, userId, code):
 
     #store in db
     user = db.session.query(User).get(str(userId))
-    user.name = "Test"
     user.google_cred = credentials
     db.session.commit()
 
