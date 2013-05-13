@@ -19,15 +19,15 @@ def run():
     app.config.from_object(__name__)
     events = get_all_users_new_events(db)
     for (user, new_events_list) in events:
-        add_new_events_to_calendar(user, new_events_list)
+        add_new_events_to_calendar(db, user, new_events_list)
 
 def run2(db):
     events = get_all_users_new_events(db)
     for (user, new_events_list) in events:
-        add_new_events_to_calendar(user, new_events_list)
+        add_new_events_to_calendar(db, user, new_events_list)
 
 
-def add_new_events_to_calendar(user, events):
+def add_new_events_to_calendar(db, user, events):
     default_calendar_id = user.default_calendar
     google_service = util.get_google_serv(util.get_cred_storage(db, user.fb_id))
         
