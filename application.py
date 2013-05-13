@@ -202,10 +202,7 @@ def auth():
     credentials = util.get_google_cred(session['user'].fb_id, request.args['code'])
     session['google_cred'] = credentials
 
-    storage = Storage("calendars/" + str(session['user'].fb_id) + ".dat")
-    c = storage.locked_get()
-    if c is None or c.invalid == True:
-        c = "credentials is none"
+    c = "calendars/" + str(session['user'].fb_id) + ".dat"
 
     return render_template('sessions.html', text = c)
 
