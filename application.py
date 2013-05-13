@@ -237,6 +237,7 @@ def facebooksettings():
 
         user = db.session.query(User).get(session['user'].fb_id)
         user.remind_by_default = f.auto_remind.data
+        print f.auto_remind.data
         user.reminder_time = convert(f.reminder_time_count.data, f.reminder_time_unit.data)
         db.session.commit()
 
