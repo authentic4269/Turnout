@@ -44,8 +44,21 @@ def add_new_events_to_calendar(db, user, events):
     
     for event in events:
 
-        if not 'end_time' in event:
-	       event['end_time'] = event['start_time']	
+        if 'end_time' not in event:
+            event['end_time'] = event['start_time']
+
+        if len(event['start_time']) == 10:
+            event['start_time'] += "T00:00:00"
+        elif len(event['start_time']) > 19:
+            event['start_time'] = event['start_time'][0:19]
+
+        if len(event['end_time']) == 10:
+            event['end_time'] += "T23:59:59"
+        elif len(event['end_time']) > 19:
+            event['end_time'] = event['end_time'][0:19]
+
+        if 'location' not in event:
+            event['location'] = ''
 
         eventObj = {
             'summary': event['name'],
