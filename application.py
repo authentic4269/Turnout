@@ -132,13 +132,14 @@ app.config.from_object(__name__)
 app.config.from_object('conf.Config')
 app.secret_key = os.urandom(22)
 
-sched = Scheduler
-sched.start(sched)
+sched = Scheduler()
 
 @sched.interval_schedule(minutes=2)
 def send_reminders():
   print "hi"
   send_reminders_thread.run2(db, app)
+
+sched.start()
 
 def get_home():
     return 'https://' + request.host + '/'
