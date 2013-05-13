@@ -21,7 +21,7 @@ $(function(){
 	$(".addToCalendar").click(function(){
 		var e = $(this).data("event");
 		var myid = $(this).data("id");
-		var calendar = $(this).siblings(".calendar option").filter(":selected").val()
+		var calendar = $(this).siblings(".calendar").children("option:selected").val();
 		$.ajax({
 			type: "POST",
 			url: "/addToCalendar",
