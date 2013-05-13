@@ -27,7 +27,7 @@ def run2(db):
     for (user, new_events_list) in events:
         add_new_events_to_calendar(db, user, new_events_list)
 	for new_event in new_events_list:
-		newEvent = models.Event(new_event['name'], new_event['rsvp_status'], user.fb_id, new_event['id'], new_event['start_time'], new_event['end_time'], new_event['timezone'])
+		newEvent = models.Event(new_event['name'], new_event['rsvp_status'], user.fb_id, new_event['id'], new_event['start_time'], new_event['end_time'])
 		db.session.add(newEvent)
 		db.session.commit()
 		if user.remind_by_default == True:

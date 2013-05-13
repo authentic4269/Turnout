@@ -11,18 +11,18 @@ class User(db.Model):
 	name = db.Column(db.String(40))
 	email = db.Column(db.String(40))
 	auto_add = db.Column(db.Boolean)
-	carrier = db.Column(db.BigInteger)
-	remind_type = db.Column(db.BigInteger)
+	carrier = db.Column(db.Integer)
+	remind_type = db.Column(db.Integer)
 	phone = db.Column(db.BigInteger)
 	remind_by_default = db.Column(db.Boolean)
-	reminder_time = db.Column(db.BigInteger)
+	reminder_time = db.Column(db.Integer)
 	post_by_default = db.Column(db.Boolean)
-	post_time = db.Column(db.BigInteger)
+	post_time = db.Column(db.Integer)
 	google_cred = db.Column(db.String(300))
 	fb_id = db.Column(db.BigInteger, primary_key=True)
-	default_calendar = db.Column(db.BigInteger)
+	default_calendar = db.Column(db.Integer)
 	access_token = db.Column(db.String(200))
-	google_cred = db.Column(db.String(1000))
+	google_cred = db.Column(db.String(5000))
 	def __init__(self, name, email, fb_id):
 		self.name = name
 		self.email = email
@@ -40,10 +40,10 @@ class User(db.Model):
 class Reminder(db.Model):
 	__tablename__ = 'reminders'
 	send_time = db.Column(db.DateTime)
-	reminder_id = db.Column(db.BigInteger, primary_key=True)
+	reminder_id = db.Column(db.Integer, primary_key=True)
 	event_id = db.Column(db.BigInteger, db.ForeignKey('events.event_id'))
 	user_id = db.Column(db.BigInteger, db.ForeignKey('users.fb_id'))
-	type = db.Column(db.BigInteger)
+	type = db.Column(db.Integer)
 	
 	def __init__(self, send_time, reminder_id, event_id, user_id, type):
 		self.send_time = send_time
@@ -62,11 +62,10 @@ class Event(db.Model):
 	end_time = db.Column(db.String(40))
 	location = db.Column(db.String(200))
 
-	def __init__(self, title, description, uid, event_id, start_time, end_time, location):
+	def __init__(self, title, description, uid, event_id, start_time, end_time):
 		self.title = title
 		self.description = description
 		self.uid = uid
 		self.event_id = event_id
 		self.start_time = start_time
 		self.end_time = end_time
-		self.location = location
