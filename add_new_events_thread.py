@@ -32,7 +32,8 @@ def add_new_events_to_calendar(db, user, events):
     google_service = util.get_google_serv(util.get_cred_storage(db, user.fb_id))
         
     for event in events:
-
+	if not 'end_time' in event:
+		event['end_time'] = event['start_time']	
         eventObj = {
             'summary': event['name'],
             'location': event['location'],
@@ -41,8 +42,7 @@ def add_new_events_to_calendar(db, user, events):
                 'timeZone': 'America/New_York'
              },
              'end': {
-		if end_time in event:
-                	'dateTime': event['end_time'],
+                'dateTime': event['end_time'],
                 'timeZone': 'America/New_York'
               }
           }
