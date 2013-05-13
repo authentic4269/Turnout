@@ -35,7 +35,7 @@ FLOW = OAuth2WebServerFlow(
     client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
     scope='https://www.googleapis.com/auth/calendar',
     redirect_uri='https://sheltered-basin-7772.herokuapp.com/oauth2callback',
-    access_type='offline_access')
+    access_type='offline')
 
 def fb_call(call, args=None):
     url = "https://graph.facebook.com/{0}".format(call)
