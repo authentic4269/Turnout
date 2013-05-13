@@ -340,7 +340,7 @@ def index():
 
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
-                args={'access_token': session['facebook']})['data']
+                args={'access_token': access_token})
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
