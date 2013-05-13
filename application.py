@@ -194,8 +194,8 @@ def get_token():
 
 @app.route('/testbackground', methods=['GET'])
 def test():
-  add_new_events_thread.run2(db)
-  return index()
+    add_new_events_thread.run2(db)
+    return index()
 
 @app.route('/oauth2callback', methods=['GET', 'POST'])
 def auth():

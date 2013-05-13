@@ -79,7 +79,7 @@ def get_cred_storage(userId):
     credentials = storage.get()
 
     print "Credentials:"
-    print storage._validate_file()
+    print storage
 
     #refresh
     http = httplib2.Http()
