@@ -35,7 +35,7 @@ FLOW = OAuth2WebServerFlow(
     client_secret='cFDEqr9pHqZs5-Xxdc3QpTv9',
     scope='https://www.googleapis.com/auth/calendar',
     redirect_uri='https://sheltered-basin-7772.herokuapp.com/oauth2callback',
-    access_type='offline')
+    access_type='offline_access')
 
 def fb_call(call, args=None):
     url = "https://graph.facebook.com/{0}".format(call)
@@ -65,7 +65,7 @@ def get_google_code():
 
 def get_google_cred(db, userId, code):
     credentials = FLOW.step2_exchange(code)
-    session['google_cred'] = credentials
+    session['google_cred'] = credentials.to_json()
 
     #store in db
     user = db.session.query(User).get(str(userId))

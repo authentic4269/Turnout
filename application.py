@@ -349,13 +349,13 @@ def index():
 
         # get events
         events = fb_call('me/events', args={'access_token': session['facebook']})
-	render_events = []
+        render_events = []
         for event in events['data']:
             event['details'] = fb_call(str(event['id']),
                 args={'access_token': access_token})
             db_event = db.session.query(Event).get(event['id'])
             if not db_event:
-		render_events.append(db_event)
+                render_events.append(db_event)
 
         return render_template(
             'index.html', app_id=FB_APP_ID, token=access_token, app=fb_app,
