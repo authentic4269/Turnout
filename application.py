@@ -311,15 +311,19 @@ def index():
         fb_app = fb_call(FB_APP_ID, args={'access_token': access_token})
 
         url = request.url
-
+	
         # creates user in database
         user = db.session.query(User).get(me['id'])
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
+            newUser.access_token = access_token
             db.session.commit()
             user = db.session.query(User).get(me['id'])
-
+	else:
+		user.access_token = access_token
+		db.session.commit()
+		user = db.session.query(User).get(me['id'])
         session['user'] = user
 
         # get google service
