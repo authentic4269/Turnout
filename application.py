@@ -372,7 +372,7 @@ def add_to_calendar():
 
 @app.route('/postReminder', methods=['GET', 'POST'])
 def post_reminder():
-    posted_reminder = fb_call('584999951522295/feed', 'post', args={message: "hello"})
+    posted_reminder = fb_call('584999951522295/feed', 'post', args={message="hello"})
     return redirect('/')
 
 @app.route('/channel.html', methods=['GET', 'POST'])
