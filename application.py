@@ -385,11 +385,11 @@ def add_to_calendar():
         }
 
         if 'timezone' in event:
-            eventObj.start.timeZone = event['timezone']
-            eventObj.end.timeZone = event['timezone']
+            eventObj['start']['timeZone'] = event['timezone']
+            eventObj['end']['timeZone'] = event['timezone']
 
         if 'end_time' in event:
-            eventObj.end.dateTime = event['end_time'][:-5]
+            eventObj['end']['dateTime'] = event['end_time'][:-5]
 
         new_event = google_service.events().insert(calendarId=calendarId, body=eventObj).execute()
 
