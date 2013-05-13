@@ -28,6 +28,9 @@ $(function(){
 			data: {"event": e, "calendar": calendar, "id": myid},
 			success: function(data){
 				alert("Added to calendar.");
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(xhr.responseText);
 			}
 		})
 	});
