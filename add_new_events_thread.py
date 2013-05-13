@@ -29,7 +29,7 @@ def run2(db):
 
 def add_new_events_to_calendar(user, events):
     default_calendar_id = user.default_calendar
-    google_service = get_google_serv(util.get_cred_storage(user.fb_id))
+    google_service = util.get_google_serv(util.get_cred_storage(user.fb_id))
         
     for e in events:
         event = ast.literal_eval(e)
@@ -68,7 +68,7 @@ def get_new_events_one_user(db, user):
      return ret
 
 def is_in_future(dt):
-   d = datetime.strptime(dt[0:9], "%Y-%m-%d" )
+   d = datetime.strptime(dt[0:10], "%Y-%m-%d" )
    if (datetime.now() - d) < timedelta(seconds=1): 
         return True
    return False
