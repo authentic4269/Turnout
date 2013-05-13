@@ -65,7 +65,7 @@ def get_google_code():
 
 def get_google_cred(db, userId, code):
     user = db.session.query(User).get(str(userId))
-    if user.google_cred:
+    if not user.google_cred == '':
         #store in db
         http = httplib2.Http()
         credentials = Credentials.new_from_json(str(user.google_cred))
