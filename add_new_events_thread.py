@@ -36,7 +36,7 @@ def run2(db):
 
 def get_reminder_time(u, e):
 	d = datetime.strptime(e.start_time[0:10], "%Y-%m-%d" )	
-	return d - timedelta(minutes = u.remind_time)
+	return d - timedelta(minutes = u.reminder_time)
 
 def add_new_events_to_calendar(db, user, events):
     default_calendar_id = user.default_calendar
