@@ -384,12 +384,12 @@ def add_to_calendar():
         if len(event['start_time']) == 10:
             event['start_time'] += "T00:00:00"
         elif len(event['start_time']) > 19:
-            event['start_time'] = event['start_time'][0:20]
+            event['start_time'] = event['start_time'][0:19]
 
         if len(event['end_time']) == 10:
             event['end_time'] += "T23:59:59"
         elif len(event['end_time']) > 19:
-            event['end_time'] = event['end_time'][0:20]
+            event['end_time'] = event['end_time'][0:19]
 
         if 'location' not in event:
             event['location'] = ''
