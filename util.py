@@ -42,6 +42,11 @@ def fb_call(call, args=None):
     r = requests.get(url, params=args)
     return json.loads(r.content)
 
+def fb_post(call, args=None):
+    url = "https://graph.facebook.com/{0}".format(call)
+    r = requests.post(url, params=args)
+    return json.loads(r.content)
+
 # returns true if credentials are valid
 def ensure_cred(credentials):
     if credentials is None or credentials.invalid == True:
