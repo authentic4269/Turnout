@@ -236,7 +236,7 @@ def facebooksettings():
         f = FacebookForm(request.form)
 
         user = db.session.query(User).get(session['user'].fb_id)
-        if f.auto_remind.data == 'True':
+        if f.auto_remind.data:
             user.remind_by_default = True
         else:
             user.remind_by_default = False
