@@ -20,13 +20,12 @@
 <ul id="events">
 {% for event in events %}
     <li id="event.id">
-    	<strong class="eventname">{{event.title}}</strong> <span class="eventtime">{{event.details.start_time}} - {{event.details.end_time}}</span><br />
+    	<strong class="eventname">{{event.name}}</strong> <span class="eventtime">{{event.details.start_time}} - {{event.details.end_time}}</span><br />
     	<span class="eventlocation">{{event.details.location}}</span><br />
     	<p class="description">{{event.details.description.replace('\n', '<br />')|safe}}</p>
     	<p>
-    		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a>
+    		<a href="#" class="reminder" data-email="{{me.email}}">Send e-mail</a><br />
             Add to Google Calendar:
-            {% if event.in_db == False %}
                 <select class="calendar" name="calendar">
                     {% for calendar in calendar_list['items'] %}
                         {% if calendar.id == default_calendar %}
@@ -37,7 +36,6 @@
                     {% endfor %}
                 </select>
                 <input type="submit" data-id="{{me.id}}" data-event="{{event.details}}" class="addToCalendar" />
-            {% endif %}
     	</p>
 	</li>
 {% endfor %}
