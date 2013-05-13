@@ -59,7 +59,8 @@ def get_all_users_new_events(db):
       
 def get_new_events_one_user(db, user):
      access_token = db.session.query(models.User).get(user.fb_id).access_token
-     events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})
+     access_token = access_token[1:len(access_token)-1]
+     events = fb_call("me/events?limit=999&since=1990", args={'access_token': access_token})['data']
      ret = []
      for event in events:
         if (not db.session.query(models.Event).get(event.id)) and is_in_future(event):
