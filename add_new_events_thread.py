@@ -35,7 +35,7 @@ def run2(db):
     db.session.commit()
 
 def get_reminder_time(u, e):
-	d = datetime.strptime(e['start_time'][0:10], "%Y-%m-%d" )	
+	d = datetime.strptime(e.start_time[0:10], "%Y-%m-%d" )	
 	return d - timedelta(minutes = u.remind_time)
 
 def add_new_events_to_calendar(db, user, events):
