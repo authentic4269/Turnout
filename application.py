@@ -179,6 +179,14 @@ def get_token():
         r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
         token = parse_qs(r.content).get('access_token')
 
+        params = {
+            'client_id': FB_APP_ID,
+            'client_secret': FB_APP_SECRET,
+	    'grant_type': 'fb_exchange_token',
+	    'fb_exchange_token': token
+        }
+	r = requests.get('https://graph.facebook.com/oauth/access_token', params=params)
+	token = parse_qs(r.content).get('access_token')
         return token
 
 @app.route('/testbackground', methods=['GET'])
@@ -307,8 +315,9 @@ def index():
         if not user:
             newUser = User(me['name'], me['email'], me['id'])
             db.session.add(newUser)
-            db.session.commit()
             user = db.session.query(User).get(me['id'])
+        user.access_token = access_token
+        db.session.commit()
 
         session['user'] = user
 
