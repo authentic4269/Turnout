@@ -78,6 +78,9 @@ def get_cred_storage(userId):
     storage = Storage("calendars/" + str(userId) + ".dat")
     credentials = storage.locked_get()
 
+    print "Credentials:"
+    print credentials
+
     #refresh
     http = httplib2.Http()
     credentials.refresh(http)
