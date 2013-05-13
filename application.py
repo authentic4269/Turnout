@@ -237,9 +237,7 @@ def facebooksettings():
 
         user = db.session.query(User).get(session['user'].fb_id)
         user.remind_by_default = f.auto_remind.data
-        user.post_by_default = f.auto_post.data
         user.reminder_time = convert(f.reminder_time_count.data, f.reminder_time_unit.data)
-        user.post_time = convert(f.post_time_count.data, f.post_time_unit.data)
         db.session.commit()
 
         session['user'] = user
@@ -248,10 +246,8 @@ def facebooksettings():
         return redirect(url_for('index'))
     elif 'user' in session:
         remind_inf = get_unit(session['user'].reminder_time)
-        post_inf = get_unit(session['user'].post_time)
         return render_template('facebook.html', auto_remind=session['user'].remind_by_default,
-            remind_time=remind_inf['num'], remind_unit=remind_inf['unit'], 
-            post_time=post_inf['num'], post_unit=post_inf['unit'])
+            remind_time=remind_inf['num'], remind_unit=remind_inf['unit'])
     else:
         flash('You are not logged in')
         return redirect(url_for('index'))
